@@ -1,6 +1,6 @@
 # pytodo
 
-pytodo is a todolist programm who works with a .todo file at the root of the home directory
+pytodo is a todolist program who works with a .todo file at the root of the home directory
 
 ## Install
 
@@ -21,7 +21,11 @@ pytodo-add "to do work #name_of_tag" #add the task 'to do work' with the tag 'na
 pytodo-add "to do other_work #name_of_other_tag" #add the other task 'to do other_work' with the tag 'name_of_other_tag'
 pytodo-add "to do other_big_work #name_of_other_tag" #add the other task 'to do other_big_work' with the tag 'name_of_tag'
 pytodo-list #print the todolist with an index for each task
+>1 to do work #name_of_tag
+>2 to do other_work #name_of_other_tag
+>3 to do other_big_work #name_of_other_tag
 pytodo-list "name_of_tag" #print the todolist filtered to the tag name_of_tag
+>1 to do work #name_of_tag
 pytodo-del 2 #delete the second task of the todolist
 pytodo-clear #reorder the todolist in consecutives index
 ```
