@@ -27,7 +27,13 @@ pytodo-list #print the todolist with an index for each task
 pytodo-list "name_of_tag" #print the todolist filtered to the tag name_of_tag
 >1 to do work #name_of_tag
 pytodo-del 2 #delete the second task of the todolist
+pytodo-list #print the todolist with an index for each task
+>1 to do work #name_of_tag
+>3 to do other_big_work #name_of_other_tag
 pytodo-clear #reorder the todolist in consecutives index
+pytodo-list #print the todolist with an index for each task
+>1 to do work #name_of_tag
+>2 to do other_big_work #name_of_other_tag
 ```
 
 ## Uninstall
