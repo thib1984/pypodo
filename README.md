@@ -22,7 +22,7 @@ pytodo-add "to do other_work #name_of_other_tag" #add the other task 'to do othe
 pytodo-add "to do other_big_work #name_of_other_tag" #add the other task 'to do other_big_work' with the tag 'name_of_tag'
 pytodo-list #print the todolist with an index for each task
 pytodo-list "name_of_tag" #print the todolist filtered to the tag name_of_tag
-pytodo-del 2 #delete the first task of the todolist
+pytodo-del 2 #delete the second task of the todolist
 pytodo-clear #reorder the todolist in consecutives index
 ```
 
