@@ -63,7 +63,7 @@ print the todolist with an index for each task :
 print the todolist filtered to the tag name_of_tag :
 
 ```
->1 to do work #name_of_tag
+1 to do work #name_of_tag
 ```
 
 ``pytodo del 2`` 
