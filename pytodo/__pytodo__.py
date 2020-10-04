@@ -2,7 +2,7 @@ from pathlib import Path
 
 def help():
 	help_txt = """\
-
+	
 NAME
        pytodo
 
@@ -10,6 +10,7 @@ SYNOPSIS
        pytodo is a todolist program who works with a .todo file at the root of the home directory
        pytodo [MODE] [PARAMETERS]...
 
+       help : display this help
        list : print the todolist with an index for each task, with tag filtered on [PARAMETER]
               pytodo list #print the todolist
               pytodo list linux #print the todolist filtered on tag linux
@@ -17,14 +18,13 @@ SYNOPSIS
               pytodo add "my first task" #add the task "my first task" to the todolist
        delete : delete the task identified with the index equals to [PARAMETER] from the todolist
               pytodo delete 3 #deletes the task identified by index equals 3	
-       clear : reorder the todolist in consecutives index
-              pytodo clear
-       help : display this help
        tag : add the tag [PARAMETER[2]] to the task the task identified with the index equals to [PARAMETER[1]]
               pytodo 3 linux #add the tag linux to the task identified with the index equals to 3
        untag : delete all tags from the task identified with the index equals to [PARAMETER]
-              pytodo untag 3 #deletes all tags frome the task identified by index equals 3				
-
+              pytodo untag 3 #deletes all tags frome the task identified by index equals 3
+       clear : reorder the todolist in consecutives index
+              pytodo clear	
+              			
 	"""
 	print(help_txt)
 
