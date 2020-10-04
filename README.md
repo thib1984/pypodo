@@ -1,6 +1,6 @@
 # pypodo
 
-pypodo is a pip package : a todolist program who works with a .todo file at the root of the home directory in your terminal
+pypodo (\pipudu\\) is a pip package : a todolist program who works with a .todo file at the root of the home directory in your terminal
 
 ## Install
 
