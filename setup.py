@@ -9,6 +9,6 @@ setup(name='pytodo',
       packages=['pytodo'],
       zip_safe=False,
       entry_points = {
-          'console_scripts': ['pytodo-list=pytodo.__pytodo__:list','pytodo-add=pytodo.__pytodo__:add','pytodo-del=pytodo.__pytodo__:delete','pytodo-clear=pytodo.__pytodo__:clear','pytodo=pytodo.__pytodo__:help'],
+          'console_scripts': ['pytodo-list=pytodo.__pytodo__:list','pytodo-add=pytodo.__pytodo__:add','pytodo-del=pytodo.__pytodo__:delete','pytodo-clear=pytodo.__pytodo__:clear','pytodo=pytodo.__pytodo__:help','pytodo-untag=pytodo.__pytodo__:untag','pytodo-tag=pytodo.__pytodo__:tag'],
       }
 )

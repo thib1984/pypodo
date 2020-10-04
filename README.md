@@ -34,6 +34,15 @@ pytodo-clear #reorder the todolist in consecutives index
 pytodo-list #print the todolist with an index for each task
 >1 to do work #name_of_tag
 >2 to do other_big_work #name_of_other_tag
+pytodo-tag 1 new_tag #add a tag to the first task
+pytodo-list #print the todolist with an index for each task
+>1 to do work #name_of_tag #new_tag
+>2 to do other_big_work #name_of_other_tag
+pytodo-untag 1 #remove tags from the first task
+pytodo-list #print the todolist with an index for each task
+>1 to do work
+>2 to do other_big_work #name_of_other_tag
+
 ```
 
 ## Uninstall
