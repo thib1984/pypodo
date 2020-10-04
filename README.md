@@ -26,13 +26,15 @@ pip3 install --user .
 
 ## Utilisation
 
-``pytodo`` display help message
+``pytodo`` or ``pytodo help``
+display help message
 
-```
-pytodo #display help message
-pytodo help #display help message
-pytodo add "to do work #name_of_tag" #add the task 'to do work' with the tag 'name_of_tag'
-pytodo add "to do other_work #name_of_other_tag" #add the other task 'to do other_work' with the tag 'name_of_other_tag'
+``pytodo add "to do work #name_of_tag"``
+add the task 'to do work' with the tag 'name_of_tag'
+
+``pytodo add "to do other_work #name_of_other_tag"``
+add the other task 'to do other_work' with the tag 'name_of_other_tag'
+
 pytodo add "to do other_big_work #name_of_other_tag" #add the other task 'to do other_big_work' with the tag 'name_of_tag'
 pytodo list #print the todolist with an index for each task
 >1 to do work #name_of_tag
