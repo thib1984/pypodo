@@ -17,6 +17,8 @@ pip3 install --user git+https://github.com/thib1984/pytodo.git#egg=pytodo
 ## Utilisation
 
 ```
+pytodo #display help
+pytodo help #display help
 pytodo add "to do work #name_of_tag" #add the task 'to do work' with the tag 'name_of_tag'
 pytodo add "to do other_work #name_of_other_tag" #add the other task 'to do other_work' with the tag 'name_of_other_tag'
 pytodo add "to do other_big_work #name_of_other_tag" #add the other task 'to do other_big_work' with the tag 'name_of_tag'
