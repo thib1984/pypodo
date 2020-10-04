@@ -1,24 +1,34 @@
-# pytodo
+# pytodolist
 
-pytodo is a todolist program who works with a .todo file at the root of the home directory
+pytodolist is a pip package : a todolist program who works with a .todo file at the root of the home directory in your terminal
 
 ## Install
 
 ```
-git clone https://github.com/thib1984/pytodolist.git
-cd pytodolist
-pip3 install --user .
+pip3 install --user git+https://github.com/thib1984/pytodolist.git#egg=pytodolist
 ```
-or 
+
+## Upgrade
+
 ```
 pip3 install --user git+https://github.com/thib1984/pytodolist.git#egg=pytodolist
+```
+
+## Github
+
+To work with Github
+```
+git clone https://github.com/thib1984/pytodolist.git
+cd pytodolist
+#work with git
+pip3 install --user .
 ```
 
 ## Utilisation
 
 ```
-pytodo #display help
-pytodo help #display help
+pytodo #display help message
+pytodo help #display help message
 pytodo add "to do work #name_of_tag" #add the task 'to do work' with the tag 'name_of_tag'
 pytodo add "to do other_work #name_of_other_tag" #add the other task 'to do other_work' with the tag 'name_of_other_tag'
 pytodo add "to do other_big_work #name_of_other_tag" #add the other task 'to do other_big_work' with the tag 'name_of_tag'
