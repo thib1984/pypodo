@@ -11,7 +11,7 @@ pip3 install --user git+https://github.com/thib1984/pytodolist.git#egg=pytodolis
 ## Upgrade
 
 ```
-pip3 install --user git+https://github.com/thib1984/pytodolist.git#egg=pytodolist
+pip3 install --user git+https://github.com/thib1984/pytodolist.git#egg=pytodolist --upgrade
 ```
 
 ## Github
