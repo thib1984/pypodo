@@ -1,53 +1,53 @@
-# pytodolist
+# pypodo
 
-pytodolist is a pip package : a todolist program who works with a .todo file at the root of the home directory in your terminal
+pypodo is a pip package : a todolist program who works with a .todo file at the root of the home directory in your terminal
 
 ## Install
 
 ```
-pip3 install --user git+https://github.com/thib1984/pytodolist.git#egg=pytodolist
+pip3 install --user git+https://github.com/thib1984/pypodo.git#egg=pypodo
 ```
 
 ## Upgrade
 
 ```
-pip3 install --user git+https://github.com/thib1984/pytodolist.git#egg=pytodolist --upgrade
+pip3 install --user git+https://github.com/thib1984/pypodo.git#egg=pypodo --upgrade
 ```
 
 ## Github
 
 To work with Github
 ```
-git clone https://github.com/thib1984/pytodolist.git
-cd pytodolist
+git clone https://github.com/thib1984/pypodo.git
+cd pypodo
 #work with git
 pip3 install --user .
 ```
 
 ## Utilisation
 
-``pytodo`` 
+``pypodo`` 
 
 display help message
 
-``pytodo help``
+``pypodo help``
 
 display help message
 
-``pytodo add "to do work #name_of_tag"``
+``pypodo add "to do work #name_of_tag"``
 
 add the task 'to do work' with the tag 'name_of_tag'
 
-``pytodo add "to do other_work #name_of_other_tag"``
+``pypodo add "to do other_work #name_of_other_tag"``
 
 add the other task 'to do other_work' with the tag 'name_of_other_tag'
 
-``pytodo add "to do other_big_work #name_of_other_tag"``
+``pypodo add "to do other_big_work #name_of_other_tag"``
 
 add the other task 'to do other_big_work' with the tag 'name_of_tag'
 
 
-``pytodo list`` 
+``pypodo list`` 
 
 print the todolist with an index for each task :
 
@@ -58,7 +58,7 @@ print the todolist with an index for each task :
 ```
 
 
-`` pytodo list "name_of_tag"``
+`` pypodo list "name_of_tag"``
 
 print the todolist filtered to the tag name_of_tag :
 
@@ -66,11 +66,11 @@ print the todolist filtered to the tag name_of_tag :
 1 to do work #name_of_tag
 ```
 
-``pytodo del 2`` 
+``pypodo del 2`` 
 
 delete the second task of the todolist
 
-``pytodo list``
+``pypodo list``
 
 
 print the todolist with an index for each task : 
@@ -81,12 +81,12 @@ print the todolist with an index for each task :
 ```
 
 
-``pytodo clear``
+``pypodo clear``
 
 reorder the todolist in consecutives index
 
 
-``pytodo list``
+``pypodo list``
 print the todolist with an index for each task :
 
 ```
@@ -94,11 +94,11 @@ print the todolist with an index for each task :
 2 to do other_big_work #name_of_other_tag
 ```
 
-``pytodo tag 1 new_tag``
+``pypodo tag 1 new_tag``
 
 add a tag to the first task
 
-``pytodo list``
+``pypodo list``
 
 print the todolist with an index for each task
 
@@ -107,11 +107,11 @@ print the todolist with an index for each task
 2 to do other_big_work #name_of_other_tag
 ```
 
-``pytodo untag 1``
+``pypodo untag 1``
 
 remove tags from the first task
 
-``pytodo list``
+``pypodo list``
 
 print the todolist with an index for each task :
 
