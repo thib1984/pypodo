@@ -52,9 +52,9 @@ add the other task 'to do other_big_work' with the tag 'name_of_tag'
 print the todolist with an index for each task :
 
 ```
->1 to do work #name_of_tag
->2 to do other_work #name_of_other_tag
->3 to do other_big_work #name_of_other_tag
+1 to do work #name_of_tag
+2 to do other_work #name_of_other_tag
+3 to do other_big_work #name_of_other_tag
 ```
 
 
@@ -76,8 +76,8 @@ delete the second task of the todolist
 print the todolist with an index for each task : 
 
 ```
->1 to do work #name_of_tag
->3 to do other_big_work #name_of_other_tag
+1 to do work #name_of_tag
+3 to do other_big_work #name_of_other_tag
 ```
 
 
@@ -90,8 +90,8 @@ reorder the todolist in consecutives index
 print the todolist with an index for each task :
 
 ```
->1 to do work #name_of_tag
->2 to do other_big_work #name_of_other_tag
+1 to do work #name_of_tag
+2 to do other_big_work #name_of_other_tag
 ```
 
 ``pytodo tag 1 new_tag``
@@ -103,8 +103,8 @@ add a tag to the first task
 print the todolist with an index for each task
 
 ```
->1 to do work #name_of_tag #new_tag
->2 to do other_big_work #name_of_other_tag
+1 to do work #name_of_tag #new_tag
+2 to do other_big_work #name_of_other_tag
 ```
 
 ``pytodo untag 1``
@@ -116,8 +116,8 @@ remove tags from the first task
 print the todolist with an index for each task :
 
 ```
->1 to do work
->2 to do other_big_work #name_of_other_tag
+1 to do work
+2 to do other_big_work #name_of_other_tag
 ```
 
 ## Uninstall
