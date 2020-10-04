@@ -5,13 +5,13 @@ pytodo is a todolist program who works with a .todo file at the root of the home
 ## Install
 
 ```
-git clone https://github.com/thib1984/pytodo.git
-cd pytodo
+git clone https://github.com/thib1984/pytodolist.git
+cd pytodolist
 pip3 install --user .
 ```
 or 
 ```
-pip3 install --user git+https://github.com/thib1984/pytodo.git#egg=pytodo
+pip3 install --user git+https://github.com/thib1984/pytodolist.git#egg=pytodolist
 ```
 
 ## Utilisation
