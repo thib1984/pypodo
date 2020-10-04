@@ -26,6 +26,8 @@ pip3 install --user .
 
 ## Utilisation
 
+``pytodo`` display help message
+
 ```
 pytodo #display help message
 pytodo help #display help message
