@@ -9,7 +9,7 @@ git clone https://github.com/thib1984/pytodo.git
 cd pytodo
 pip3 install --user .
 ```
-or directly
+or 
 ```
 pip3 install --user git+https://github.com/thib1984/pytodo.git#egg=pytodo
 ```
