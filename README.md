@@ -49,5 +49,5 @@ pytodo list #print the todolist with an index for each task
 ## Uninstall
 
 ```
-pip3 uninstall pytodo
+pip3 uninstall pytodolist
 ```
