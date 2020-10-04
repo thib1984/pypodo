@@ -67,7 +67,7 @@ def list():
 			if len(sys.argv) == 1:
 				print(line, end = '')	
 			elif len(sys.argv) == 2:
-				if '#'+sys.rgv[1] in line:
+				if '#'+sys.argv[1] in line:
 					print(line, end = '')
 					
 def add():
@@ -179,6 +179,7 @@ def tag():
 	else:
 		sys.exit("2 parametres attendus pour pytodo-tag : l index de la tache au format numérique et le tag à ajouter")	
 
+	
 if __name__ == "__list__":
     list()
 if __name__ == "__add__":
