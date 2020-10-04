@@ -123,5 +123,5 @@ print the todolist with an index for each task :
 ## Uninstall
 
 ```
-pip3 uninstall pytodolist
+pip3 uninstall pypodo
 ```
