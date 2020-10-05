@@ -6,6 +6,7 @@ setup(name='pypodo',
       url='https://github.com/thib1984/pypodo',
       author='thib1984',
       author_email='thibault.garcon@gmail.com',
+      license='mit',
       packages=['pypodo'],
       zip_safe=False,
       entry_points = {
