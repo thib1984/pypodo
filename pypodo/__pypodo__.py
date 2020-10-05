@@ -19,7 +19,7 @@ SYNOPSIS
        del : delete the task identified with the index equals to [PARAMETER] from the todolist
               pypodo del 3 #deletes the task identified by index equals 3	
        tag : add the tag [PARAMETER[2]] to the task the task identified with the index equals to [PARAMETER[1]]
-              pypodo 3 linux #add the tag linux to the task identified with the index equals to 3
+              pypodo tag 3 linux #add the tag linux to the task identified with the index equals to 3
        untag : delete all tags from the task identified with the index equals to [PARAMETER]
               pypodo untag 3 #deletes all tags frome the task identified by index equals 3
        clear : reorder the todolist in consecutives index
