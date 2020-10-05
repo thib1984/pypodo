@@ -33,22 +33,31 @@ def list():
 	check()
 	home = str(Path.home())
 	if len(sys.argv) > 3:
-		sys.exit("0 ou 1 parametre attendu pour pypodo list : le tag")
+		sys.exit("error : 0 or 1 parameter needed for pypodo list - the tag")
+	vide = 'true'
 	with open(home+"/.todo", 'r') as f:
 		for line in f.readlines():
 			if len(sys.argv) == 2:
-				print(line, end = '')	
+				print(line, end = '')
+				vide = 'false'	
 			elif len(sys.argv) == 3:
 				if '#'+sys.argv[2] in line:
 					print(line, end = '')
-					
+					vide = 'false'
+	if vide == 'true':
+		if len(sys.argv) == 3:
+			print("warning : the filtered todolist is empty")
+		else:
+			print("warning : the todolist is empty")
+							
 def add():
 	import sys
 	check()
 	home = str(Path.home())
 	if len(sys.argv) != 3:
-		sys.exit("1 et 1 seul parametre attendu pour pypodo add : la tache a ajouter") 
+		sys.exit("error : 1 parameter needed for pypodo add - the task") 
 	else:
+		vide = 'true'
 		with open(home+"/.todo", 'r') as f:
 			lines = f.readlines()
 		if len(lines) > 0:
@@ -58,31 +67,42 @@ def add():
 			index = 1	
 		with open(home+"/.todo", 'a') as f:
 			f.write(str(index)+" "+sys.argv[2]+'\n')		
-
+			print("info : task added to the todolist - " + str(index)+" "+sys.argv[2])
+			vide = 'false'
+		if vide == 'true':
+			print("warning : no task added to the todolist")	
+			
 def delete():
 	import sys
 	import re
 	check()
 	home = str(Path.home())
 	if len(sys.argv) == 3:
+		vide = 'true'
 		if not re.findall("^\d+$",sys.argv[2]):
-			sys.exit("1 et 1 seul parametre attendu pour pypodo del : l index a supprimer au format numerique")		
+			sys.exit("error : 1 parameter needed for pypodo add - the index to delete in numeric format") 
 		with open(home+"/.todo", 'r') as f:
 			lines = f.readlines()
 		with open(home+"/.todo", 'w') as f:	    
 			for line in lines:
 				if not re.findall("^"+sys.argv[2]+' ',line):
-					f.write(line)	
+					f.write(line)
+				else:
+					print("info : task deleted from the todolist - " + line.rstrip('\n'))
+					vide = 'false'
+		if vide == 'true':
+			print("warning : no task deleted from the todolist")					
 	else:
-		sys.exit("1 et 1 seul parametre pour attendu pypodo del : l index a supprimer au format numerique")							
+		sys.exit("error : 1 parameter needed for pypodo add - the index to delete in numeric format")							
 
 def clear():
 	import sys
 	import re
 	check()
 	if len(sys.argv) != 2:
-		sys.exit("0 parametre attendu pour pypodo clear") 
+		sys.exit("error : 0 parameter needed for pypodo clear") 
 	else:
+		vide = 'true'
 		index=1
 		home = str(Path.home())
 		with open(home+"/.todo", 'r') as f:
@@ -92,6 +112,12 @@ def clear():
 				replaced = re.sub("^\d+ ",str(index)+" ", line)
 				index=index+1
 				f.write(replaced)
+				vide = 'false'
+		if vide == 'true':
+			print("warning : the todolist is empty - nothing to do")
+		else:
+			print("info : the todolist is cleared")		
+			
 
 def check():
 	import sys
@@ -104,7 +130,7 @@ def check():
 		with open(home+"/.todo", 'r') as f:
 			for line in f.readlines():
 				if not re.findall("^\d+ ",line):
-					sys.exit("erreur : vérifier le fichier .todo")
+					sys.exit("error : verify the .todo file")
 	else:
 		open(home+"/.todo", "w")
 
@@ -115,8 +141,9 @@ def untag():
 	check()
 	home = str(Path.home())
 	if len(sys.argv) == 3:
+		vide = 'true'
 		if not re.findall("^\d+$",sys.argv[2]):
-			sys.exit("1 et 1 seul parametre attendu pour pypodo untag : l index dont le tag doit etre supprime")		
+			sys.exit("1 parameter needed for pypodo untag : the index of the task whose tags to delete")		
 		with open(home+"/.todo", 'r') as f:
 			lines = f.readlines()
 		with open(home+"/.todo", 'w') as f:	    
@@ -124,9 +151,13 @@ def untag():
 				if not re.findall("^"+sys.argv[2]+' ',line):
 					f.write(line)
 				if re.findall("^"+sys.argv[2]+' ',line):
-					f.write(re.sub(" #.*" ,"", line))								
+					f.write(re.sub(" #.*" ,"", line))
+					print("info : tag deleted from the task of the todolist - " + line.rstrip('\n') + " -> " + re.sub(" #.*" ,"", line.rstrip('\n')))
+					vide = 'false'
+		if vide == 'true':
+			print("warning : no tags deleted from the todolist")											
 	else:
-		sys.exit("1 et 1 seul parametre pour attendu pypodo untag : l index dont le tag doit etre supprime")	
+		sys.exit("1 parameter needed for pypodo untag : the index of the task whose tags to delete")	
 
 
 def tag():
@@ -136,17 +167,20 @@ def tag():
 	home = str(Path.home())
 	if len(sys.argv) == 4:
 		if not re.findall("^\d+$",sys.argv[2]):
-			sys.exit("2 parametres attendus pour pypodo tag : l index de la tache au format numérique et le tag à ajouter")		
+			sys.exit("2 parameters needed for pypodo tag : the index of the task in numeric format and the tag to added")		
 		with open(home+"/.todo", 'r') as f:
 			lines = f.readlines()
+		vide = 'true'
 		with open(home+"/.todo", 'w') as f:	    
 			for line in lines:
 				if not re.findall("^"+sys.argv[2]+' ',line):
 					f.write(line)
 				if re.findall("^"+sys.argv[2]+' ',line):
-					f.write(line.rstrip('\n')+" #"+sys.argv[3]+"\n")							
+					f.write(line.rstrip('\n')+" #"+sys.argv[3]+"\n")
+					print("info : tag added to the task of the todolist - " + line.rstrip('\n') + " -> " + line.rstrip('\n')+" #"+sys.argv[3]) 
+					vide = 'false'							
 	else:
-		sys.exit("2 parametres attendus pour pypodo tag : l index de la tache au format numérique et le tag à ajouter")	
+		sys.exit("2 parameters needed for pypodo tag : the index of the task in numeric format and the tag to added")	
 
 def pypodo():	
 	import sys
