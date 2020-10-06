@@ -76,7 +76,7 @@ print the todolist with an index for each task :
 ```
 
 
-``pypodo clear``
+``pypodo sort``
 
 reorder the todolist in consecutives index
 

@@ -22,8 +22,8 @@ SYNOPSIS
               pypodo tag linux 3 4 #add the tag linux to the task identified with the index equals to 3 and 4
        untag : delete the tag identidied by [PARAMETER1] in the task definied by the [PARAMETER2]...
               pypodo untag linux 3 4 #delete the tag linux from the task identified by index equals 3 and 4
-       clear : reorder the todolist in consecutives index
-              pypodo clear	
+       sort : reorder the todolist in consecutives index
+              pypodo sort	
               			
 	"""
 	print(help_txt)
@@ -101,12 +101,12 @@ def delete():
 	else:
 		sys.exit("error : 1 or more parameter needed for pypodo add - indexes to delete in numeric format")							
 
-def clear():
+def sort():
 	import sys
 	import re
 	check()
 	if len(sys.argv) != 2:
-		sys.exit("error : 0 parameter needed for pypodo clear") 
+		sys.exit("error : 0 parameter needed for pypodo sort") 
 	else:
 		vide = 'true'
 		index=1
@@ -122,7 +122,7 @@ def clear():
 		if vide == 'true':
 			print("warning : the todolist is empty - nothing to do")
 		else:
-			print("info : the todolist is cleared")		
+			print("info : the todolist is sorted")		
 			
 
 def check():
@@ -215,8 +215,8 @@ def pypodo():
 	    add()
 	elif sys.argv[1] == "del":
 	    delete()
-	elif sys.argv[1] == "clear":
-	    clear()    
+	elif sys.argv[1] == "sort":
+	    sort()    
 	elif sys.argv[1] == "help":
 	    help()
 	elif sys.argv[1] == "untag":
