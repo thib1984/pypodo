@@ -20,8 +20,8 @@ SYNOPSIS
               pypodo del 3 #deletes the task identified by index equals 3	
        tag : add the tag [PARAMETER[2]] to the task the task identified with the index equals to [PARAMETER[1]]
               pypodo tag 3 linux #add the tag linux to the task identified with the index equals to 3
-       untag : delete all tags from the task identified with the index equals to [PARAMETER]
-              pypodo untag 3 #deletes all tags frome the task identified by index equals 3
+       untag : delete the tag identidied by [PARAMETER2] in the task definied by the [PARAMETER1]
+              pypodo untag 3 linux #delete the tag linux from the task identified by index equals 3
        clear : reorder the todolist in consecutives index
               pypodo clear	
               			
@@ -150,10 +150,10 @@ def untag():
 	import re
 	check()
 	home = str(Path.home())
-	if len(sys.argv) == 3:
+	if len(sys.argv) == 4:
 		vide = 'true'
 		if not re.findall("^\d+$",sys.argv[2]):
-			sys.exit("error : 1 parameter needed for pypodo untag : the index of the task whose tags to delete")		
+			sys.exit("error : 2 parameters needed for pypodo untag : the index of the task whose tags to delete and the tag to delete")		
 		with open(home+"/.todo", 'r') as f:
 			lines = f.readlines()
 		with open(home+"/.todo", 'w') as f:	    
@@ -161,9 +161,12 @@ def untag():
 				if not re.findall("^"+sys.argv[2]+' ',line):
 					f.write(line)
 				if re.findall("^"+sys.argv[2]+' ',line):
-					f.write(re.sub(" #.*" ,"", line))
-					print("info : tag deleted from the task of the todolist - " + line.rstrip('\n') + " -> " + re.sub(" #.*" ,"", line.rstrip('\n')))
-					vide = 'false'
+					if re.findall("#"+re.escape(sys.argv[3])+'( |$)',line.rstrip('\n')):
+						f.write(re.sub("#"+re.escape(sys.argv[3])+'( |$)' ,"", line).rstrip('\n').rstrip()+'\n')
+						print("info : tag deleted from the task of the todolist - " + line.rstrip('\n') + " -> " + re.sub("#"+re.escape(sys.argv[3])+'( |$)',"", line.rstrip('\n')))
+						vide = 'false'
+					else:
+						f.write(line)	
 		if vide == 'true':
 			print("warning : no tags deleted from the todolist")											
 	else:
@@ -215,7 +218,7 @@ def pypodo():
 	elif sys.argv[1] == "tag":
 	    tag()
 	elif sys.argv[1] == "help":
-	    tag() 
+	    help() 
 	else:
 	     help()	
 	      
