@@ -167,7 +167,7 @@ def untag():
 	import sys
 	import re
 	check()
-	home = str(Path.home())
+	todo = str(Path.home())+"/.todo"
 	if len(sys.argv) >= 4:
 		tag=sys.argv[2]
 		if not re.findall("^[^ #]+$",tag):
@@ -179,9 +179,9 @@ def untag():
 				print("warning : the index to untag is not in numeric format - " + index)
 			else:	
 				index_trouve = 'false'
-				with open(home+"/.todo", 'r') as f:
+				with open(todo, 'r') as f:
 					lines = f.readlines()
-				with open(home+"/.todo", 'w') as f:	    
+				with open(todo, 'w') as f:	    
 					for line in lines:
 						if not re.findall("^"+index+' ',line):
 							f.write(line)
@@ -204,7 +204,7 @@ def tag():
 	import sys
 	import re
 	check()
-	home = str(Path.home())
+	todo = str(Path.home())+"/.todo"
 	if len(sys.argv) >= 4:
 		tag=sys.argv[2]
 		if not re.findall("^[^ #]+$",tag):
@@ -217,9 +217,9 @@ def tag():
 				print("warning : the index to yag is not in numeric format - " + index)
 			else:	
 				index_trouve = 'false'
-				with open(home+"/.todo", 'r') as f:
+				with open(todo, 'r') as f:
 					lines = f.readlines()
-				with open(home+"/.todo", 'w') as f:	    
+				with open(todo, 'w') as f:	    
 					for line in lines:
 						if not re.findall("^"+index+' ',line):
 							f.write(line)
