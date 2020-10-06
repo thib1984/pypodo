@@ -1,6 +1,6 @@
 # pypodo
 
-pypodo (\pipudu\\) is a pip package : a todolist program who works with a .todo file at the root of the home directory in your terminal
+**pypodo** (\pipudu\\) is a pip package : a todolist tool which works with a .todo file positionned the root of the home directory
 
 ## Install
 
@@ -12,6 +12,12 @@ pip3 install --user git+https://github.com/thib1984/pypodo.git#egg=pypodo
 
 ```
 pip3 install --user git+https://github.com/thib1984/pypodo.git#egg=pypodo --upgrade
+```
+
+## Uninstall
+
+```
+pip3 uninstall pypodo
 ```
 
 ## Github
@@ -26,23 +32,17 @@ pip3 install --user .
 
 ## Utilisation
 
-``pypodo`` 
+- ``pypodo`` : display help message
 
-display help message
+- ``pypodo help`` : display help message
 
-``pypodo help``
+- ``pypodo add "to do work #name_of_tag"`` : add the task 'to do work' with the tag 'name_of_tag'
 
-display help message
-
-``pypodo add "to do work #name_of_tag"``
-
-add the task 'to do work' with the tag 'name_of_tag'
-
-``pypodo add "to do other_work #name_of_other_tag" "to do other_big_work #name_of_other_tag"``
+- ``pypodo add "to do other_work #name_of_other_tag" "to do other_big_work #name_of_other_tag"``
 
 add the other task 'to do other_work' with the tag 'name_of_other_tag' the another task 'to do other_big_work' with the tag 'name_of_tag'
 
-``pypodo list`` 
+- ``pypodo list`` 
 
 print the todolist with an index for each task :
 
@@ -53,7 +53,7 @@ print the todolist with an index for each task :
 ```
 
 
-`` pypodo list "name_of_tag"``
+- `` pypodo list "name_of_tag"``
 
 print the todolist filtered to the tag name_of_tag :
 
@@ -61,93 +61,17 @@ print the todolist filtered to the tag name_of_tag :
 1 to do work #name_of_tag
 ```
 
-``pypodo del 2`` 
-
-delete the second task of the todolist
-
-``pypodo list``
+- ``pypodo del 2``  : delete the second task of the todolist
 
 
-print the todolist with an index for each task : 
+- ``pypodo sort`` :  reorder the todolist in consecutives index
 
-```
-1 to do work #name_of_tag
-3 to do other_big_work #name_of_other_tag
-```
+- ``pypodo tag new_tag 1`` : add a tag to the first task
 
+- ``pypodo untag new_tag 1`` : remove tag new_tag from the first task
 
-``pypodo sort``
+- ``pypodo tag new_tag 1 2`` : add a tag to the first and second task
 
-reorder the todolist in consecutives index
+- ``pypodo unatag new_tag 1 2`` : remove a tag  new_tag to the first and second task
 
-
-``pypodo list``
-print the todolist with an index for each task :
-
-```
-1 to do work #name_of_tag
-2 to do other_big_work #name_of_other_tag
-```
-
-``pypodo tag new_tag 1``
-
-add a tag to the first task
-
-``pypodo list``
-
-print the todolist with an index for each task
-
-```
-1 to do work #name_of_tag #new_tag
-2 to do other_big_work #name_of_other_tag
-```
-
-``pypodo untag new_tag 1``
-
-remove tag new_tag from the first task
-
-``pypodo list``
-
-print the todolist with an index for each task :
-
-```
-1 to do work
-2 to do other_big_work #name_of_other_tag
-```
-
-``pypodo tag new_tag 1 2``
-
-add a tag to the first and second task
-
-``pypodo list``
-
-print the todolist with an index for each task :
-
-```
-1 to do work #new_tag
-2 to do other_big_work #name_of_other_tag #new_tag
-```
-
-``pypodo unatag new_tag 1 2``
-
-remove a tag  new_tag to the first and second task
-
-``pypodo list``
-
-print the todolist with an index for each task :
-
-```
-1 to do work 
-2 to do other_big_work #name_of_other_tag
-```
-
-``pypodo del 1 2``
-
-remove the 2 task 
-
-
-## Uninstall
-
-```
-pip3 uninstall pypodo
-```
+- ``pypodo del 1 2`` : remove the 2 task 
