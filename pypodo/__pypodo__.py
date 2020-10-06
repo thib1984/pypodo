@@ -52,11 +52,14 @@ def list():
 							
 def add():
 	import sys
+	import re
 	check()
 	home = str(Path.home())
 	if len(sys.argv) != 3:
 		sys.exit("error : 1 parameter needed for pypodo add - the task") 
 	else:
+		if not re.findall("^([^#])+( #[^ #]+)*$",sys.argv[2]):
+			sys.exit("error : the task has not valid format - "+sys.argv[2]) 
 		vide = 'true'
 		with open(home+"/.todo", 'r') as f:
 			lines = f.readlines()
@@ -128,9 +131,16 @@ def check():
 	file_exists = os.path.isfile(home+"/.todo") 
 	if file_exists:
 		with open(home+"/.todo", 'r') as f:
+			error = 'false'
 			for line in f.readlines():
 				if not re.findall("^\d+ ",line):
-					sys.exit("error : verify the .todo file")
+					print("warning : this line has not valid format in .todo - "+line.rstrip('\n'))
+					error = 'true'
+				if not re.findall("^([^#])+( #[^ #]+)*$",line.rstrip('\n')):
+					print("warning : this line has not valid format in .todo - "+line.rstrip('\n'))
+					error = 'true'
+		if error == 'true':
+			sys.exit("error : verify the .todo file")			
 	else:
 		open(home+"/.todo", "w")
 
@@ -143,7 +153,7 @@ def untag():
 	if len(sys.argv) == 3:
 		vide = 'true'
 		if not re.findall("^\d+$",sys.argv[2]):
-			sys.exit("1 parameter needed for pypodo untag : the index of the task whose tags to delete")		
+			sys.exit("error : 1 parameter needed for pypodo untag : the index of the task whose tags to delete")		
 		with open(home+"/.todo", 'r') as f:
 			lines = f.readlines()
 		with open(home+"/.todo", 'w') as f:	    
@@ -157,7 +167,7 @@ def untag():
 		if vide == 'true':
 			print("warning : no tags deleted from the todolist")											
 	else:
-		sys.exit("1 parameter needed for pypodo untag : the index of the task whose tags to delete")	
+		sys.exit("error : 1 parameter needed for pypodo untag : the index of the task whose tags to delete")	
 
 
 def tag():
@@ -166,8 +176,10 @@ def tag():
 	check()
 	home = str(Path.home())
 	if len(sys.argv) == 4:
+		if not re.findall("^[^ #]+$",sys.argv[3]):
+			sys.exit("error : the tag has non valid format - "+sys.argv[3])		
 		if not re.findall("^\d+$",sys.argv[2]):
-			sys.exit("2 parameters needed for pypodo tag : the index of the task in numeric format and the tag to added")		
+			sys.exit("error : 2 parameters needed for pypodo tag : the index of the task in numeric format and the tag to added")		
 		with open(home+"/.todo", 'r') as f:
 			lines = f.readlines()
 		vide = 'true'
@@ -180,7 +192,7 @@ def tag():
 					print("info : tag added to the task of the todolist - " + line.rstrip('\n') + " -> " + line.rstrip('\n')+" #"+sys.argv[3]) 
 					vide = 'false'							
 	else:
-		sys.exit("2 parameters needed for pypodo tag : the index of the task in numeric format and the tag to added")	
+		sys.exit("error : 2 parameters needed for pypodo tag : the index of the task in numeric format and the tag to added")	
 
 def pypodo():	
 	import sys
