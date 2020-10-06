@@ -190,7 +190,9 @@ def tag():
 				if re.findall("^"+sys.argv[2]+' ',line):
 					f.write(line.rstrip('\n')+" #"+sys.argv[3]+"\n")
 					print("info : tag added to the task of the todolist - " + line.rstrip('\n') + " -> " + line.rstrip('\n')+" #"+sys.argv[3]) 
-					vide = 'false'							
+					vide = 'false'	
+		if vide == 'true':
+			print("warning : no task tagged in the todolist")										
 	else:
 		sys.exit("error : 2 parameters needed for pypodo tag : the index of the task in numeric format and the tag to added")	
 
