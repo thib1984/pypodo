@@ -38,14 +38,9 @@ display help message
 
 add the task 'to do work' with the tag 'name_of_tag'
 
-``pypodo add "to do other_work #name_of_other_tag"``
+``pypodo add "to do other_work #name_of_other_tag" "to do other_big_work #name_of_other_tag"``
 
-add the other task 'to do other_work' with the tag 'name_of_other_tag'
-
-``pypodo add "to do other_big_work #name_of_other_tag"``
-
-add the other task 'to do other_big_work' with the tag 'name_of_tag'
-
+add the other task 'to do other_work' with the tag 'name_of_other_tag' the another task 'to do other_big_work' with the tag 'name_of_tag'
 
 ``pypodo list`` 
 
@@ -94,7 +89,7 @@ print the todolist with an index for each task :
 2 to do other_big_work #name_of_other_tag
 ```
 
-``pypodo tag 1 new_tag``
+``pypodo tag new_tag 1``
 
 add a tag to the first task
 
@@ -107,7 +102,7 @@ print the todolist with an index for each task
 2 to do other_big_work #name_of_other_tag
 ```
 
-``pypodo untag 1 new_tag``
+``pypodo untag new_tag 1``
 
 remove tag new_tag from the first task
 
@@ -119,6 +114,37 @@ print the todolist with an index for each task :
 1 to do work
 2 to do other_big_work #name_of_other_tag
 ```
+
+``pypodo tag new_tag 1 2``
+
+add a tag to the first and second task
+
+``pypodo list``
+
+print the todolist with an index for each task :
+
+```
+1 to do work #new_tag
+2 to do other_big_work #name_of_other_tag #new_tag
+```
+
+``pypodo unatag new_tag 1 2``
+
+remove a tag  new_tag to the first and second task
+
+``pypodo list``
+
+print the todolist with an index for each task :
+
+```
+1 to do work 
+2 to do other_big_work #name_of_other_tag
+```
+
+``pypodo del 1 2``
+
+remove the 2 task 
+
 
 ## Uninstall
 
