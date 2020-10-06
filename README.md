@@ -107,9 +107,9 @@ print the todolist with an index for each task
 2 to do other_big_work #name_of_other_tag
 ```
 
-``pypodo untag 1``
+``pypodo untag 1 new_tag``
 
-remove tags from the first task
+remove tag new_tag from the first task
 
 ``pypodo list``
 
