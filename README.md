@@ -74,3 +74,17 @@ print the todolist filtered to the tag '_name_of_tag_' :
 - ``pypodo unatag new_tag 1 2`` : remove the tag '_new_tag_' to the first and second task
 
 - ``pypodo del 1 2`` : remove the 2 tasks 
+
+## Alias
+
+You can use alias as
+
+```
+alias tl='pypodo list'
+alias ta='pypodo add'
+alias tt='pypodo tag'
+alias td='pypodo del'
+alias ts='pypodo sort'
+alias tu='pypodo untag'
+```
+to improve your velocity!

@@ -43,9 +43,9 @@ def list():
 		for line in f.readlines():
 			# without filter -> we print all
 			if len(sys.argv) == 2:
-				task = Fore.GREEN + re.sub("^[^ ]+ ","",line.rstrip('\n'))
+				task = Fore.GREEN + re.sub("#.*","",re.sub("^[^ ]+ ","",line.rstrip('\n')))
 				index = Fore.BLUE + line.split(' ', 1)[0]
-				tags = Fore.YELLOW + re.sub("^[^#]+ #"," #",re.sub("^[^#]+$","",task))
+				tags = Fore.YELLOW + re.sub("^[^#]+ #","#",re.sub("^[^#]+$","",re.sub("^[^ ]+ ","",line.rstrip('\n'))))
 				print(index +" "+ task + tags)
 				vide = 'false'	
 			# with filter -> we check tag
@@ -53,9 +53,9 @@ def list():
 				tag=sys.argv[2]
 				# regex to search tags "#toto " or "#toto" at the end of the line
 				if re.findall("#"+re.escape(tag)+'( |$)',line.rstrip('\n')):
-					task = Fore.GREEN + re.sub("^[^ ]+ ","",line.rstrip('\n'))
+					task = Fore.GREEN + re.sub("#.*","",re.sub("^[^ ]+ ","",line.rstrip('\n')))
 					index = Fore.BLUE + line.split(' ', 1)[0]
-					tags = Fore.YELLOW + re.sub("^[^#]+ #"," #",re.sub("^[^#]+$","",task))
+					tags = Fore.YELLOW + re.sub("^[^#]+ #","#",re.sub("^[^#]+$","",re.sub("^[^ ]+ ","",line.rstrip('\n'))))
 					print(index +" "+ task + tags)
 					vide = 'false'
 	if vide == 'true':
@@ -151,7 +151,8 @@ def sort():
 		if vide == 'true':
 			print(colored("warning : the todolist is empty - nothing to do","yellow"))
 		else:
-			print(colored("info : the todolist is sorted","green"))		
+			print(colored("info : the todolist is sorted","green"))
+			list()		
 			
 # various checks on the todo file
 def check():
