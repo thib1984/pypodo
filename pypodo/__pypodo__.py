@@ -29,7 +29,7 @@ SYNOPSIS
 	print(help_txt)
 
 # list the .todo possibly filtered on the tags corresponding to the parameter 
-def list():
+def list(open = open):
 	import sys
 	import re
 	from colorama import Fore, Style
@@ -50,14 +50,16 @@ def list():
 				vide = 'false'	
 			# with filter -> we check tag
 			elif len(sys.argv) == 3:
-				tag=sys.argv[2]
-				# regex to search tags "#toto " or "#toto" at the end of the line
-				if re.findall("#"+re.escape(tag)+'( |$)',line.rstrip('\n')):
-					task = Fore.GREEN + re.sub("#.*","",re.sub("^[^ ]+ ","",line.rstrip('\n')))
-					index = Fore.BLUE + line.split(' ', 1)[0]
-					tags = Fore.YELLOW + re.sub("^[^#]+ #","#",re.sub("^[^#]+$","",re.sub("^[^ ]+ ","",line.rstrip('\n'))))
-					print(index +" "+ task + tags)
-					vide = 'false'
+				if '#'+sys.argv[2] in line:
+					print(line, end = '')
+				  tag=sys.argv[2]
+				  # regex to search tags "#toto " or "#toto" at the end of the line
+				  if re.findall("#"+re.escape(tag)+'( |$)',line.rstrip('\n')):
+					  task = Fore.GREEN + re.sub("#.*","",re.sub("^[^ ]+ ","",line.rstrip('\n')))
+					  index = Fore.BLUE + line.split(' ', 1)[0]
+					  tags = Fore.YELLOW + re.sub("^[^#]+ #","#",re.sub("^[^#]+$","",re.sub("^[^ ]+ ","",line.rstrip('\n'))))
+					  print(index +" "+ task + tags)
+					  vide = 'false'
 	if vide == 'true':
 		if len(sys.argv) == 3:
 			print(colored("warning : the filtered todolist is empty","yellow"))
@@ -65,7 +67,7 @@ def list():
 			print(colored("warning : the todolist is empty","yellow"))
 							
 # adds the tasks as a parameter to the todolist (by calculating their indexes).					
-def add():
+def add(open = open):
 	import sys
 	import re
 	from termcolor import colored
@@ -94,8 +96,8 @@ def add():
 					f.write(str(index)+" "+task+'\n')		
 					print(colored("info : task is added to the todolist - " + str(index)+" "+task,"green"))	
 
-# removes the tasks whose indexes are provided as a parameter			
-def delete():
+# removes the tasks whose indexes are provided as a parameter	
+def delete(open = open):
 	import sys
 	import re
 	from termcolor import colored
