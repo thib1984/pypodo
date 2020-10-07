@@ -28,7 +28,7 @@ SYNOPSIS
 	"""
 	print(help_txt)
 
-def list():
+def list(open = open):
 	import sys
 	check()
 	home = str(Path.home())
@@ -42,7 +42,7 @@ def list():
 				if '#'+sys.argv[2] in line:
 					print(line, end = '')
 					
-def add():
+def add(open = open):
 	import sys
 	check()
 	home = str(Path.home())
@@ -59,7 +59,7 @@ def add():
 		with open(home+"/.todo", 'a') as f:
 			f.write(str(index)+" "+sys.argv[2]+'\n')		
 
-def delete():
+def delete(open = open):
 	import sys
 	import re
 	check()
