@@ -32,34 +32,43 @@ SYNOPSIS
 def list():
 	import sys
 	import re
+	from colorama import Fore, Style
+	from termcolor import colored
 	check()
 	todo = str(Path.home())+"/.todo"
 	if len(sys.argv) > 3:
-		sys.exit("error : 0 or 1 parameter is needed for pypodo list - the tag")
+		sys.exit(colored("error : 0 or 1 parameter is needed for pypodo list - the tag",'red'))
 	vide = 'true'
 	with open(todo, 'r') as f:
 		for line in f.readlines():
 			# without filter -> we print all
 			if len(sys.argv) == 2:
-				print(line.rstrip('\n'))
+				task = Fore.GREEN + re.sub("^[^ ]+ ","",line.rstrip('\n'))
+				index = Fore.BLUE + line.split(' ', 1)[0]
+				tags = Fore.YELLOW + re.sub("^[^#]+ #"," #",re.sub("^[^#]+$","",task))
+				print(index +" "+ task + tags)
 				vide = 'false'	
 			# with filter -> we check tag
 			elif len(sys.argv) == 3:
 				tag=sys.argv[2]
 				# regex to search tags "#toto " or "#toto" at the end of the line
 				if re.findall("#"+re.escape(tag)+'( |$)',line.rstrip('\n')):
-					print(line.rstrip('\n'))
+					task = Fore.GREEN + re.sub("^[^ ]+ ","",line.rstrip('\n'))
+					index = Fore.BLUE + line.split(' ', 1)[0]
+					tags = Fore.YELLOW + re.sub("^[^#]+ #"," #",re.sub("^[^#]+$","",task))
+					print(index +" "+ task + tags)
 					vide = 'false'
 	if vide == 'true':
 		if len(sys.argv) == 3:
-			print("warning : the filtered todolist is empty")
+			print(colored("warning : the filtered todolist is empty","yellow"))
 		else:
-			print("warning : the todolist is empty")
+			print(colored("warning : the todolist is empty","yellow"))
 							
 # adds the tasks as a parameter to the todolist (by calculating their indexes).					
 def add():
 	import sys
 	import re
+	from termcolor import colored
 	check()
 	todo = str(Path.home())+"/.todo"
 	if len(sys.argv) < 3:
@@ -70,7 +79,7 @@ def add():
 			task=sys.argv[x]
 			# check format : words* #tag1 #tag2 : task at free format, tags in one word prefixed by #
 			if not re.findall("^([^# ])([^#])*( #[^ #]+)*$",task):
-				print("warning : the task has not a valid format - "+task)
+				print(colored("warning : the task has not a valid format - "+task,"yellow"))
 			else: 
 				with open(todo, 'r') as f:
 					lines = f.readlines()
@@ -83,12 +92,13 @@ def add():
 				# adding task to the todolist		
 				with open(todo, 'a') as f:
 					f.write(str(index)+" "+task+'\n')		
-					print("info : task is added to the todolist - " + str(index)+" "+task)	
+					print(colored("info : task is added to the todolist - " + str(index)+" "+task,"green"))	
 
 # removes the tasks whose indexes are provided as a parameter			
 def delete():
 	import sys
 	import re
+	from termcolor import colored
 	check()
 	todo = str(Path.home())+"/.todo"
 	if len(sys.argv) >= 3:
@@ -97,7 +107,7 @@ def delete():
 			index=sys.argv[x]
 			# check the numeric format of the index
 			if not re.findall("^\d+$",index):
-				print("warning : the index to delete is not in numeric format - " + index)
+				print(colored("warning : the index to delete is not in numeric format - " + index,"yellow"))
 			else:	
 				index_existant = 'false' 
 				with open(todo, 'r') as f:
@@ -109,20 +119,22 @@ def delete():
 							f.write(line)
 						# else it is deleted by not being copied
 						else:
-							print("info : task deleted from the todolist - " + line.rstrip('\n'))
+							print(colored("info : task deleted from the todolist - " + line.rstrip('\n'),"green"))
 							index_existant = 'true'
 				if index_existant == 'false':
-					print("warning : no task is deleted from the todolist, not existing index - "+ index)					
+					print(colored("warning : no task is deleted from the todolist, not existing index - "+ index,"yellow"))					
 	else:
-		sys.exit("error : 1 or more parameter is needed for pypodo add - indexes to delete in numeric format")							
+		sys.exit(colored("error : 1 or more parameter is needed for pypodo add - indexes to delete in numeric format","red"))							
+
 
 # sort the list in successive ascending order
 def sort():
 	import sys
 	import re
+	from termcolor import colored
 	check()
 	if len(sys.argv) != 2:
-		sys.exit("error : 0 parameter is needed for pypodo sort") 
+		sys.exit(colored("error : 0 parameter is needed for pypodo sort","red")) 
 	else:
 		vide = 'true'
 		index=1
@@ -137,15 +149,16 @@ def sort():
 				f.write(replaced)
 				vide = 'false'
 		if vide == 'true':
-			print("warning : the todolist is empty - nothing to do")
+			print(colored("warning : the todolist is empty - nothing to do","yellow"))
 		else:
-			print("info : the todolist is sorted")		
+			print(colored("info : the todolist is sorted","green"))		
 			
 # various checks on the todo file
 def check():
 	import sys
 	import re
 	import os
+	from termcolor import colored
 	index=1
 	todo = str(Path.home())+"/.todo"
 	file_exists = os.path.isfile(todo) 
@@ -155,10 +168,10 @@ def check():
 			for line in f.readlines():
 				# verification regex, index + task + possible tags
 				if not re.findall("^\d+ ([^#])+( #[^ #]+)*$",line.rstrip('\n')):
-					print("warning : this line has not a valid format in .todo - "+line.rstrip('\n'))
+					print(colored("warning : this line has not a valid format in .todo - "+line.rstrip('\n'),"yellow"))
 					error = 'true'
 		if error == 'true':
-			sys.exit("error : verify the .todo file")			
+			sys.exit(colored("error : verify the .todo file","red"))			
 	else:
 		open(todo, "w")
 
@@ -166,17 +179,18 @@ def check():
 def untag():
 	import sys
 	import re
+	from termcolor import colored
 	check()
 	todo = str(Path.home())+"/.todo"
 	if len(sys.argv) >= 4:
 		tag=sys.argv[2]
 		if not re.findall("^[^ #]+$",tag):
-			sys.exit("error : the tag has not a valid format - "+tag)		
+			sys.exit(colored("error : the tag has not a valid format - "+tag),"red")		
 		# loop on the indexes
 		for x in range(3, len(sys.argv)):
 			index=sys.argv[x]
 			if not re.findall("^\d+$",index):
-				print("warning : the index to untag is not in numeric format - " + index)
+				print(colored("warning : the index to untag is not in numeric format - " + index,"yellow"))
 			else:	
 				index_trouve = 'false'
 				with open(todo, 'r') as f:
@@ -188,33 +202,34 @@ def untag():
 						if re.findall("^"+index+' ',line):
 							if re.findall("#"+re.escape(tag)+'( |$)',line.rstrip('\n')):
 								f.write(re.sub("#"+re.escape(tag)+'( |$)' ,"", line).rstrip('\n').rstrip()+'\n')
-								print("info : tag deleted from the task of the todolist - " + line.rstrip('\n') + " -> " + re.sub("#"+re.escape(tag)+'( |$)',"", line.rstrip('\n')))
+								print(colored("info : tag deleted from the task of the todolist - " + line.rstrip('\n') + " -> " + re.sub("#"+re.escape(tag)+'( |$)',"", line.rstrip('\n')),"green"))
 							else:
 								f.write(line)
-								print("warning : no tags is deleted from the todolist for the task - "+line.rstrip('\n'))	
+								print(colored("warning : no tags is deleted from the todolist for the task - "+line.rstrip('\n'),"yellow"))	
 							index_trouve = 'true'
 				if index_trouve == 'false':
-					print("warning : no task with index - "+index)											
+					print(colored("warning : no task with index - "+index,"yellow"))											
 	else:
-		sys.exit("error : 1 parameter is needed for pypodo untag : the index of the task whose tags to delete")	
+		sys.exit(colored("error : 1 parameter is needed for pypodo untag : the index of the task whose tags to delete","red"))	
 
 
 # tagging task
 def tag():
 	import sys
 	import re
+	from termcolor import colored
 	check()
 	todo = str(Path.home())+"/.todo"
 	if len(sys.argv) >= 4:
 		tag=sys.argv[2]
 		if not re.findall("^[^ #]+$",tag):
-			sys.exit("error : the tag has not a valid format - "+tag)		
+			sys.exit(colored("error : the tag has not a valid format - "+tag,'red'))	
 		
 		# loop on the indexes		
 		for x in range(3, len(sys.argv)):
 			index=sys.argv[x]		
 			if not re.findall("^\d+$",index):
-				print("warning : the index to tag is not in numeric format - " + index)
+				print(colored("warning : the index to tag is not in numeric format - " + index,"yellow"))
 			else:	
 				index_trouve = 'false'
 				with open(todo, 'r') as f:
@@ -225,12 +240,12 @@ def tag():
 							f.write(line)
 						if re.findall("^"+index+' ',line):
 							f.write(line.rstrip('\n')+" #"+tag+"\n")
-							print("info : tag added to the task of the todolist - " + line.rstrip('\n') + " -> " + line.rstrip('\n')+" #"+tag) 
+							print(colored("info : tag added to the task of the todolist - " + line.rstrip('\n') + " -> " + line.rstrip('\n')+" #"+tag,"green")) 
 							index_trouve = 'true'	
 				if index_trouve == 'false':
-					print("warning : no task with number is in the todolist - "+index)										
+					print(colored("warning : no task with number is in the todolist - "+index,"yellow"))										
 	else:
-		sys.exit("error : 2 or more parameters are needed for pypodo tag : the tag to added and indexes of the task are in numeric format")	
+		sys.exit(colored("error : 2 or more parameters are needed for pypodo tag : the tag to added and indexes of the task are in numeric format","red"))	
 
 def pypodo():	
 	import sys
