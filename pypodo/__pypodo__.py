@@ -51,15 +51,15 @@ def list(open = open):
 			# with filter -> we check tag
 			elif len(sys.argv) == 3:
 				if '#'+sys.argv[2] in line:
-					print(line, end = '')
-				  tag=sys.argv[2]
-				  # regex to search tags "#toto " or "#toto" at the end of the line
-				  if re.findall("#"+re.escape(tag)+'( |$)',line.rstrip('\n')):
-					  task = Fore.GREEN + re.sub("#.*","",re.sub("^[^ ]+ ","",line.rstrip('\n')))
-					  index = Fore.BLUE + line.split(' ', 1)[0]
-					  tags = Fore.YELLOW + re.sub("^[^#]+ #","#",re.sub("^[^#]+$","",re.sub("^[^ ]+ ","",line.rstrip('\n'))))
-					  print(index +" "+ task + tags)
-					  vide = 'false'
+					#print(line, end = '')
+					tag=sys.argv[2]
+					# regex to search tags "#toto " or "#toto" at the end of the line
+					if re.findall("#"+re.escape(tag)+'( |$)',line.rstrip('\n')):
+						task = Fore.GREEN + re.sub("#.*","",re.sub("^[^ ]+ ","",line.rstrip('\n')))
+						index = Fore.BLUE + line.split(' ', 1)[0]
+						tags = Fore.YELLOW + re.sub("^[^#]+ #","#",re.sub("^[^#]+$","",re.sub("^[^ ]+ ","",line.rstrip('\n'))))
+						print(index +" "+ task + tags)
+						vide = 'false'
 	if vide == 'true':
 		if len(sys.argv) == 3:
 			print(colored("warning : the filtered todolist is empty","yellow"))
