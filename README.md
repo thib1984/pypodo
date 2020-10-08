@@ -2,6 +2,10 @@
 
 **pypodo** (\pipudu\\) is a pip package : a todolist tool which works with a .todo file positionned the root of the home directory
 
+## Compatibility
+
+:warning: Not compatible with python2 who is deprecated! Use python3
+
 ## Install
 
 ```
