@@ -1,6 +1,6 @@
 from pathlib import Path
 from termcolor import colored
-from colorama import Fore, Style
+
 
 import os
 import sys
@@ -49,10 +49,11 @@ def list(open = open):
 		for line in f.readlines():
 			# without filter -> we print all
 			if len(sys.argv) == 2:
-				task = Fore.GREEN + re.sub("#.*","",re.sub("^[^ ]+ ","",line.rstrip('\n')))
-				index = Fore.BLUE + line.split(' ', 1)[0]
-				tags = Fore.YELLOW + re.sub("^[^#]+ #","#",re.sub("^[^#]+$","",re.sub("^[^ ]+ ","",line.rstrip('\n'))))
-				tags = re.sub("#urgent",Fore.RED+"#urgent"+Fore.YELLOW,tags)
+				task = colored(re.sub("#.*","",re.sub("^[^ ]+ ","",line.rstrip('\n'))),"green")
+				index = colored(line.split(' ', 1)[0],"blue")
+				tags_nocolor = re.sub("^[^#]+ #","#",re.sub("^[^#]+$","",re.sub("^[^ ]+ ","",line.rstrip('\n'))))
+				tags = re.sub(r"(#[^ #]+( |$)?)",colored(r"\1","yellow"),tags_nocolor)
+				tags = re.sub(r"(#urgent+( |$)?)",colored(r"\1","red"),tags)
 				print(index +" "+ task + tags)
 				vide = 'false'	
 			# with filter -> we check tag
@@ -62,12 +63,13 @@ def list(open = open):
 					tag=sys.argv[2]
 					# regex to search tags "#toto " or "#toto" at the end of the line
 					if re.findall("#"+re.escape(tag)+'( |$)',line.rstrip('\n')):
-						task = Fore.GREEN + re.sub("#.*","",re.sub("^[^ ]+ ","",line.rstrip('\n')))
-						index = Fore.BLUE + line.split(' ', 1)[0]
-						tags = Fore.YELLOW + re.sub("^[^#]+ #","#",re.sub("^[^#]+$","",re.sub("^[^ ]+ ","",line.rstrip('\n'))))
-						tags = re.sub("#urgent",Fore.RED+"#urgent"+Fore.YELLOW,tags)
+						task = colored(re.sub("#.*","",re.sub("^[^ ]+ ","",line.rstrip('\n'))),"green")
+						index = colored(line.split(' ', 1)[0],"blue")
+						tags_nocolor = re.sub("^[^#]+ #","#",re.sub("^[^#]+$","",re.sub("^[^ ]+ ","",line.rstrip('\n'))))
+						tags = re.sub(r"(#[^ #]+( |$)?)",colored(r"\1","yellow"),tags_nocolor)
+						tags = re.sub(r"(#urgent+( |$)?)",colored(r"\1","red"),tags)
 						print(index +" "+ task + tags)
-						vide = 'false'
+						vide = 'false'	
 	if vide == 'true':
 		if len(sys.argv) == 3:
 			print(colored("warning : the filtered todolist is empty","yellow"))
@@ -86,10 +88,11 @@ def listnotag(open = open):
 	with open(STR_PATH_HOME__TODO_, 'r') as f:
 		for line in f.readlines():
 			if not '#' in line:
-				task = Fore.GREEN + re.sub("#.*","",re.sub("^[^ ]+ ","",line.rstrip('\n')))
-				index = Fore.BLUE + line.split(' ', 1)[0]
-				tags = Fore.YELLOW + re.sub("^[^#]+ #","#",re.sub("^[^#]+$","",re.sub("^[^ ]+ ","",line.rstrip('\n'))))
-				tags = re.sub("#urgent",Fore.RED+"#urgent"+Fore.YELLOW,tags)
+				task = colored(re.sub("#.*","",re.sub("^[^ ]+ ","",line.rstrip('\n'))),"green")
+				index = colored(line.split(' ', 1)[0],"blue")
+				tags_nocolor = re.sub("^[^#]+ #","#",re.sub("^[^#]+$","",re.sub("^[^ ]+ ","",line.rstrip('\n'))))
+				tags = re.sub(r"(#[^ #]+( |$)?)",colored(r"\1","yellow"),tags_nocolor)
+				tags = re.sub(r"(#urgent+( |$)?)",colored(r"\1","red"),tags)
 				print(index +" "+ task + tags)
 				vide = 'false'
 	if vide == 'true':
