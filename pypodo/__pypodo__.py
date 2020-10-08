@@ -188,7 +188,7 @@ def delete(open = open):
 
 
 # sort the list in successive ascending order
-def sort():
+def sort(open = open):
 	import sys
 	import re
 	from termcolor import colored
@@ -212,10 +212,10 @@ def sort():
 			print(colored("warning : the todolist is empty - nothing to do","yellow"))
 		else:
 			print(colored("info : the todolist is sorted","green"))
-			list()		
+			list(open)		
 			
 # various checks on the todo file
-def check():
+def check(open = open):
 	import sys
 	import re
 	import os
@@ -236,14 +236,14 @@ def check():
 		open(todo, "w")
 
 # untag tasks				
-def untag():
+def untag(open = open):
 	import sys
 	import re
 	from termcolor import colored
 	check()
 	todo = str(Path.home())+"/.todo"
 	if len(sys.argv) == 2:
-		listnotag()
+		listnotag(open)
 	elif len(sys.argv) >= 4:
 		tag=sys.argv[2]
 		if not re.findall("^[^ #]+$",tag):
@@ -276,14 +276,14 @@ def untag():
 
 
 # tagging task
-def tag():
+def tag(open = open):
 	import sys
 	import re
 	from termcolor import colored
 	check()
 	todo = str(Path.home())+"/.todo"
 	if len(sys.argv) == 2:
-		listtag()
+		listtag(open)
 	elif len(sys.argv) >= 4:
 		tag=sys.argv[2]
 		if not re.findall("^[^ #]+$",tag):
