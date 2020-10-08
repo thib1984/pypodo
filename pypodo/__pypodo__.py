@@ -1,4 +1,12 @@
 from pathlib import Path
+from termcolor import colored
+from colorama import Fore, Style
+
+import os
+import sys
+import re
+
+STR_PATH_HOME__TODO_ = str(Path.home()) + '/.todo'
 
 def help():
 	help_txt = """\
@@ -33,16 +41,11 @@ SYNOPSIS
 
 # list the .todo possibly filtered on the tags corresponding to the parameter 
 def list(open = open):
-	import sys
-	import re
-	from colorama import Fore, Style
-	from termcolor import colored
 	check()
-	todo = str(Path.home())+"/.todo"
 	if len(sys.argv) > 3:
 		sys.exit(colored("error : 0 or 1 parameter is needed for pypodo list - the tag",'red'))
 	vide = 'true'
-	with open(todo, 'r') as f:
+	with open(STR_PATH_HOME__TODO_, 'r') as f:
 		for line in f.readlines():
 			# without filter -> we print all
 			if len(sys.argv) == 2:
@@ -76,16 +79,11 @@ def list(open = open):
 
 # list the .todo possibly filtered on the tags corresponding to the parameter 
 def listnotag(open = open):
-	import sys
-	import re
-	from colorama import Fore, Style
-	from termcolor import colored
 	check()
-	todo = str(Path.home())+"/.todo"
 	if len(sys.argv) > 2:
 		sys.exit(colored("error : 0 parameter is needed for pypodo listnotag",'red'))
 	vide = 'true'
-	with open(todo, 'r') as f:
+	with open(STR_PATH_HOME__TODO_, 'r') as f:
 		for line in f.readlines():
 			if not '#' in line:
 				task = Fore.GREEN + re.sub("#.*","",re.sub("^[^ ]+ ","",line.rstrip('\n')))
@@ -99,16 +97,11 @@ def listnotag(open = open):
 
 # list the .todo possibly filtered on the tags corresponding to the parameter 
 def listtag(open = open):
-	import sys
-	import re
-	from colorama import Fore, Style
-	from termcolor import colored
 	check()
-	todo = str(Path.home())+"/.todo"
 	if len(sys.argv) > 2:
 		sys.exit(colored("error : 0 parameter is needed for pypodo listtag",'red'))
 	vide = 'true'
-	with open(todo, 'r') as f:
+	with open(STR_PATH_HOME__TODO_, 'r') as f:
 		my_list = []
 		for line in f.readlines():
 			for part in line.split():
@@ -126,11 +119,7 @@ def sort_uniq(sequence):
 							
 # adds the tasks as a parameter to the todolist (by calculating their indexes).					
 def add(open = open):
-	import sys
-	import re
-	from termcolor import colored
 	check()
-	todo = str(Path.home())+"/.todo"
 	if len(sys.argv) < 3:
 		sys.exit("error : 1 or more parameter is needed for pypodo add - tasks") 
 	else:
@@ -141,7 +130,7 @@ def add(open = open):
 			if not re.findall("^([^# ])([^#])*( #[^ #]+)*$",task):
 				print(colored("warning : the task has not a valid format - "+task,"yellow"))
 			else: 
-				with open(todo, 'r') as f:
+				with open(STR_PATH_HOME__TODO_, 'r') as f:
 					lines = f.readlines()
 				# index calculation	
 				if len(lines) > 0:
@@ -150,17 +139,13 @@ def add(open = open):
 				else:
 					index = 1
 				# adding task to the todolist		
-				with open(todo, 'a') as f:
+				with open(STR_PATH_HOME__TODO_, 'a') as f:
 					f.write(str(index)+" "+task+'\n')		
 					print(colored("info : task is added to the todolist - " + str(index)+" "+task,"green"))	
 
 # removes the tasks whose indexes are provided as a parameter	
 def delete(open = open):
-	import sys
-	import re
-	from termcolor import colored
 	check()
-	todo = str(Path.home())+"/.todo"
 	if len(sys.argv) >= 3:
 		# loop on the indexes
 		for x in range(2, len(sys.argv)):
@@ -170,9 +155,9 @@ def delete(open = open):
 				print(colored("warning : the index to delete is not in numeric format - " + index,"yellow"))
 			else:	
 				index_existant = 'false' 
-				with open(todo, 'r') as f:
+				with open(STR_PATH_HOME__TODO_, 'r') as f:
 					lines = f.readlines()
-				with open(todo, 'w') as f:	    
+				with open(STR_PATH_HOME__TODO_, 'w') as f:	    
 					for line in lines:
 						# if the current row doesn't contain the index it is kept
 						if not re.findall("^"+index+' ',line):
@@ -189,19 +174,15 @@ def delete(open = open):
 
 # sort the list in successive ascending order
 def sort(open = open):
-	import sys
-	import re
-	from termcolor import colored
 	check()
 	if len(sys.argv) != 2:
 		sys.exit(colored("error : 0 parameter is needed for pypodo sort","red")) 
 	else:
 		vide = 'true'
 		index=1
-		todo = str(Path.home())+"/.todo"
-		with open(todo, 'r') as f:
+		with open(STR_PATH_HOME__TODO_, 'r') as f:
 			lines = f.readlines()
-		with open(todo, 'w') as f:	    
+		with open(STR_PATH_HOME__TODO_, 'w') as f:	    
 			for line in lines:
 				# we replace the existing index by the current index that we increment
 				replaced = re.sub("^\\d+ ",str(index)+" ", line)
@@ -216,14 +197,9 @@ def sort(open = open):
 			
 # various checks on the todo file
 def check(open = open):
-	import sys
-	import re
-	import os
-	from termcolor import colored
-	todo = str(Path.home())+"/.todo"
-	file_exists = os.path.isfile(todo) 
+	file_exists = os.path.isfile(STR_PATH_HOME__TODO_) 
 	if file_exists:
-		with open(todo, 'r') as f:
+		with open(STR_PATH_HOME__TODO_, 'r') as f:
 			error = 'false'
 			for line in f.readlines():
 				# verification regex, index + task + possible tags
@@ -233,15 +209,11 @@ def check(open = open):
 		if error == 'true':
 			sys.exit(colored("error : verify the .todo file","red"))			
 	else:
-		open(todo, "w")
+		open(STR_PATH_HOME__TODO_, "w")
 
 # untag tasks				
 def untag(open = open):
-	import sys
-	import re
-	from termcolor import colored
 	check()
-	todo = str(Path.home())+"/.todo"
 	if len(sys.argv) == 2:
 		listnotag(open)
 	elif len(sys.argv) >= 4:
@@ -255,9 +227,9 @@ def untag(open = open):
 				print(colored("warning : the index to untag is not in numeric format - " + index,"yellow"))
 			else:	
 				index_trouve = 'false'
-				with open(todo, 'r') as f:
+				with open(STR_PATH_HOME__TODO_, 'r') as f:
 					lines = f.readlines()
-				with open(todo, 'w') as f:	    
+				with open(STR_PATH_HOME__TODO_, 'w') as f:	    
 					for line in lines:
 						if not re.findall("^"+index+' ',line):
 							f.write(line)
@@ -277,18 +249,13 @@ def untag(open = open):
 
 # tagging task
 def tag(open = open):
-	import sys
-	import re
-	from termcolor import colored
 	check()
-	todo = str(Path.home())+"/.todo"
 	if len(sys.argv) == 2:
 		listtag(open)
 	elif len(sys.argv) >= 4:
 		tag=sys.argv[2]
 		if not re.findall("^[^ #]+$",tag):
 			sys.exit(colored("error : the tag has not a valid format - "+tag,'red'))	
-		
 		# loop on the indexes		
 		for x in range(3, len(sys.argv)):
 			index=sys.argv[x]		
@@ -296,9 +263,9 @@ def tag(open = open):
 				print(colored("warning : the index to tag is not in numeric format - " + index,"yellow"))
 			else:	
 				index_trouve = 'false'
-				with open(todo, 'r') as f:
+				with open(STR_PATH_HOME__TODO_, 'r') as f:
 					lines = f.readlines()
-				with open(todo, 'w') as f:	    
+				with open(STR_PATH_HOME__TODO_, 'w') as f:	    
 					for line in lines:
 						if not re.findall("^"+index+' ',line):
 							f.write(line)

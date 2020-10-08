@@ -4,8 +4,6 @@ import re
 from io import StringIO
 from pathlib import Path
 from unittest.mock import patch, mock_open
-from colorama import Fore, Style
-from termcolor import colored
 from pypodo.__pypodo__ import pypodo, list, add, delete, untag, tag, sort
 
 STR_PATH_HOME__TODO_ = str(Path.home()) + '/.todo'
@@ -13,10 +11,19 @@ STR_PATH_HOME__TODO_ = str(Path.home()) + '/.todo'
 
 class TestStringMethods(unittest.TestCase):
 
+    @patch('builtins.open', new_callable=mock_open)
     @patch('sys.stdout', new_callable=StringIO)
-    def test_list_retourne_vide(self, mock_print):
-        list()
-        self.assertEqual(escape_ansi(mock_print.getvalue().rstrip('\n')), "warning : the todolist is empty")
+    def test_sort_retourne_vide(self, mock_print, mock_open):
+        with patch.object(sys, 'argv', [pypodo, list]):
+            list(mock_open)
+            self.assertEqual(escape_ansi(mock_print.getvalue().rstrip('\n')), "warning : the todolist is empty")
+
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_list_retourne_vide(self, mock_print, mock_open):
+        with patch.object(sys, 'argv', [pypodo, sort]):
+            sort(mock_open)
+            self.assertEqual(escape_ansi(mock_print.getvalue().rstrip('\n')), "warning : the todolist is empty - nothing to do")
 
     @patch('builtins.open', new_callable=mock_open, read_data = '1 ma tache')
     @patch('sys.stdout', new_callable=StringIO)
