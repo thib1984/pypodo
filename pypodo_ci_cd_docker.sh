@@ -1,21 +1,26 @@
 #!/bin/bash
+docker rm coverage
 echo "" &&\
 echo "" &&\
 echo "" &&\
 echo "*****DEBUT_DOCKER_BUILD******" &&\
 docker build -t pypodo . --no-cache &&\
+export PYPODO_FILE=/tmp/.todo && touch $PYPODO_FILE && rm $PYPODO_FILE && touch $PYPODO_FILE &&\
 echo "*****FIN_DOCKER_BUILD******" &&\
 echo "" &&\
 echo "" &&\
 echo "" &&\
 echo "*****DEBUT_DOCKER_TEST******" &&\
-docker run -ti --entrypoint="python" pypodo -m unittest -v pypodo/__pypodo__test.py &&\
+docker run --rm --mount type=bind,source=${PYPODO_FILE},target=/root/.todo  -ti --entrypoint="python" pypodo -m unittest -v pypodo/__pypodo__test.py &&\
 echo "*****FIN_DOCKER_TEST******" &&\
 echo "" &&\
 echo "" &&\
 echo "" &&\
-echo "*****DEBUT_DOCKER_COVERAGE******" &&\
-docker run -ti --entrypoint="coverage" pypodo run -m unittest pypodo/__pypodo__test.py &&\
+echo "*****
+DEBUT_DOCKER_COVERAGE******" &&\
+docker run --name coverage --mount type=bind,source=${PYPODO_FILE},target=/root/.todo  -ti --entrypoint="coverage" pypodo run -m unittest pypodo/__pypodo__test.py &&\
+docker commit coverage coverage &&\
+docker run -it --entrypoint="coverage" coverage report &&\
 echo "*****FIN_DOCKER_COVERAGE******" &&\
 echo "" &&\
 echo "" &&\
@@ -47,8 +52,7 @@ diff ${PYPODO_FILE} ci_cd/.todo.expected &&\
 echo "*****FIN_COMPARAISON_TODO******" &&\
 echo "" &&\
 echo "" &&\
-echo ""
-
+echo "" &&\
 
 if [[ $? = 0 ]]
 then
