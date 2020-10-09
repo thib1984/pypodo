@@ -2,28 +2,21 @@
 echo "" &&\
 echo "" &&\
 echo "" &&\
-echo "*****DEBUT_INSTALLATION******" &&\
-pip3 install --user . &&\
-echo "*****FIN_INSTALLATION******" &&\
-echo "" &&\
-echo "" &&\
-echo "" &&\
-echo "*****DEBUT_TEST******" &&\
-python3 -m unittest -v pypodo/__pypodo__test.py &&\
-echo "*****FIN_TEST******" &&\
-echo "" &&\
-echo "" &&\
-echo "" &&\
-echo "*****DEBUT_COUVERTURE******" &&\
-coverage run -m unittest pypodo/__pypodo__test.py &&\
-coverage report &&\
-echo "*****FIN_COUVERTURE******" &&\
-echo "" &&\
-echo "" &&\
-echo "" &&\
 echo "*****DEBUT_DOCKER_BUILD******" &&\
 docker build -t pypodo . --no-cache &&\
 echo "*****FIN_DOCKER_BUILD******" &&\
+echo "" &&\
+echo "" &&\
+echo "" &&\
+echo "*****DEBUT_DOCKER_TEST******" &&\
+docker run -ti --entrypoint="python" pypodo -m unittest -v pypodo/__pypodo__test.py &&\
+echo "*****FIN_DOCKER_TEST******" &&\
+echo "" &&\
+echo "" &&\
+echo "" &&\
+echo "*****DEBUT_DOCKER_COVERAGE******" &&\
+docker run -ti --entrypoint="coverage" pypodo run -m unittest pypodo/__pypodo__test.py &&\
+echo "*****FIN_DOCKER_COVERAGE******" &&\
 echo "" &&\
 echo "" &&\
 echo "" &&\
@@ -62,11 +55,11 @@ then
 echo ""
 echo ""
 echo ""
-echo "CI_CD OK"
+echo "CI_CD DOCKER OK"
 else
 echo ""
 echo ""
 echo ""
-echo "CI_CD KO - ERROR"
+echo "CI_CD DOCKER KO - ERROR"
 exit 1
 fi
