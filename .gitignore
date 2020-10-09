@@ -1,3 +1,5 @@
 /pypodo.iml
 /.idea/
 venv
+.coverage
+**/__pycache__
