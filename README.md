@@ -2,6 +2,10 @@
 
 **pypodo** (\pipudu\\) is a pip package : a todolist tool which works with a .todo file positionned the root of the home directory
 
+## Compatibility
+
+:warning: Not compatible with python2 who is deprecated! Use python3
+
 ## Install
 
 ```
@@ -20,7 +24,7 @@ pip3 install --user git+https://github.com/thib1984/pypodo.git#egg=pypodo --upgr
 pip3 uninstall pypodo
 ```
 
-## Github
+## Github and test
 
 To work with Github
 ```
@@ -28,7 +32,34 @@ git clone https://github.com/thib1984/pypodo.git
 cd pypodo
 #work with git
 pip3 install --user .
+cd pypodo
+python3 __pypodo__test.py #to test the app with TU
+#docker test is coming!
+git add .
+git commit -am "my commit"
+git push
 ```
+
+## Docker usage
+
+If you want, you can use **pypodo** as a docker image.
+
+```
+git clone https://github.com/thib1984/pypodo.git
+cd pypodo
+docker build -t pypodo .
+export PYPODO_FILE=<path of your pypodo file>
+touch $PYPODO_FILE
+docker run --rm --mount type=bind,source=${PYPODO_FILE},target=/root/.todo pypodo
+```
+And your pypodo app is available 🤘 ! 
+
+If you don't want to write all this command at each time, you can create an alias : 
+```
+alias pypodo="docker run --rm --mount type=bind,source=${PYPODO_FILE},target=/root/.todo pypodo"
+```
+
+or for a full time usage, change your ```.bash_profile``` file.
 
 ## Utilisation
 
