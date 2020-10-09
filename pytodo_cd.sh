@@ -9,7 +9,7 @@ echo "" &&\
 echo "" &&\
 echo "" &&\
 echo "*****DEBUT_TEST******" &&\
-python3 pypodo/__pypodo__test.py &&\
+python3 -m unittest -v pypodo/__pypodo__test.py &&\
 echo "*****FIN_TEST******" &&\
 echo "" &&\
 echo "" &&\
