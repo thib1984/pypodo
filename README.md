@@ -32,6 +32,7 @@ git clone https://github.com/thib1984/pypodo.git
 cd pypodo
 #work with git
 ./pytodo_cd.sh #launch install/test/coverage/docker build/docker test!
+#on your choice, use docker image or pip3 install --user .
 git add .
 git commit -am "my commit"
 git push
