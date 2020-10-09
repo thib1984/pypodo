@@ -40,6 +40,27 @@ git commit -am "my commit"
 git push
 ```
 
+## Docker usage
+
+If you want, you can use **pypodo** as a docker image.
+
+```
+git clone https://github.com/thib1984/pypodo.git
+cd pypodo
+docker build -t pypodo .
+export PYPODO_FILE=<path of your pypodo file>
+touch $PYPODO_FILE
+docker run --rm --mount type=bind,source=${PYPODO_FILE},target=/root/.todo pypodo
+```
+And your pypodo app is available 🤘 ! 
+
+If you don't want to write all this command at each time, you can create an alias : 
+```
+alias pypodo="docker run --rm --mount type=bind,source=${PYPODO_FILE},target=/root/.todo pypodo"
+```
+
+or for a full time usage, change your ```.bash_profile``` file.
+
 ## Utilisation
 
 - ``pypodo`` : display help message
