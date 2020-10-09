@@ -1,4 +1,6 @@
 /pypodo.iml
 /.idea/
 venv
+.coverage
+**/__pycache__
 /.vscode
