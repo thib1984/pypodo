@@ -2,4 +2,3 @@
 [run]
 omit =
     */site-packages/*
-    pypodo/__pypodo__test.py
