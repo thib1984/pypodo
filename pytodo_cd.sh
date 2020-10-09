@@ -34,7 +34,17 @@ echo "" &&\
 echo "" &&\
 echo "" &&\
 echo "*****DEBUT_SMOKE_TEST******" &&\
-$smoketest list  && $smoketest add "tache1" && $smoketest add "tache2 #montag" && $smoketest add "tache3 #urgent" && $smoketest list && $smoketest del 2 && $smoketest tag montag2 3 && $smoketest sort && $smoketest add "mon autre tache #tag #retag" && $smoketest untag retag 3 && $smoketest list &&\
+$smoketest list  &&\
+$smoketest add "tache1" &&\
+$smoketest add "tache2 #montag" &&\
+$smoketest add "tache3 #urgent" &&\
+$smoketest list && $smoketest del 2 &&\
+$smoketest tag montag2 3 &&\
+$smoketest sort &&\
+$smoketest add "mon autre tache #tag #retag" &&\
+$smoketest untag retag 3 &&\
+$smoketest tag newtag 3 3 2 &&\
+$smoketest list &&\
 echo "*****FIN_SMOKE_TEST******" &&\
 echo "" &&\
 echo "" &&\
