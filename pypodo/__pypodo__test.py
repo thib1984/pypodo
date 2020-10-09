@@ -14,8 +14,9 @@ class TestStringMethods(unittest.TestCase):
 
     @patch('sys.stdout', new_callable=StringIO)
     def test_list_retourne_vide(self, mock_print):
-        list()
-        self.assertEqual(mock_print.getvalue().rstrip('\n'), colored("warning : the todolist is empty","yellow"))
+        with patch.object(sys, 'argv', [pypodo, list]):
+            list()
+            self.assertEqual(mock_print.getvalue().rstrip('\n'), colored("warning : the todolist is empty","yellow"))
 
     @patch('builtins.open', new_callable=mock_open, read_data = '1 ma tache')
     @patch('sys.stdout', new_callable=StringIO)
