@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: python:3.8
+    runs-on: ubuntu-latest
     
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
