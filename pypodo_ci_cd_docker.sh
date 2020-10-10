@@ -1,11 +1,13 @@
 #!/bin/bash
+green="\e[32m"
+red="\e[31m"
 echo "*****DEBUT_CONFIGURATION_CLEAR******"
 docker rm mutation
 docker rm coverage
 docker rm coveragehtml
 rm ci_cd/.todo_mise_en_forme
 rm -rf htmlcov/*
-rm mutation.txt
+rm mutation.log
 echo "*****FIN_CONFIGURATION_CLEAR******" 
 echo "" &&\
 echo "" &&\
@@ -78,20 +80,8 @@ diff ci_cd/cache/.todo_mise_en_forme ci_cd/.todo_mise_en_forme.expected && echo 
 echo "*****FIN_VERIF_MISE_EN_FORME_TODO******" &&\
 if [[ $? = 0 ]]
 then
-echo ""
-echo ""
-echo ""
-echo "CI_CD DOCKER OK"
-echo ""
-echo ""
-echo ""
+echo -e "$green""CI_CD DOCKER OK""\e[39m"
 else
-echo ""
-echo ""
-echo ""
-echo "CI_CD DOCKER KO - ERROR"
-echo ""
-echo ""
-echo ""
+echo -e "$red""CI_CD DOCKER KO - ERROR""\e[39m"
 exit 1
 fi
