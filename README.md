@@ -37,9 +37,10 @@ To work with Github
 git clone https://github.com/thib1984/pypodo.git
 cd pypodo
 #work with git
-./pytodo_ci_cd_docker.sh #to create and validate docker image with full test
-./pytodo_ci_cd_pip.sh #to create and validate apip pp with minimal test 
-./pytodo_ci_cd_full.sh #to create and validate docker image awith full test and validate image
+./pytodo_ci_cd.sh pip #to test and create pip package
+./pytodo_ci_cd.sh docker #to test and create docker image with big test!
+./pytodo_ci_cd.sh full #to test and create docker image with big test and create pip package too!
+#after ci_cd, you can see htmlcov for coverage, mutation.log for mutation, and test.log for unit tests
 git add .
 git commit -am "my commit"
 git push

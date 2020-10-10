@@ -1,6 +1,9 @@
 #!/bin/bash
 green="\e[32m"
 red="\e[31m"
+
+
+dockerci () {
 echo "*****DEBUT_CONFIGURATION_CLEAR******"
 docker rm mutation
 docker rm coverage
@@ -22,7 +25,9 @@ echo "" &&\
 echo "" &&\
 echo "" &&\
 echo "*****DEBUT_TU_TEST******" &&\
-docker run --rm --mount type=bind,source=${PYPODO_FILE},target=/root/.todo --mount type=bind,source=${PYPODO_BACKUP},target=/root/.todo_backup -ti --entrypoint="python" pypodo -m unittest -v pypodo/__pypodo__test.py &&\
+(docker run --rm --mount type=bind,source=${PYPODO_FILE},target=/root/.todo --mount type=bind,source=${PYPODO_BACKUP},target=/root/.todo_backup -ti --entrypoint="python" pypodo -m unittest -v pypodo/__pypodo__test.py | tee "test.log") &&\
+docker run --rm --mount type=bind,source=${PYPODO_FILE},target=/root/.todo --mount type=bind,source=${PYPODO_BACKUP},target=/root/.todo_backup -ti --entrypoint="python" pypodo -m unittest -v pypodo/__pypodo__test.py > /dev/null &&\
+
 echo "*****FIN_TU_TEST******" &&\
 echo "" &&\
 echo "" &&\
@@ -78,11 +83,57 @@ echo "" &&\
 echo "*****DEBUT_VERIF_MISE_EN_FORME_TODO******" &&\
 $smoketest list > ci_cd/cache/.todo_mise_en_forme &&\
 diff ci_cd/cache/.todo_mise_en_forme ci_cd/.todo_mise_en_forme.expected && echo "comparaison mise en forme ok" &&\
-echo "*****FIN_VERIF_MISE_EN_FORME_TODO******" &&\
+echo "*****FIN_VERIF_MISE_EN_FORME_TODO******"
+} 
+
+
+pipci () {
+echo "*****DEBUT_CONFIGURATION_CLEAR******"
+rm -rf htmlcov/*
+rm mutation.log
+rm test.log
+echo "*****FIN_CONFIGURATION_CLEAR******" 
+python3 -m unittest -v pypodo/__pypodo__test.py 2>&1 | tee test.log &&\
+coverage run -m unittest pypodo/__pypodo__test.py &&\
+coverage report &&\
+coverage html &&\
+mutatest --src pypodo/__pypodo__.py  -t "python3 -m unittest -v pypodo/__pypodo__test.py" -o mutation.log
+}
+
+pipcd () {
+pip3 install --user .
+}
+
+if [[ $1 = "docker" ]]
+then
+dockerci
 if [[ $? = 0 ]]
 then
-echo -e "$green""CI_CD DOCKER OK""\e[39m"
+echo -e "$green""CI DOCKER OK""\e[39m"
 else
-echo -e "$red""CI_CD DOCKER KO - ERROR""\e[39m"
-exit 1
+echo -e "$red""CI DOCKER KO""\e[39m"
+fi
+
+elif [[ $1 = "pip" ]]
+then
+pipci && pipcd
+if [[ $? = 0 ]]
+then
+echo -e "$green""CI CD PIP OK""\e[39m"
+else
+echo -e "$red""CI CD PIP KO""\e[39m"
+fi
+
+elif [[ $1 = "full" ]]
+then
+dockerci && pipcd
+if [[ $? = 0 ]]
+then
+echo -e "$green""CI DOCKER CD PIP OK""\e[39m"
+else
+echo -e "$red""CI DOCKER CD PIP KO""\e[39m"
+fi
+
+else
+echo -e "$red""KO Bad Parameter""\e[39m"
 fi

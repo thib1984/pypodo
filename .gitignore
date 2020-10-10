@@ -7,3 +7,4 @@ venv
 /ci_cd/cache/**
 /htmlcov/**
 mutation.log
+test.log
