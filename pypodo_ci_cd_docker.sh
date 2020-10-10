@@ -4,6 +4,7 @@ docker rm coverage
 docker rm coveragehtml
 rm ci_cd/.todo_mise_en_forme
 rm -rf htmlcov/*
+rm mutation.txt
 echo "*****FIN_CONFIGURATION_CLEAR******" 
 echo "" &&\
 echo "" &&\
@@ -17,20 +18,27 @@ echo "*****FIN_DOCKER_BUILD******" &&\
 echo "" &&\
 echo "" &&\
 echo "" &&\
-echo "*****DEBUT_DOCKER_TEST******" &&\
+echo "*****DEBUT_TU_TEST******" &&\
 docker run --rm --mount type=bind,source=${PYPODO_FILE},target=/root/.todo --mount type=bind,source=${PYPODO_BACKUP},target=/root/.todo_backup -ti --entrypoint="python" pypodo -m unittest -v pypodo/__pypodo__test.py &&\
-echo "*****FIN_DOCKER_TEST******" &&\
+echo "*****FIN_TU_TEST******" &&\
 echo "" &&\
 echo "" &&\
 echo "" &&\
-echo "*****DEBUT_DOCKER_COVERAGE******" &&\
+echo "*****DEBUT_TU_COVERAGE******" &&\
 docker run --name coverage --mount type=bind,source=${PYPODO_FILE},target=/root/.todo --mount type=bind,source=${PYPODO_BACKUP},target=/root/.todo_backup -ti --entrypoint="coverage" pypodo run -m unittest pypodo/__pypodo__test.py &&\
 docker commit coverage coverage &&\
 docker run -it --entrypoint="coverage" coverage report &&\
 docker run -it --name coveragehtml --entrypoint="coverage" coverage html &&\
 docker commit coveragehtml coveragehtml &&\
 docker cp coveragehtml:/pypodo/htmlcov . && echo "you can see the coverage in htmlcov folder" &&\
-echo "*****FIN_DOCKER_COVERAGE******" &&\
+echo "*****FIN_TU_COVERAGE******" &&\
+echo "" &&\
+echo "" &&\
+echo "" &&\
+echo "*****DEBUT_TU_MUTATION******" &&\
+docker run --rm --mount type=bind,source=${PYPODO_FILE},target=/root/.todo --mount type=bind,source=${PYPODO_BACKUP},target=/root/.todo_backup -ti --entrypoint="mutatest" pypodo --src pypodo/__pypodo__.py -t "python3 -m unittest -v pypodo/__pypodo__test.py" > mutation.log &&\
+cat mutation.log && echo "you can see the coverage in mutation.log" &&\
+echo "*****FIN_TU_MUTATION******" &&\
 echo "" &&\
 echo "" &&\
 echo "" &&\
@@ -73,10 +81,16 @@ echo ""
 echo ""
 echo ""
 echo "CI_CD DOCKER OK"
+echo ""
+echo ""
+echo ""
 else
 echo ""
 echo ""
 echo ""
 echo "CI_CD DOCKER KO - ERROR"
+echo ""
+echo ""
+echo ""
 exit 1
 fi
