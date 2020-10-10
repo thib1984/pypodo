@@ -1,12 +1,16 @@
 from pathlib import Path
 from termcolor import colored
+from shutil import copyfile
 
 
 import os
 import sys
 import re
+import time
 
 STR_PATH_HOME__TODO_ = str(Path.home()) + '/.todo'
+STR_PATH_HOME__TODO_BACKUP_FOLDER_ = str(Path.home()) + '/.todo_backup/'
+
 
 def help():
 	help_txt = """\
@@ -281,6 +285,21 @@ def tag(open = open):
 	else:
 		sys.exit(colored("error : 2 or more parameters are needed for pypodo tag : the tag to added and indexes of the task are in numeric format","red"))	
 
+def backup(open = open):
+	check()
+	if len(sys.argv) > 2:
+		sys.exit(colored("error : 0 parameter is needed for pypodo backup",'red'))
+	
+	dir_exists = os.path.exists(STR_PATH_HOME__TODO_BACKUP_FOLDER_)
+
+	if not dir_exists:
+		os.makedirs(STR_PATH_HOME__TODO_BACKUP_FOLDER_)
+		print(colored("info : creating todolist backup folder","green"))	
+
+	backup_name = STR_PATH_HOME__TODO_BACKUP_FOLDER_ + ".todo" + time.strftime("%Y%m%d%H%M%S")
+	copyfile(STR_PATH_HOME__TODO_, backup_name)
+	print(colored(f"info : creating todolist backup at: {backup_name}","green"))
+
 def pypodo():	
 	import sys
 	if len(sys.argv) == 1:
@@ -299,8 +318,9 @@ def pypodo():
 	    untag()
 	elif sys.argv[1] == "tag":
 	    tag()
+	elif sys.argv[1] == "backup":
+		backup()
 	elif sys.argv[1] == "help":
 	    help()	 	 
 	else:
 	     help()	
-	      
