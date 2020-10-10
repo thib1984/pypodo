@@ -5,47 +5,54 @@ red="\e[31m"
 
 dockerci () {
 echo "*****DEBUT_CONFIGURATION_CLEAR******"
-docker rm mutation
-docker rm coverage
-docker rm coveragehtml
-rm ci_cd/.todo_mise_en_forme
+docker rm pypodo_mutation
+docker rm pypodo_coverage
+docker rmi pypodo_coverage
+docker rm pypodo_coverage_html
+docker rmi pypodo_coverage_html
+rm ci_cd/cache/.todo_mise_en_forme
 rm -rf htmlcov/*
 rm mutation.log
+export PYPODO_FILE=/tmp/.todo && touch $PYPODO_FILE && rm $PYPODO_FILE && touch $PYPODO_FILE
+export PYPODO_BACKUP=/tmp/.todo_backup && rm -rf $PYPODO_BACKUP && mkdir $PYPODO_BACKUP
+smoketest="docker run --rm --mount type=bind,source=${PYPODO_FILE},target=/root/.todo --mount type=bind,source=${PYPODO_BACKUP},target=/root/.todo_backup pypodo" &&\
+dockerpypodorun="docker run --mount type=bind,source=${PYPODO_FILE},target=/root/.todo --mount type=bind,source=${PYPODO_BACKUP},target=/root/.todo_backup -ti" &&\
+
+
 echo "*****FIN_CONFIGURATION_CLEAR******" 
 echo "" &&\
 echo "" &&\
 echo "" &&\
 echo "*****DEBUT_DOCKER_BUILD******" &&\
 docker build -t pypodo . --no-cache &&\
-export PYPODO_FILE=/tmp/.todo && touch $PYPODO_FILE && rm $PYPODO_FILE && touch $PYPODO_FILE &&\
-export PYPODO_BACKUP=/tmp/.todo_backup && rm -rf $PYPODO_BACKUP && mkdir $PYPODO_BACKUP &&\
 smoketest="docker run --rm --mount type=bind,source=${PYPODO_FILE},target=/root/.todo --mount type=bind,source=${PYPODO_BACKUP},target=/root/.todo_backup pypodo" &&\
 echo "*****FIN_DOCKER_BUILD******" &&\
 echo "" &&\
 echo "" &&\
 echo "" &&\
 echo "*****DEBUT_TU_TEST******" &&\
-(docker run --rm --mount type=bind,source=${PYPODO_FILE},target=/root/.todo --mount type=bind,source=${PYPODO_BACKUP},target=/root/.todo_backup -ti --entrypoint="python" pypodo -m unittest -v pypodo/__pypodo__test.py | tee "test.log") &&\
-docker run --rm --mount type=bind,source=${PYPODO_FILE},target=/root/.todo --mount type=bind,source=${PYPODO_BACKUP},target=/root/.todo_backup -ti --entrypoint="python" pypodo -m unittest -v pypodo/__pypodo__test.py > /dev/null &&\
+#FIXME actually we have two commande to display the log AND save it AND exit if fail
+$dockerpypodorun --rm --entrypoint="python" pypodo -m unittest -v pypodo/__pypodo__test.py | tee "test.log" &&\
+$dockerpypodorun --rm --entrypoint="python" pypodo -m unittest -v pypodo/__pypodo__test.py > /dev/null &&\
 
 echo "*****FIN_TU_TEST******" &&\
 echo "" &&\
 echo "" &&\
 echo "" &&\
 echo "*****DEBUT_TU_COVERAGE******" &&\
-docker run --name coverage --mount type=bind,source=${PYPODO_FILE},target=/root/.todo --mount type=bind,source=${PYPODO_BACKUP},target=/root/.todo_backup -ti --entrypoint="coverage" pypodo run -m unittest pypodo/__pypodo__test.py &&\
-docker commit coverage coverage &&\
-docker run -it --entrypoint="coverage" coverage report &&\
-docker run -it --name coveragehtml --entrypoint="coverage" coverage html &&\
-docker commit coveragehtml coveragehtml &&\
-docker cp coveragehtml:/pypodo/htmlcov . && echo "you can see the coverage in htmlcov folder" &&\
+$dockerpypodorun --name pypodo_coverage --entrypoint="coverage" pypodo run &&\
+#FIXME actually we commit the container as an image to restart one other container and launch html...
+docker commit pypodo_coverage pypodo_coverage &&\
+docker run -it --name pypodo_coverage_html --entrypoint="coverage" pypodo_coverage html &&\
+docker cp pypodo_coverage_html:/pypodo/htmlcov . && echo "you can see the coverage in htmlcov folder" &&\
 echo "*****FIN_TU_COVERAGE******" &&\
 echo "" &&\
 echo "" &&\
 echo "" &&\
 echo "*****DEBUT_TU_MUTATION******" &&\
-docker run --name mutation --mount type=bind,source=${PYPODO_FILE},target=/root/.todo --mount type=bind,source=${PYPODO_BACKUP},target=/root/.todo_backup -ti --entrypoint="mutatest" pypodo -n 1000 --src pypodo/__pypodo__.py -t "python3 -m unittest -v pypodo/__pypodo__test.py" -o mutation.log &&\
-docker cp mutation:/pypodo/mutation.log . && echo "you can see the coverage in mutation.log" &&\
+#FIXME no idea to otain full Number of location
+$dockerpypodorun --name pypodo_mutation --entrypoint="mutatest" pypodo &&\
+docker cp pypodo_mutation:/pypodo/mutation.log . && echo "you can see the coverage in mutation.log" &&\
 echo "*****FIN_TU_MUTATION******" &&\
 echo "" &&\
 echo "" &&\
@@ -94,12 +101,11 @@ rm mutation.log
 rm test.log
 pip3 install mutatest
 pip3 install coverage
-echo "*****FIN_CONFIGURATION_CLEAR******" 
+echo "*****FIN_CONFIGURATION_CLEAR******"
 python3 -m unittest -v pypodo/__pypodo__test.py 2>&1 | tee test.log &&\
-coverage run -m unittest pypodo/__pypodo__test.py &&\
-coverage report &&\
+coverage run &&\
 coverage html &&\
-mutatest -n 1000 --src pypodo/__pypodo__.py  -t "python3 -m unittest -v pypodo/__pypodo__test.py" -o mutation.log
+mutatest
 }
 
 pipcd () {
