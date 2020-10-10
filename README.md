@@ -30,7 +30,7 @@ pip3 install --user git+https://github.com/thib1984/pypodo.git#egg=pypodo --upgr
 pip3 uninstall pypodo
 ```
 
-## Github and test
+## Github
 
 To work with Github
 ```
