@@ -46,7 +46,7 @@ SYNOPSIS
 
 # list the .todo possibly filtered on the tags corresponding to the parameter 
 def list(open = open):
-	check()
+	check(open)
 	if len(sys.argv) > 3:
 		sys.exit(colored("error : 0 or 1 parameter is needed for pypodo list - the tag",'red'))
 	vide = 'true'
@@ -86,7 +86,7 @@ def list(open = open):
 
 # list the .todo possibly filtered on the tags corresponding to the parameter 
 def listnotag(open = open):
-	check()
+	check(open)
 	if len(sys.argv) > 2:
 		sys.exit(colored("error : 0 parameter is needed for pypodo listnotag",'red'))
 	vide = 'true'
@@ -105,7 +105,7 @@ def listnotag(open = open):
 
 # list the .todo possibly filtered on the tags corresponding to the parameter 
 def listtag(open = open):
-	check()
+	check(open)
 	if len(sys.argv) > 2:
 		sys.exit(colored("error : 0 parameter is needed for pypodo listtag",'red'))
 	vide = 'true'
@@ -127,7 +127,7 @@ def sort_uniq(sequence):
 							
 # adds the tasks as a parameter to the todolist (by calculating their indexes).					
 def add(open = open):
-	check()
+	check(open)
 	if len(sys.argv) < 3:
 		sys.exit("error : 1 or more parameter is needed for pypodo add - tasks") 
 	else:
@@ -153,7 +153,7 @@ def add(open = open):
 
 # removes the tasks whose indexes are provided as a parameter	
 def delete(open = open):
-	check()
+	check(open)
 	if len(sys.argv) >= 3:
 		# loop on the indexes
 		for x in range(2, len(sys.argv)):
@@ -182,7 +182,7 @@ def delete(open = open):
 
 # sort the list in successive ascending order
 def sort(open = open):
-	check()
+	check(open)
 	if len(sys.argv) != 2:
 		sys.exit(colored("error : 0 parameter is needed for pypodo sort","red")) 
 	else:
@@ -222,7 +222,7 @@ def check(open = open):
 		
 # untag tasks				
 def untag(open = open):
-	check()
+	check(open)
 	if len(sys.argv) == 2:
 		listnotag(open)
 	elif len(sys.argv) >= 4:
@@ -258,7 +258,7 @@ def untag(open = open):
 
 # tagging task
 def tag(open = open):
-	check()
+	check(open)
 	if len(sys.argv) == 2:
 		listtag(open)
 	elif len(sys.argv) >= 4:
@@ -288,7 +288,7 @@ def tag(open = open):
 		sys.exit(colored("error : 2 or more parameters are needed for pypodo tag : the tag to added and indexes of the task are in numeric format","red"))	
 
 def backup(open = open):
-	check()
+	check(open)
 	if len(sys.argv) > 2:
 		sys.exit(colored("error : 0 parameter is needed for pypodo backup",'red'))
 	
