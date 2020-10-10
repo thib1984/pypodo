@@ -39,7 +39,8 @@ SYNOPSIS
             pypodo untag #print the todolist filtered on untagged tasks	
        sort  : reorder the todolist in consecutives index
             pypodo sort	#reorder the todolist in consecutives index	
-              			
+       backup  : create a timestamped copy of the actual .todo file in a backupfolder
+            pypodo backup	#create a timestamped copy of the actual .todo file in a backupfolder	              			
 	"""
 	print(help_txt)
 
@@ -217,7 +218,8 @@ def check(open = open):
 			sys.exit(colored("error : verify the .todo file","red"))			
 	else:
 		open(STR_PATH_HOME__TODO_, "w")
-
+		print(colored("info : creating .todolist file","green"))
+		
 # untag tasks				
 def untag(open = open):
 	check()
@@ -296,9 +298,11 @@ def backup(open = open):
 		os.makedirs(STR_PATH_HOME__TODO_BACKUP_FOLDER_)
 		print(colored("info : creating todolist backup folder","green"))	
 
-	backup_name = STR_PATH_HOME__TODO_BACKUP_FOLDER_ + ".todo" + time.strftime("%Y%m%d%H%M%S")
+	time_suffix=time.strftime("%Y%m%d%H%M%S")
+	todobackupname= ".todo" + time_suffix
+	backup_name = STR_PATH_HOME__TODO_BACKUP_FOLDER_ + todobackupname 
 	copyfile(STR_PATH_HOME__TODO_, backup_name)
-	print(colored(f"info : creating todolist backup at: {backup_name}","green"))
+	print(colored("info : creating todolist backup - " + todobackupname ,"green"))
 
 def pypodo():	
 	import sys

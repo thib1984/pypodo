@@ -47,18 +47,26 @@ If you want, you can use **pypodo** as a docker image.
 git clone https://github.com/thib1984/pypodo.git
 cd pypodo
 docker build -t pypodo .
+``` 
+to construct the docker image 
+And your pypodo app is available 🤘 ! 
+
+and
+```
 export PYPODO_FILE=<path of your pypodo file>
 touch $PYPODO_FILE
-docker run --rm --mount type=bind,source=${PYPODO_FILE},target=/root/.todo pypodo
+export PYPODO_BACKUP=<path of your pypodo backup folder>
+mkdir -p $PYPODO_BACKUP  
+docker run --rm --mount type=bind,source=${PYPODO_FILE},target=/root/.todo --mount type=bind,source=${PYPODO_BACKUP},target=/root/.todo_backup pypodo
 ```
-And your pypodo app is available 🤘 ! 
+to use it
 
 If you don't want to write all this command at each time, you can create an alias : 
 ```
-alias pypodo="docker run --rm --mount type=bind,source=${PYPODO_FILE},target=/root/.todo pypodo"
+alias pypodo="export PYPODO_FILE=<path of your pypodo file> && touch $PYPODO_FILE && export PYPODO_BACKUP=<path of your pypodo backup folder> && mkdir -p $PYPODO_BACKUP  && docker run --rm --mount type=bind,source=${PYPODO_FILE},target=/root/.todo --mount type=bind,source=${PYPODO_BACKUP},target=/root/.todo_backup pypodo"
 ```
 
-or for a full time usage, change your ```.bash_profile``` file.
+or for a full time usage, change your ```.bash_profile``` file, and if you want use aliases in alias section after!
 
 ## Utilisation
 
@@ -93,28 +101,36 @@ print the todolist filtered to the tag '_name_of_tag_' :
 
 - ``pypodo del 2``  : delete the second task of the todolist
 
-- ``pypodo sort`` :  reorder all tasks by index
+- ``pypodo del 1 2`` : remove the 2 tasks 
 
 - ``pypodo tag new_tag 1`` : add the tag '_new_tag_' to the first task
 
-- ``pypodo untag new_tag 1`` : remove tag '_new_tag_' from the first task
-
 - ``pypodo tag new_tag 1 2`` : add the tag '_new_tag_' to the first and second task
 
-- ``pypodo unatag new_tag 1 2`` : remove the tag '_new_tag_' to the first and second task
+- ``pypodo untag new_tag 1`` : remove tag '_new_tag_' from the first task
 
-- ``pypodo del 1 2`` : remove the 2 tasks 
+- ``pypodo untag new_tag 1 2`` : remove the tag '_new_tag_' to the first and second task
+
+- ``pypodo sort`` :  reorder all tasks by index
+
+- ``pypodo backup`` : backup the actual .todo in a backup folder with a name suffixed by a timestamp
+
 
 ## Alias
 
 You can use alias as
 
 ```
+#if you use docker app only
+alias pypodo="export PYPODO_FILE=<path of your pypodo file> && touch $PYPODO_FILE && export PYPODO_BACKUP=<path of your pypodo backup folder> && mkdir -p $PYPODO_BACKUP  && docker run --rm --mount type=bind,source=${PYPODO_FILE},target=/root/.todo --mount type=bind,source=${PYPODO_BACKUP},target=/root/.todo_backup pypodo"
+#for all apps
 alias tl='pypodo list'
 alias ta='pypodo add'
 alias tt='pypodo tag'
 alias td='pypodo del'
 alias ts='pypodo sort'
 alias tu='pypodo untag'
+alias tb='pypodo backup'
 ```
+
 to improve your velocity!
