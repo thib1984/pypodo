@@ -92,6 +92,8 @@ echo "*****DEBUT_CONFIGURATION_CLEAR******"
 rm -rf htmlcov/*
 rm mutation.log
 rm test.log
+pip3 install mutatest
+pip3 install coverage
 echo "*****FIN_CONFIGURATION_CLEAR******" 
 python3 -m unittest -v pypodo/__pypodo__test.py 2>&1 | tee test.log &&\
 coverage run -m unittest pypodo/__pypodo__test.py &&\
