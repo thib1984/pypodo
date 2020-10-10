@@ -36,6 +36,7 @@ To work with Github
 ```
 git clone https://github.com/thib1984/pypodo.git
 cd pypodo
+#BACKUP YOU .TODOFILE WITH pypodo backup or manually -> https://github.com/thib1984/pypodo/issues
 #work with git
 ./pytodo_ci_cd.sh pip #to test and create pip package
 ./pytodo_ci_cd.sh docker #to test and create docker image with big test!
