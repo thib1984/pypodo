@@ -34,16 +34,27 @@ pip3 uninstall pypodo
 
 To work with Github
 ```
-git clone https://github.com/thib1984/pypodo.git
+git clone https://github.com/thib1984/pypodo.git #or your fork repo ;)
 cd pypodo
 #work with git
-./pytodo_ci_cd.sh pip #to test and create pip package
-./pytodo_ci_cd.sh docker #to test and create docker image with big test!
-./pytodo_ci_cd.sh full #to test and create docker image with big test and create pip package too!
-#after ci_cd, you can see htmlcov for coverage, mutation.log for mutation, and test.log for unit tests
 git add .
 git commit -am "my commit"
 git push
+```
+
+## Test
+
+```
+python3 -m unittest -v pypodo/__pypodo__test.py # to execute unit tests
+coverage run && coverage html #to generate html report in htmlcov
+mutatest #to test mutations
+```
+## Local CI/CD
+
+```
+./pytodo_ci_cd.sh pip #to launch unit test, coverage mutation, and build pip if ok 
+./pytodo_ci_cd.sh docker #to create docker image_test, launch unit test, coverage mutation, and "end-to-end" test and build docker image app if ok 
+./pytodo_ci_cd.sh full #to create docker image_test, launch unit test, coverage mutation, and "end-to-end" test and build docker image app  + pip if ok 
 ```
 
 ## Docker usage
