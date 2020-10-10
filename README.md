@@ -4,7 +4,7 @@
 
 ## Tanks to contributors
 
-- https://github.com/bbougon
+- https://github.com/bbougon : @bbougon
 - https://github.com/isaacvv
 - https://github.com/jeanphibaconnais
 
