@@ -98,9 +98,13 @@ print the todolist filtered to the tag '_name_of_tag_' :
 
 - ``pypodo tag new_tag 1 2`` : add the tag '_new_tag_' to the first and second task
 
+- ``pypodo tag`` : display all tags of the todolist
+
 - ``pypodo untag new_tag 1`` : remove tag '_new_tag_' from the first task
 
 - ``pypodo untag new_tag 1 2`` : remove the tag '_new_tag_' to the first and second task
+
+- ``pypodo untag`` : display all tasks without tags
 
 - ``pypodo sort`` :  reorder all tasks by index
 
