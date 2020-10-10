@@ -12,22 +12,12 @@
 
 :warning: Not compatible with python2 who is deprecated! Use python3
 
-## Install
+## Install/Upgrade/Uninstall
 
 ```
-pip3 install --user git+https://github.com/thib1984/pypodo.git#egg=pypodo
-```
-
-## Upgrade
-
-```
-pip3 install --user git+https://github.com/thib1984/pypodo.git#egg=pypodo --upgrade
-```
-
-## Uninstall
-
-```
-pip3 uninstall pypodo
+pip3 install --user git+https://github.com/thib1984/pypodo.git#egg=pypodo #Installation
+pip3 install --user git+https://github.com/thib1984/pypodo.git#egg=pypodo --upgrade #Upgrade
+pip3 uninstall pypodo #Uninstall
 ```
 
 ## Docker usage
