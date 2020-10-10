@@ -30,33 +30,6 @@ pip3 install --user git+https://github.com/thib1984/pypodo.git#egg=pypodo --upgr
 pip3 uninstall pypodo
 ```
 
-## Github
-
-To work with Github
-```
-git clone https://github.com/thib1984/pypodo.git #or your fork repo ;)
-cd pypodo
-#work with git
-git add .
-git commit -am "my commit"
-git push
-```
-
-## Test
-
-```
-python3 -m unittest -v pypodo/__pypodo__test.py # to execute unit tests
-coverage run && coverage html #to generate html report in htmlcov
-mutatest #to test mutations
-```
-## Local CI/CD
-
-```
-./pytodo_ci_cd.sh pip #to launch unit test, coverage mutation, and build pip if ok 
-./pytodo_ci_cd.sh docker #to create docker image_test, launch unit test, coverage mutation, and "end-to-end" test and build docker image app if ok 
-./pytodo_ci_cd.sh full #to create docker image_test, launch unit test, coverage mutation, and "end-to-end" test and build docker image app  + pip if ok 
-```
-
 ## Docker usage
 
 If you want, you can use **pypodo** as a docker image.
@@ -152,3 +125,31 @@ alias tb='pypodo backup'
 ```
 
 to improve your velocity!
+
+
+## Github
+
+To work with Github
+```
+git clone https://github.com/thib1984/pypodo.git #or your fork repo ;)
+cd pypodo
+#work with git
+git add .
+git commit -am "my commit"
+git push
+```
+
+## Test
+
+```
+python3 -m unittest -v pypodo/__pypodo__test.py # to execute unit tests
+coverage run && coverage html #to generate html report in htmlcov
+mutatest #to test mutations
+```
+## Local CI/CD
+
+```
+./pytodo_ci_cd.sh pip #to launch unit test, coverage mutation, and build pip if ok 
+./pytodo_ci_cd.sh docker #to create docker image_test, launch unit test, coverage mutation, and "end-to-end" test and build docker image app if ok 
+./pytodo_ci_cd.sh full #to create docker image_test, launch unit test, coverage mutation, and "end-to-end" test and build docker image app  + pip if ok 
+```
