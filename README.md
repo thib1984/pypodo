@@ -93,17 +93,20 @@ print the todolist filtered to the tag '_name_of_tag_' :
 
 - ``pypodo del 2``  : delete the second task of the todolist
 
-- ``pypodo sort`` :  reorder all tasks by index
+- ``pypodo del 1 2`` : remove the 2 tasks 
 
 - ``pypodo tag new_tag 1`` : add the tag '_new_tag_' to the first task
 
-- ``pypodo untag new_tag 1`` : remove tag '_new_tag_' from the first task
-
 - ``pypodo tag new_tag 1 2`` : add the tag '_new_tag_' to the first and second task
 
-- ``pypodo unatag new_tag 1 2`` : remove the tag '_new_tag_' to the first and second task
+- ``pypodo untag new_tag 1`` : remove tag '_new_tag_' from the first task
 
-- ``pypodo del 1 2`` : remove the 2 tasks 
+- ``pypodo untag new_tag 1 2`` : remove the tag '_new_tag_' to the first and second task
+
+- ``pypodo sort`` :  reorder all tasks by index
+
+- ``pypodo backup`` : backup the actual .todo in a backup folder with a name suffixed by a timestamp
+
 
 ## Alias
 
@@ -116,5 +119,7 @@ alias tt='pypodo tag'
 alias td='pypodo del'
 alias ts='pypodo sort'
 alias tu='pypodo untag'
+alias tb='pypodo backup'
 ```
+
 to improve your velocity!

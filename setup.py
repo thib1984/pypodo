@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='pypodo',
-      version='1.3.0',
+      version='1.4.0',
       description='pypodo is a todolist tool which works with a .todo file positionned the root of the home directory : use pypodo to run it.',
       url='https://github.com/thib1984/pypodo',
       author='thib1984',
