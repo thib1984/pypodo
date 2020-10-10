@@ -8,9 +8,6 @@
 - https://github.com/isaacvv
 - https://github.com/jeanphibaconnais
 
-
-[![Contributors][opencollective-contributors]][contributors]
-
 ## Compatibility
 
 :warning: Not compatible with python2 who is deprecated! Use python3
