@@ -44,7 +44,7 @@ echo "" &&\
 echo "" &&\
 echo "" &&\
 echo "*****DEBUT_TU_MUTATION******" &&\
-docker run --name mutation --mount type=bind,source=${PYPODO_FILE},target=/root/.todo --mount type=bind,source=${PYPODO_BACKUP},target=/root/.todo_backup -ti --entrypoint="mutatest" -n 1000 pypodo --src pypodo/__pypodo__.py -t "python3 -m unittest -v pypodo/__pypodo__test.py" -o mutation.log &&\
+docker run --name mutation --mount type=bind,source=${PYPODO_FILE},target=/root/.todo --mount type=bind,source=${PYPODO_BACKUP},target=/root/.todo_backup -ti --entrypoint="mutatest" pypodo -n 1000 --src pypodo/__pypodo__.py -t "python3 -m unittest -v pypodo/__pypodo__test.py" -o mutation.log &&\
 docker cp mutation:/pypodo/mutation.log . && echo "you can see the coverage in mutation.log" &&\
 echo "*****FIN_TU_MUTATION******" &&\
 echo "" &&\
