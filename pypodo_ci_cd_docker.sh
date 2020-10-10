@@ -52,6 +52,7 @@ $smoketest add "tache2 #montag" &&\
 $smoketest add "tache3 #urgent" &&\
 $smoketest list && $smoketest del 2 &&\
 $smoketest tag montag2 3 &&\
+$smoketest tag urgente 3 &&\
 $smoketest sort &&\
 $smoketest add "mon autre tache #tag #retag" &&\
 $smoketest untag retag 3 &&\

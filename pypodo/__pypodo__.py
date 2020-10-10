@@ -58,7 +58,7 @@ def list(open = open):
 				index = colored(line.split(' ', 1)[0],"blue")
 				tags_nocolor = re.sub("^[^#]+ #","#",re.sub("^[^#]+$","",re.sub("^[^ ]+ ","",line.rstrip('\n'))))
 				tags = re.sub(r"(#[^ #]+( |$)?)",colored(r"\1","yellow"),tags_nocolor)
-				tags = re.sub(r"(#urgent+( |$)?)",colored(r"\1","red"),tags)
+				tags = re.sub(r"(#urgent( |$)?)",colored(r"\1","red"),tags)
 				print(index +" "+ task + tags)
 				vide = 'false'	
 			# with filter -> we check tag
@@ -72,7 +72,7 @@ def list(open = open):
 						index = colored(line.split(' ', 1)[0],"blue")
 						tags_nocolor = re.sub("^[^#]+ #","#",re.sub("^[^#]+$","",re.sub("^[^ ]+ ","",line.rstrip('\n'))))
 						tags = re.sub(r"(#[^ #]+( |$)?)",colored(r"\1","yellow"),tags_nocolor)
-						tags = re.sub(r"(#urgent+( |$)?)",colored(r"\1","red"),tags)
+						tags = re.sub(r"(#urgent( |$)?)",colored(r"\1","red"),tags)
 						print(index +" "+ task + tags)
 						vide = 'false'	
 	if vide == 'true':
@@ -97,7 +97,7 @@ def listnotag(open = open):
 				index = colored(line.split(' ', 1)[0],"blue")
 				tags_nocolor = re.sub("^[^#]+ #","#",re.sub("^[^#]+$","",re.sub("^[^ ]+ ","",line.rstrip('\n'))))
 				tags = re.sub(r"(#[^ #]+( |$)?)",colored(r"\1","yellow"),tags_nocolor)
-				tags = re.sub(r"(#urgent+( |$)?)",colored(r"\1","red"),tags)
+				tags = re.sub(r"(#urgent( |$)?)",colored(r"\1","red"),tags)
 				print(index +" "+ task + tags)
 				vide = 'false'
 	if vide == 'true':
