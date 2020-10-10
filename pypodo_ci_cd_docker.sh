@@ -29,7 +29,7 @@ docker commit coverage coverage &&\
 docker run -it --entrypoint="coverage" coverage report &&\
 docker run -it --name coveragehtml --entrypoint="coverage" coverage html &&\
 docker commit coveragehtml coveragehtml &&\
-docker cp coveragehtml:/pypodo/htmlcov . &&\
+docker cp coveragehtml:/pypodo/htmlcov . && echo "you can see the coverage in htmlcov folder" &&\
 echo "*****FIN_DOCKER_COVERAGE******" &&\
 echo "" &&\
 echo "" &&\
