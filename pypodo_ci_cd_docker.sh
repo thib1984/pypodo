@@ -1,5 +1,6 @@
 #!/bin/bash
 echo "*****DEBUT_CONFIGURATION_CLEAR******"
+docker rm mutation
 docker rm coverage
 docker rm coveragehtml
 rm ci_cd/.todo_mise_en_forme
@@ -36,8 +37,8 @@ echo "" &&\
 echo "" &&\
 echo "" &&\
 echo "*****DEBUT_TU_MUTATION******" &&\
-docker run --rm --mount type=bind,source=${PYPODO_FILE},target=/root/.todo --mount type=bind,source=${PYPODO_BACKUP},target=/root/.todo_backup -ti --entrypoint="mutatest" pypodo --src pypodo/__pypodo__.py -t "python3 -m unittest -v pypodo/__pypodo__test.py" > mutation.log &&\
-cat mutation.log && echo "you can see the coverage in mutation.log" &&\
+docker run --name mutation --mount type=bind,source=${PYPODO_FILE},target=/root/.todo --mount type=bind,source=${PYPODO_BACKUP},target=/root/.todo_backup -ti --entrypoint="mutatest" pypodo --src pypodo/__pypodo__.py -t "python3 -m unittest -v pypodo/__pypodo__test.py" -o mutation.log &&\
+docker cp mutation:/pypodo/mutation.log . && echo "you can see the coverage in mutation.log" &&\
 echo "*****FIN_TU_MUTATION******" &&\
 echo "" &&\
 echo "" &&\
