@@ -67,7 +67,7 @@ def list(open = open):
 					#print(line, end = '')
 					tag=sys.argv[2]
 					# regex to search tags "#toto " or "#toto" at the end of the line
-					if re.findall("#"+re.escape(tag)+'( |$)',line.rstrip('\n')):
+					if re.findall("#"+re.escape(tag)+"( |$)",line.rstrip('\n')):
 						task = colored(re.sub("#.*","",re.sub("^[^ ]+ ","",line.rstrip('\n'))),"green")
 						index = colored(line.split(' ', 1)[0],"blue")
 						tags_nocolor = re.sub("^[^#]+ #","#",re.sub("^[^#]+$","",re.sub("^[^ ]+ ","",line.rstrip('\n'))))

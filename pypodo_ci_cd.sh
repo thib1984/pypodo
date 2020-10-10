@@ -18,7 +18,7 @@ echo "" &&\
 echo "*****DEBUT_DOCKER_BUILD******" &&\
 docker build -t pypodo . --no-cache &&\
 export PYPODO_FILE=/tmp/.todo && touch $PYPODO_FILE && rm $PYPODO_FILE && touch $PYPODO_FILE &&\
-export PYPODO_BACKUP=/tmp/.todo_backup && rm -rf $PYPODO_BACKUP && mkdir $PYPODO_BACKUP &&\  
+export PYPODO_BACKUP=/tmp/.todo_backup && rm -rf $PYPODO_BACKUP && mkdir $PYPODO_BACKUP &&\
 smoketest="docker run --rm --mount type=bind,source=${PYPODO_FILE},target=/root/.todo --mount type=bind,source=${PYPODO_BACKUP},target=/root/.todo_backup pypodo" &&\
 echo "*****FIN_DOCKER_BUILD******" &&\
 echo "" &&\
@@ -44,7 +44,7 @@ echo "" &&\
 echo "" &&\
 echo "" &&\
 echo "*****DEBUT_TU_MUTATION******" &&\
-docker run --name mutation --mount type=bind,source=${PYPODO_FILE},target=/root/.todo --mount type=bind,source=${PYPODO_BACKUP},target=/root/.todo_backup -ti --entrypoint="mutatest" pypodo --src pypodo/__pypodo__.py -t "python3 -m unittest -v pypodo/__pypodo__test.py" -o mutation.log &&\
+docker run --name mutation --mount type=bind,source=${PYPODO_FILE},target=/root/.todo --mount type=bind,source=${PYPODO_BACKUP},target=/root/.todo_backup -ti --entrypoint="mutatest" -n 1000 pypodo --src pypodo/__pypodo__.py -t "python3 -m unittest -v pypodo/__pypodo__test.py" -o mutation.log &&\
 docker cp mutation:/pypodo/mutation.log . && echo "you can see the coverage in mutation.log" &&\
 echo "*****FIN_TU_MUTATION******" &&\
 echo "" &&\
@@ -97,7 +97,7 @@ python3 -m unittest -v pypodo/__pypodo__test.py 2>&1 | tee test.log &&\
 coverage run -m unittest pypodo/__pypodo__test.py &&\
 coverage report &&\
 coverage html &&\
-mutatest --src pypodo/__pypodo__.py  -t "python3 -m unittest -v pypodo/__pypodo__test.py" -o mutation.log
+mutatest -n 1000 --src pypodo/__pypodo__.py  -t "python3 -m unittest -v pypodo/__pypodo__test.py" -o mutation.log
 }
 
 pipcd () {
