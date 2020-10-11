@@ -2,11 +2,9 @@
 
 **pypodo** (\pipudu\\) is a pip package (or docker image if you want, see below!) : a todolist tool which works with a .todo file positionned the root of the home directory
 
-## Compatibility
+## Install/Upgrade/Uninstall
 
 :warning: Not compatible with python2 who is deprecated! Use python3
-
-## Install/Upgrade/Uninstall
 
 ```
 pip3 install --user git+https://github.com/thib1984/pypodo.git#egg=pypodo #Installation
