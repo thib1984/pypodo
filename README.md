@@ -2,12 +2,6 @@
 
 **pypodo** (\pipudu\\) is a pip package (or docker image if you want, see below!) : a todolist tool which works with a .todo file positionned the root of the home directory
 
-## Tanks to contributors
-
-- https://github.com/bbougon
-- https://github.com/isaacvv
-- https://github.com/jeanphibaconnais
-
 ## Compatibility
 
 :warning: Not compatible with python2 who is deprecated! Use python3
@@ -173,3 +167,10 @@ mutatest #to test mutations #to generate mutations : report mutation.log
 ./pypodo_ci_cd.sh full fast #to launch unit test, coverage and end to end test with docker + build pip + build image pypodo
 
 ```
+
+
+## Tanks to contributors :construction_worker:
+
+- https://github.com/bbougon
+- https://github.com/isaacvv
+- https://github.com/jeanphibaconnais
