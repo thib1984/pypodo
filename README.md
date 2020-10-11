@@ -18,10 +18,6 @@ Common commands are **list**/**add**/**del**/**tag**/**untag**
 
 Other commands are **help**/**backup**/**sort**/**find**
 
-- ``pypodo`` : display help message
-
-- ``pypodo help`` : display help message
-
 - ``pypodo add "to do work #name_of_tag"`` : add the task '_to do work_' with the tag '_name_of_tag_'
 
 - ``pypodo add "to do other_work #name_of_other_tag" "to do other_big_work #name_of_other_tag"``
@@ -70,6 +66,11 @@ print the todolist filtered to the tag '_name_of_tag_' :
 - ``pypodo backup`` : backup the actual .todo in a backup folder with a name suffixed by a timestamp
 
 - ``pypodo find "t.*he"`` : filter the todolist on the parameter (regex format)
+
+- ``pypodo help`` : display help message
+
+- ``pypodo`` : display help message
+
 
 ## Screenshots
 
