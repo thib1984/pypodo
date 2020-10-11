@@ -5,28 +5,72 @@ from io import StringIO
 from pathlib import Path
 from unittest.mock import mock_open, patch
 
-from pypodo.__pypodo__ import add, delete, list, pypodo, sort, tag, untag
+from pypodo.__pypodo__ import add, delete, list, pypodo, sort, tag, untag, help, backup
 
 STR_PATH_HOME__TODO_ = str(Path.home()) + '/.todo'
 
 
 class TestStringMethods(unittest.TestCase):
 
-    @patch('builtins.open', new_callable=mock_open)
-    @patch('sys.stdout', new_callable=StringIO)
-    def test_sort_retourne_vide(self, mock_print, mock_open):
-        with patch.object(sys, 'argv', [pypodo, list]):
-            list(mock_open)
-            self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
-                '\n')), "warning : the todolist is empty")
+    #partie erreurs
 
     @patch('builtins.open', new_callable=mock_open)
     @patch('sys.stdout', new_callable=StringIO)
-    def test_list_retourne_vide(self, mock_print, mock_open):
+    def test_add_nothing_return_error(self, mock_print, mock_open):
+        with patch.object(sys, 'argv', [pypodo, add]):
+            add(mock_open)
+            self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
+                '\n')), 'error : 1 or more parameter is needed for pypodo add - tasks')
+
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_del_nothing_return_error(self, mock_print, mock_open):
+        with patch.object(sys, 'argv', [pypodo, delete]):
+            delete(mock_open)
+            self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
+                '\n')), 'error : 1 or more parameter is needed for pypodo del - indexes to delete in numeric format')
+
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_sort_with_parameters_return_error(self, mock_print, mock_open):
+        with patch.object(sys, 'argv', [pypodo, sort, "toto"]):
+            sort(mock_open)
+            self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
+                '\n')), "error : 0 parameter is needed for pypodo sort")
+
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_help_with_parameters_return_error(self, mock_print, mock_open):
+        with patch.object(sys, 'argv', [pypodo, help, "toto"]):
+            help(mock_open)
+            self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
+                '\n')), "error : 0 parameter is needed for pypodo help")
+
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_backup_with_parameters_return_error(self, mock_print, mock_open):
+        with patch.object(sys, 'argv', [pypodo, backup, "toto"]):
+            backup(mock_open)
+            self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
+                '\n')), "error : 0 parameter is needed for pypodo backup")
+
+
+    
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_sort_retourne_vide(self, mock_print, mock_open):
         with patch.object(sys, 'argv', [pypodo, sort]):
             sort(mock_open)
             self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
                 '\n')), "warning : the todolist is empty - nothing to do")
+
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_list_retourne_vide(self, mock_print, mock_open):
+        with patch.object(sys, 'argv', [pypodo, list]):
+            list(mock_open)
+            self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
+                '\n')), "warning : the todolist is empty")
 
     @patch('builtins.open', new_callable=mock_open, read_data='1 ma tache')
     @patch('sys.stdout', new_callable=StringIO)
@@ -45,6 +89,24 @@ class TestStringMethods(unittest.TestCase):
             mock_open.assert_called_with(STR_PATH_HOME__TODO_, 'r')
             self.assertEqual(escape_ansi(
                 mock_print.getvalue().rstrip('\n')), '1 ma tache #test')
+
+    @patch('builtins.open', new_callable=mock_open, read_data='1 ma tache #test\n2 ma seconde tache #linux\n3 ma troisieme tache #linux #test\n4 ma 4 tache #toto')
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_list_TAG_retourne_une_tache_avec_deux_parametres(self, mock_print, mock_open):
+        with patch.object(sys, 'argv', [pypodo, list, 'test', 'linux']):
+            list(mock_open)
+            mock_open.assert_called_with(STR_PATH_HOME__TODO_, 'r')
+            self.assertEqual(escape_ansi(
+                mock_print.getvalue().rstrip('\n')), '3 ma troisieme tache #linux #test')      
+
+    @patch('builtins.open', new_callable=mock_open, read_data='1 ma tache #test\n2 ma seconde tache #linux\n3 ma troisieme tache #linux #test\n4 ma 4 tache #toto')
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_list_TAG_retourne_empty_avec_deux_parametres(self, mock_print, mock_open):
+        with patch.object(sys, 'argv', [pypodo, list, 'test', 'pe']):
+            list(mock_open)
+            mock_open.assert_called_with(STR_PATH_HOME__TODO_, 'r')
+            self.assertEqual(escape_ansi(
+                mock_print.getvalue().rstrip('\n')), 'warning : the filtered todolist is empty')                    
 
     @patch('builtins.open', new_callable=mock_open)
     @patch('sys.stdout', new_callable=StringIO)
