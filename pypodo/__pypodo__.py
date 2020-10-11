@@ -63,7 +63,7 @@ def list(open=open):
             if len(sys.argv) == 2:
                 vide = printlinetodo(line, vide)
             # with filter -> we check tag
-            elif len(sys.argv) >= 3:
+            else:
                 display = 'true'
                 for x in range(2, len(sys.argv)):
                     tag = sys.argv[x]
@@ -244,7 +244,7 @@ def untag(open=open):
                     for line in lines:
                         if not re.findall("^"+index+' ', line):
                             f.write(line)
-                        if re.findall("^"+index+' ', line):
+                        else:
                             if re.findall("#"+re.escape(tag)+'( |$)', line.rstrip('\n')):
                                 f.write(re.sub("#"+re.escape(tag)+'( |$)',
                                                "", line).rstrip('\n').rstrip()+'\n')
@@ -259,7 +259,7 @@ def untag(open=open):
                     printwarning("no task with index - "+index)
     else:
         printerror(
-            "1 parameter is needed for pypodo untag : the index of the task whose tags to delete")
+            "0,2 or more parameters is needed for pypodo untag : the tag to delete and the indexes of the task whose tags to delete - nothing to list task without tags")
 
 
 # tagging task
@@ -285,7 +285,7 @@ def tag(open=open):
                     for line in lines:
                         if not re.findall("^"+index+' ', line):
                             f.write(line)
-                        if re.findall("^"+index+' ', line):
+                        else:
                             f.write(line.rstrip('\n')+" #"+tag+"\n")
                             printinfo("tag added to the task of the todolist - " +
                                       line.rstrip('\n') + " -> " + line.rstrip('\n')+" #"+tag)
@@ -295,7 +295,7 @@ def tag(open=open):
                         "no task with number is in the todolist - "+index)
     else:
         printerror(
-            "2 or more parameters are needed for pypodo tag : the tag to added and indexes of the task are in numeric format")
+            "0,2 or more parameters is needed for pypodo tag : the tag to add and the indexes of the task whose tags to add - nothing to list tags of the todolist")
 
 
 def backup(open=open):
