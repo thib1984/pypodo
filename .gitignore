@@ -8,3 +8,4 @@ venv
 /htmlcov/**
 mutation.log
 test.log
+pylint.log

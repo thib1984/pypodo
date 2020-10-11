@@ -13,6 +13,7 @@ STR_PATH_HOME__TODO_BACKUP_FOLDER_ = str(Path.home()) + '/.todo_backup/'
 REGEX_INDEX = "^\\d+$"
 REGEX_SPACE_OR_ENDLINE = "( |$)"
 
+
 def help(open=open):
     if len(sys.argv) == 2:
         help_txt = """\
@@ -155,7 +156,7 @@ def delete(open=open):
         for x in range(2, len(sys.argv)):
             index = sys.argv[x]
             # check the numeric format of the index
-            
+
             if not re.findall(REGEX_INDEX, index):
                 printwarning(
                     "the index to delete is not in numeric format - " + index)
@@ -318,6 +319,7 @@ def backup(open=open):
         copyfile(STR_PATH_HOME__TODO_, backup_name)
         printinfo("creating todolist backup - " + todobackupname)
 
+
 def find(open=open):
     check(open)
     if len(sys.argv) != 3:
@@ -329,9 +331,10 @@ def find(open=open):
                 search = sys.argv[2]
                 if re.findall(search, line.rstrip('\n')):
                     printlinetodo(line)
-                    vide= 'false'
+                    vide = 'false'
         if vide == 'true':
             printwarning("the filtered todolist is empty")
+
 
 def printlinetodo(line):
     task = colored(
@@ -383,7 +386,7 @@ def pypodo():
     elif sys.argv[1] == "backup":
         backup()
     elif sys.argv[1] == "find":
-        find()    
+        find()
     elif sys.argv[1] == "help":
         help()
     else:

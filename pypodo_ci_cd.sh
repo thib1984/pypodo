@@ -14,6 +14,7 @@ dockerci () {
     rm ci_cd/cache/.todo_mise_en_forme
     rm -rf htmlcov/*
     rm mutation.log
+    rm pylint.log
     export PYPODO_FILE=/tmp/.todo && touch $PYPODO_FILE && rm $PYPODO_FILE && touch $PYPODO_FILE
     export PYPODO_BACKUP=/tmp/.todo_backup && rm -rf $PYPODO_BACKUP && mkdir $PYPODO_BACKUP
     smoketest="docker run --rm --mount type=bind,source=${PYPODO_FILE},target=/root/.todo --mount type=bind,source=${PYPODO_BACKUP},target=/root/.todo_backup pypodo_test" &&\
@@ -27,6 +28,15 @@ dockerci () {
     echo "*****DEBUT_DOCKER_BUILD******" &&\
     docker build -t pypodo_test . --no-cache &&\
     echo "*****FIN_DOCKER_BUILD******" &&\
+    echo "" &&\
+    echo "" &&\
+    echo "" &&\
+    echo "*****DEBUT_PYLINT******" &&\
+    #FIXME actually we have two commande to display the log AND save it AND exit if fail
+    $dockerpypodorun --rm --entrypoint="pylint" pypodo_test pypodo/__pypodo__.py 2>&1 | tee "pylint.log" &&\
+    #$dockerpypodorun --rm --entrypoint="pylint" pypodo_test pypodo/__pypodo__.py 2>&1 > /dev/null &&\
+    
+    echo "*****FINPYLINT******" &&\
     echo "" &&\
     echo "" &&\
     echo "" &&\
@@ -117,9 +127,12 @@ pipci () {
     rm -rf htmlcov/*
     rm mutation.log
     rm test.log
+    rm pylint.log
     pip3 install mutatest
     pip3 install coverage
+    pip3 install pylint
     echo "*****FIN_CONFIGURATION_CLEAR******"
+    pylint pypodo/__pypodo__.py  2>&1 | tee  ./pylint.log &&\
     python3 -m unittest -v pypodo/__pypodo__test.py 2>&1 | tee test.log &&\
     coverage run &&\
     coverage html &&\
