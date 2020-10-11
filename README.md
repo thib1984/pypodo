@@ -77,7 +77,7 @@ The indexes are in blue, the tasks in green, and the tags in yellow or red.
 
 ![image](https://user-images.githubusercontent.com/45128847/95683314-c75dd400-0bea-11eb-900c-bf1aafc09999.png)
 
-## Docker usage :computer:
+## Docker usage [optionnal]
 
 If you want, you can use **pypodo** as a docker image.
 
@@ -109,7 +109,7 @@ or for a full time usage, change your ```.bash_profile``` file, and if you want 
 To remove docker app, just : ``docker rmi pypodo``
 
 
-## Alias :computer:
+## Alias [optionnal]
 
 You can use alias as
 
