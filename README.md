@@ -144,7 +144,13 @@ mutatest #to test mutations
 ## Local CI/CD
 
 ```
-./pypodo_ci_cd.sh pip #to launch unit test, coverage mutation, and build pip if ok 
-./pypodo_ci_cd.sh docker #to create docker image_test, launch unit test, coverage mutation, and "end-to-end" test and build docker image app if ok 
-./pypodo_ci_cd.sh full #to create docker image_test, launch unit test, coverage mutation, and "end-to-end" test and build docker image app  + pip if ok 
+./pypodo_ci_cd.sh pip ci #to launch unit test, coverage mutation
+./pypodo_ci_cd.sh pip ci fast #to launch unit test
+./pypodo_ci_cd.sh pip cd #to launch unit test, coverage mutation and build pip
+./pypodo_ci_cd.sh docker ci #to launch unit test, coverage mutation, and dend to end test with docker
+./pypodo_ci_cd.sh docker ci fast #to launch unit test, and dend to end test with docker
+./pypodo_ci_cd.sh full #to launch unit test, coverage mutation, and dend to end test with docker and build pipodo final image and build pip
+./pypodo_ci_cd.sh full fast #to launch unit test, and dend to end test with docker and build pipodo final image and build pip
+
+
 ```

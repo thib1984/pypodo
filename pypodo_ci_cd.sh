@@ -49,9 +49,15 @@ dockerci () {
     echo "" &&\
     echo "" &&\
     echo "*****DEBUT_TU_MUTATION******" &&\
-    #FIXME no idea to otain full Number of location
-    $dockerpypodorun --name pypodo_mutation --entrypoint="mutatest" pypodo_test &&\
-    docker cp pypodo_mutation:/pypodo/mutation.log . && echo "you can see the coverage in mutation.log" &&\
+    if [[ $1 = "fast" ]]
+    then
+        echo -e "$red""mutatest disabled""\e[39m"
+    else
+        #FIXME no idea to otain full Number of location
+        $dockerpypodorun --name pypodo_mutation --entrypoint="mutatest" pypodo_test &&\
+        docker cp pypodo_mutation:/pypodo/mutation.log . && echo "you can see the coverage in mutation.log"
+    fi &&\
+    
     echo "*****FIN_TU_MUTATION******" &&\
     echo "" &&\
     echo "" &&\
@@ -66,6 +72,7 @@ dockerci () {
     $smoketest tag urgente 3 &&\
     $smoketest sort &&\
     $smoketest add "mon autre tache #tag #retag" &&\
+    $smoketest list tag retag &&\
     $smoketest untag retag 3 &&\
     $smoketest tag newtag 3 3 2 &&\
     $smoketest list &&\
@@ -104,7 +111,12 @@ pipci () {
     python3 -m unittest -v pypodo/__pypodo__test.py 2>&1 | tee test.log &&\
     coverage run &&\
     coverage html &&\
-    mutatest
+    if [[ $1 = "fast" ]]
+    then
+        echo -e "$red""mutatest disabled""\e[39m"
+    else
+        mutatest
+    fi
 }
 
 dockercd () {
@@ -117,34 +129,57 @@ pipcd () {
 
 if [[ $1 = "docker" ]]
 then
-    dockerci && dockercd
-    if [[ $? = 0 ]]
+    if [[ $2 = "ci" ]]
     then
-        echo -e "$green""CI DOCKER OK""\e[39m"
-    else
-        echo -e "$red""CI DOCKER KO""\e[39m"
-    fi
+        dockerci "$3"
+        if [[ $? = 0 ]]
+        then
+            echo -e "$green""CI DOCKER OK""\e[39m"
+        else
+            echo -e "$red""CI DOCKER KO""\e[39m"
+        fi
+    elif [[ $2 = "cd" ]]
+    then
+        dockerci "$3" && dockercd
+        if [[ $? = 0 ]]
+        then
+            echo -e "$green""CI_CD DOCKER OK""\e[39m"
+        else
+            echo -e "$red""CI_CD DOCKER KO""\e[39m"
+        fi
+    fi   
     
 elif [[ $1 = "pip" ]]
 then
-    pipci && pipcd
-    if [[ $? = 0 ]]
+    if [[ $2 = "ci" ]]
     then
-        echo -e "$green""CI CD PIP OK""\e[39m"
-    else
-        echo -e "$red""CI CD PIP KO""\e[39m"
-    fi
+        pipci "$3"
+        if [[ $? = 0 ]]
+        then
+            echo -e "$green""CI PIP OK""\e[39m"
+        else
+            echo -e "$red""CI PIP KO""\e[39m"
+        fi
+    elif [[ $2 = "cd" ]]
+    then
+        pipci "$3" && pipcd
+        if [[ $? = 0 ]]
+        then
+            echo -e "$green""CI_CD PIP OK""\e[39m"
+        else
+            echo -e "$red""CI_CD PIP KO""\e[39m"
+        fi
+    fi    
     
 elif [[ $1 = "full" ]]
 then
-    dockerci && pipcd
+    dockerci $2 && dockercd && pipcd
     if [[ $? = 0 ]]
     then
-        echo -e "$green""CI DOCKER CD PIP OK""\e[39m"
+        echo -e "$green""CI_CD FULL OK""\e[39m"
     else
-        echo -e "$red""CI DOCKER CD PIP KO""\e[39m"
+        echo -e "$red""CI_CD FULL KO""\e[39m"
     fi
-    
 else
     echo -e "$red""KO Bad Parameter""\e[39m"
 fi
