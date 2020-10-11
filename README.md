@@ -130,7 +130,7 @@ alias tf='pypodo find'
 to improve your velocity!
 
 
-## For :construction_worker:
+## For contributors :construction_worker:
 
 ### To work with Github
 
