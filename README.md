@@ -130,7 +130,7 @@ alias tf='pypodo find'
 
 to improve your velocity!
 
-## For contributors :worker:
+## For contributors :construction_worker:
 
 [Go to CONTRIBUTING.md](CONTRIBUTING.md)
 
