@@ -132,7 +132,7 @@ alias tf='pypodo find'
 to improve your velocity!
 
 
-## Github
+## Github :construction_worker:
 
 To work with Github
 ```
@@ -144,7 +144,7 @@ git commit -am "my commit"
 git push
 ```
 
-## Test
+## Test :construction_worker:
 
 ```
 #in the root of the project
@@ -152,7 +152,7 @@ python3 -m unittest -v pypodo/__pypodo__test.py #to execute unit tests
 coverage run && coverage html #to generate html : report in htmlcov folder
 mutatest #to test mutations #to generate mutations : report mutation.log
 ```
-## Local CI/CD
+## Local CI/CD :construction_worker:
 
 ```
 ./pypodo_ci_cd.sh pip ci #to launch unit test, coverage and mutation
