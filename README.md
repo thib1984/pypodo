@@ -51,6 +51,10 @@ or for a full time usage, change your ```.bash_profile``` file, and if you want 
 
 ## Utilisation
 
+Common commands are **list**/**add**/**del**/**tag**/**untag**
+
+Other commands are **help**/**backup**/**sort**/**find**
+
 - ``pypodo`` : display help message
 
 - ``pypodo help`` : display help message
