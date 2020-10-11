@@ -79,7 +79,10 @@ print the todolist filtered to the tag '_name_of_tag_' :
 
 - ``pypodo find "t.*he"`` : filter the todolist on the parameter (regex format)
 
-## Screeshots
+## Screenshots
+
+The indexes are in blue, the tasks in green, and the tags in yellow or red.
+Aliases (see below) are used.
 
 ![image](https://user-images.githubusercontent.com/45128847/95682988-cc218880-0be8-11eb-940b-f974a4093847.png)
 
