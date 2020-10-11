@@ -136,6 +136,9 @@ To work with Github
 ```
 git clone https://github.com/thib1984/pypodo.git #or your fork repo ;)
 cd pypodo
+#if you want use pip
+pip3 install mutatest
+pip3 install coverage
 #work with git
 git add .
 git commit -am "my commit"

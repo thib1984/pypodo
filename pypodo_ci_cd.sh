@@ -8,6 +8,7 @@ dockerci () {
     docker rm pypodo_mutation
     docker rm pypodo_coverage
     docker rmi pypodo_coverage
+    docker rmi pypodo_test
     docker rm pypodo_coverage_html
     docker rmi pypodo_coverage_html
     rm ci_cd/cache/.todo_mise_en_forme
