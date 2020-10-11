@@ -147,6 +147,8 @@ then
         else
             echo -e "$red""CI_CD DOCKER KO""\e[39m"
         fi
+    else 
+        echo -e "$red""KO - bad params : docker (ci/cd) [fast]""\e[39m"
     fi   
     
 elif [[ $1 = "pip" ]]
@@ -169,7 +171,9 @@ then
         else
             echo -e "$red""CI_CD PIP KO""\e[39m"
         fi
-    fi    
+    else 
+        echo -e "$red""KO - bad params : pip (ci/cd) [fast]""\e[39m"
+    fi      
     
 elif [[ $1 = "full" ]]
 then
@@ -181,5 +185,5 @@ then
         echo -e "$red""CI_CD FULL KO""\e[39m"
     fi
 else
-    echo -e "$red""KO Bad Parameter""\e[39m"
+    echo -e "$red""KO - bad params : (docker/pip) (ci/cd) [fast] or full [fast]""\e[39m"
 fi
