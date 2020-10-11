@@ -49,6 +49,8 @@ alias pypodo="export PYPODO_FILE=<path of your pypodo file> && touch $PYPODO_FIL
 
 or for a full time usage, change your ```.bash_profile``` file, and if you want use aliases in alias section after!
 
+To remove docker app, just : ``docker rmi pypodo``
+
 ## Utilisation
 
 Common commands are **list**/**add**/**del**/**tag**/**untag**
@@ -146,20 +148,22 @@ git push
 
 ```
 #in the root of the project
-python3 -m unittest -v pypodo/__pypodo__test.py # to execute unit tests
-coverage run && coverage html #to generate html report in htmlcov
-mutatest #to test mutations
+python3 -m unittest -v pypodo/__pypodo__test.py #to execute unit tests
+coverage run && coverage html #to generate html : report in htmlcov folder
+mutatest #to test mutations #to generate mutations : report mutation.log
 ```
 ## Local CI/CD
 
 ```
-./pypodo_ci_cd.sh pip ci #to launch unit test, coverage mutation
-./pypodo_ci_cd.sh pip ci fast #to launch unit test
-./pypodo_ci_cd.sh pip cd #to launch unit test, coverage mutation and build pip
-./pypodo_ci_cd.sh docker ci #to launch unit test, coverage mutation, and dend to end test with docker
-./pypodo_ci_cd.sh docker ci fast #to launch unit test, and dend to end test with docker
-./pypodo_ci_cd.sh full #to launch unit test, coverage mutation, and dend to end test with docker and build pipodo final image and build pip
-./pypodo_ci_cd.sh full fast #to launch unit test, and dend to end test with docker and build pipodo final image and build pip
-
+./pypodo_ci_cd.sh pip ci #to launch unit test, coverage and mutation
+./pypodo_ci_cd.sh pip ci fast #to launch unit test and coverage
+./pypodo_ci_cd.sh pip cd #to launch unit test, coverage, and mutation + build pip
+./pypodo_ci_cd.sh pip cd fast #to launch unit test and coverage + build pip
+./pypodo_ci_cd.sh docker ci #to launch unit test, coverage, mutation and end to end test with docker
+./pypodo_ci_cd.sh docker ci fast #to launch unit test, coverage and end to end test with docker
+./pypodo_ci_cd.sh docker cd #to launch unit test, coverage, mutation and end to end test with docker + build image pypodo
+./pypodo_ci_cd.sh docker cd fast #to launch unit test, coverage and end to end test with docker + build image pypodo
+./pypodo_ci_cd.sh full #to launch unit test, coverage, mutation and end to end test with docker + build pip + build image pypodo
+./pypodo_ci_cd.sh full fast #to launch unit test, coverage and end to end test with docker + build pip + build image pypodo
 
 ```
