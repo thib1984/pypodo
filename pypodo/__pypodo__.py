@@ -41,7 +41,9 @@ def help(open=open):
         sort  : reorder the todolist in consecutives index
                 pypodo sort	#reorder the todolist in consecutives index	
         backup  : create a timestamped copy of the actual .todo file in a backupfolder
-                pypodo backup	#create a timestamped copy of the actual .todo file in a backupfolder	              			
+                pypodo backup	#create a timestamped copy of the actual .todo file in a backupfolder	 
+        find  : filter the todo list on the paramter (regex accepted)
+                pypodo filter "ta.*che"	#filter on the regex ta.*che	                             			
         """
         print(help_txt)
     else:
@@ -311,6 +313,19 @@ def backup(open=open):
         copyfile(STR_PATH_HOME__TODO_, backup_name)
         printinfo("creating todolist backup - " + todobackupname)
 
+def find(open=open):
+    check(open)
+    if len(sys.argv) != 3:
+        printerror("1 parameter is needed for pypodo find")
+    else:
+        vide = 'true'
+        with open(STR_PATH_HOME__TODO_, 'r') as f:
+            for line in f.readlines():
+                search = sys.argv[2]
+                if re.findall(search, line.rstrip('\n')):
+                    vide = printlinetodo(line, vide)
+        if vide == 'true':
+            printwarning("the filtered todolist is empty")
 
 def printlinetodo(line, vide):
     task = colored(
@@ -363,6 +378,8 @@ def pypodo():
         tag()
     elif sys.argv[1] == "backup":
         backup()
+    elif sys.argv[1] == "find":
+        find()    
     elif sys.argv[1] == "help":
         help()
     else:

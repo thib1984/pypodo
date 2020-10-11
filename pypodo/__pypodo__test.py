@@ -5,7 +5,7 @@ from io import StringIO
 from pathlib import Path
 from unittest.mock import mock_open, patch
 
-from pypodo.__pypodo__ import add, delete, list, pypodo, sort, tag, untag, help, backup
+from pypodo.__pypodo__ import add, delete, list, pypodo, sort, tag, untag, help, backup, find
 
 STR_PATH_HOME__TODO_ = str(Path.home()) + '/.todo'
 
@@ -13,6 +13,13 @@ STR_PATH_HOME__TODO_ = str(Path.home()) + '/.todo'
 class TestStringMethods(unittest.TestCase):
 
     # partie erreurs
+    @patch('builtins.open', new_callable=mock_open, read_data='1 ma tache #test\n2 ma seconde tache #test\n3 ma seconde tache #linux')
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_find_retourne_erreur(self, mock_print, mock_open):
+        with patch.object(sys, 'argv', [pypodo, find]):
+            find(mock_open)
+            self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
+                '\n')), "error : 1 parameter is needed for pypodo find")
 
     @patch('builtins.open', new_callable=mock_open)
     @patch('sys.stdout', new_callable=StringIO)
@@ -152,6 +159,38 @@ class TestStringMethods(unittest.TestCase):
             self.assertEqual(escape_ansi(
                 mock_print.getvalue().rstrip('\n')), '#linux\n'+'#test')
 
+
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_find_retourne_empty(self, mock_print, mock_open):
+        with patch.object(sys, 'argv', [pypodo, find, "toto"]):
+            find(mock_open)
+            self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
+                '\n')), "warning : the filtered todolist is empty")            
+
+    @patch('builtins.open', new_callable=mock_open, read_data='1 ma tache #test\n2 ma seconde tache #test\n3 ma seconde tache #linux')
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_find_retourne_no_element(self, mock_print, mock_open):
+        with patch.object(sys, 'argv', [pypodo, find, "toto"]):
+            find(mock_open)
+            self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
+                '\n')), "warning : the filtered todolist is empty")        
+
+    @patch('builtins.open', new_callable=mock_open, read_data='1 ma tache #test\n2 ma seconde tache #test\n3 ma seconde tache #linux')
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_find_retourne_one_element(self, mock_print, mock_open):
+        with patch.object(sys, 'argv', [pypodo, find, "ma tache "]):
+            find(mock_open)
+            self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
+                '\n')), "1 ma tache #test")  
+
+    @patch('builtins.open', new_callable=mock_open, read_data='1 ma tache #test\n2 ma seconde tache #test\n3 ma seconde tache #linux')
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_find_regex_retourne_one_element(self, mock_print, mock_open):
+        with patch.object(sys, 'argv', [pypodo, find, "li.+x"]):
+            find(mock_open)
+            self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
+                '\n')), "3 ma seconde tache #linux")           
 
 def escape_ansi(line):
     ansi_escape = re.compile(r'(?:\x1B[@-_]|[\x80-\x9F])[0-?]*[ -/]*[@-~]')
