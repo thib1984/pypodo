@@ -12,7 +12,7 @@ STR_PATH_HOME__TODO_ = str(Path.home()) + '/.todo'
 
 class TestStringMethods(unittest.TestCase):
 
-    #partie erreurs
+    # partie erreurs
 
     @patch('builtins.open', new_callable=mock_open)
     @patch('sys.stdout', new_callable=StringIO)
@@ -54,8 +54,6 @@ class TestStringMethods(unittest.TestCase):
             self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
                 '\n')), "error : 0 parameter is needed for pypodo backup")
 
-
-    
     @patch('builtins.open', new_callable=mock_open)
     @patch('sys.stdout', new_callable=StringIO)
     def test_sort_retourne_vide(self, mock_print, mock_open):
@@ -97,7 +95,7 @@ class TestStringMethods(unittest.TestCase):
             list(mock_open)
             mock_open.assert_called_with(STR_PATH_HOME__TODO_, 'r')
             self.assertEqual(escape_ansi(
-                mock_print.getvalue().rstrip('\n')), '3 ma troisieme tache #linux #test')      
+                mock_print.getvalue().rstrip('\n')), '3 ma troisieme tache #linux #test')
 
     @patch('builtins.open', new_callable=mock_open, read_data='1 ma tache #test\n2 ma seconde tache #linux\n3 ma troisieme tache #linux #test\n4 ma 4 tache #toto')
     @patch('sys.stdout', new_callable=StringIO)
@@ -106,7 +104,7 @@ class TestStringMethods(unittest.TestCase):
             list(mock_open)
             mock_open.assert_called_with(STR_PATH_HOME__TODO_, 'r')
             self.assertEqual(escape_ansi(
-                mock_print.getvalue().rstrip('\n')), 'warning : the filtered todolist is empty')                    
+                mock_print.getvalue().rstrip('\n')), 'warning : the filtered todolist is empty')
 
     @patch('builtins.open', new_callable=mock_open)
     @patch('sys.stdout', new_callable=StringIO)
