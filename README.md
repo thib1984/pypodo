@@ -183,6 +183,8 @@ So, choose one of these commands :
 
 ```
 
+You can now verify, at the root of the projetc, the **test.log**, **mutation.log**, **htmlcov** folder and **pylint.log** to view results of the ci/cd.
+
 
 ## Tanks to contributors 
 - https://github.com/bbougon
