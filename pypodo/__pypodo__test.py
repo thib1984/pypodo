@@ -166,15 +166,7 @@ class TestStringMethods(unittest.TestCase):
         with patch.object(sys, 'argv', [pypodo, find, "toto"]):
             find(mock_open)
             self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
-                '\n')), "warning : the filtered todolist is empty")            
-
-    @patch('builtins.open', new_callable=mock_open, read_data='1 ma tache #test\n2 ma seconde tache #test\n3 ma seconde tache #linux')
-    @patch('sys.stdout', new_callable=StringIO)
-    def test_find_retourne_no_element(self, mock_print, mock_open):
-        with patch.object(sys, 'argv', [pypodo, find, "toto"]):
-            find(mock_open)
-            self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
-                '\n')), "warning : the filtered todolist is empty")        
+                '\n')), "warning : the filtered todolist is empty")                  
 
     @patch('builtins.open', new_callable=mock_open, read_data='1 ma tache #test\n2 ma seconde tache #test\n3 ma seconde tache #linux')
     @patch('sys.stdout', new_callable=StringIO)

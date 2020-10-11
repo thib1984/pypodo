@@ -10,7 +10,8 @@ from termcolor import colored
 STR_PATH_HOME__TODO_ = str(Path.home()) + '/.todo'
 TAG_URGENT = "urgent"
 STR_PATH_HOME__TODO_BACKUP_FOLDER_ = str(Path.home()) + '/.todo_backup/'
-
+REGEX_INDEX = "^\\d+$"
+REGEX_SPACE_OR_ENDLINE = "( |$)"
 
 def help(open=open):
     if len(sys.argv) == 2:
@@ -61,17 +62,19 @@ def list(open=open):
         for line in f.readlines():
             # without filter -> we print all
             if len(sys.argv) == 2:
-                vide = printlinetodo(line, vide)
+                printlinetodo(line)
+                vide = 'false'
             # with filter -> we check tag
             else:
                 display = 'true'
                 for x in range(2, len(sys.argv)):
                     tag = sys.argv[x]
-                    if not re.findall("#"+re.escape(tag)+"( |$)", line.rstrip('\n')):
+                    if not re.findall("#"+re.escape(tag)+REGEX_SPACE_OR_ENDLINE, line.rstrip('\n')):
                         display = 'false'
                 # regex to search tags "#toto " or "#toto" at the end of the line
                 if display == 'true':
-                    vide = printlinetodo(line, vide)
+                    printlinetodo(line)
+                    vide = 'false'
     if vide == 'true':
         if len(sys.argv) >= 3:
             printwarning("the filtered todolist is empty")
@@ -89,7 +92,8 @@ def listnotag(open=open):
         with open(STR_PATH_HOME__TODO_, 'r') as f:
             for line in f.readlines():
                 if not '#' in line:
-                    vide = printlinetodo(line, vide)
+                    printlinetodo(line)
+                    vide = 'false'
         if vide == 'true':
             printwarning("the filtered todolist with no tag is empty")
 
@@ -151,7 +155,8 @@ def delete(open=open):
         for x in range(2, len(sys.argv)):
             index = sys.argv[x]
             # check the numeric format of the index
-            if not re.findall("^\\d+$", index):
+            
+            if not re.findall(REGEX_INDEX, index):
                 printwarning(
                     "the index to delete is not in numeric format - " + index)
             else:
@@ -233,7 +238,7 @@ def untag(open=open):
         # loop on the indexes
         for x in range(3, len(sys.argv)):
             index = sys.argv[x]
-            if not re.findall("^\\d+$", index):
+            if not re.findall(REGEX_INDEX, index):
                 printwarning(
                     "the index to untag is not in numeric format - " + index)
             else:
@@ -245,11 +250,11 @@ def untag(open=open):
                         if not re.findall("^"+index+' ', line):
                             f.write(line)
                         else:
-                            if re.findall("#"+re.escape(tag)+'( |$)', line.rstrip('\n')):
-                                f.write(re.sub("#"+re.escape(tag)+'( |$)',
+                            if re.findall("#"+re.escape(tag)+REGEX_SPACE_OR_ENDLINE, line.rstrip('\n')):
+                                f.write(re.sub("#"+re.escape(tag)+REGEX_SPACE_OR_ENDLINE,
                                                "", line).rstrip('\n').rstrip()+'\n')
                                 printinfo("tag deleted from the task of the todolist - " + line.rstrip(
-                                    '\n') + " -> " + re.sub("#"+re.escape(tag)+'( |$)', "", line.rstrip('\n')))
+                                    '\n') + " -> " + re.sub("#"+re.escape(tag)+REGEX_SPACE_OR_ENDLINE, "", line.rstrip('\n')))
                             else:
                                 f.write(line)
                                 printwarning(
@@ -274,7 +279,7 @@ def tag(open=open):
         # loop on the indexes
         for x in range(3, len(sys.argv)):
             index = sys.argv[x]
-            if not re.findall("^\\d+$", index):
+            if not re.findall(REGEX_INDEX, index):
                 printwarning(
                     "the index to tag is not in numeric format - " + index)
             else:
@@ -323,22 +328,21 @@ def find(open=open):
             for line in f.readlines():
                 search = sys.argv[2]
                 if re.findall(search, line.rstrip('\n')):
-                    vide = printlinetodo(line, vide)
+                    printlinetodo(line)
+                    vide= 'false'
         if vide == 'true':
             printwarning("the filtered todolist is empty")
 
-def printlinetodo(line, vide):
+def printlinetodo(line):
     task = colored(
         re.sub("#.*", "", re.sub("^[^ ]+ ", "", line.rstrip('\n'))), "green")
     index = colored(line.split(' ', 1)[0], "blue")
     tags_nocolor = re.sub(
         "^[^#]+ #", "#", re.sub("^[^#]+$", "", re.sub("^[^ ]+ ", "", line.rstrip('\n'))))
     tags = re.sub(
-        r"(#[^ #]+( |$)?)", colored(r"\1", "yellow"), tags_nocolor)
+        r"(#[^ #]+"+REGEX_SPACE_OR_ENDLINE+"?)", colored(r"\1", "yellow"), tags_nocolor)
     tags = re.sub(r"33m#"+TAG_URGENT, "31m#"+TAG_URGENT, tags)
     print(index + " " + task + tags)
-    vide = 'false'
-    return vide
 
 
 def printinfo(text):

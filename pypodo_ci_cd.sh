@@ -104,7 +104,7 @@ dockerci () {
     echo "*****DEBUT_VERIF_MISE_EN_FORME_LISTE_TAGS******" &&\
     $smoketest tag > ci_cd/cache/.tags_mise_en_forme &&\
     diff ci_cd/cache/.tags_mise_en_forme ci_cd/.tags_mise_en_forme.expected && echo "comparaison mise en forme ok" &&\
-    echo "*****FIN_VERIF_MISE_EN_FORME_LISTE_TAGS******"
+    echo "*****FIN_VERIF_MISE_EN_FORME_LISTE_TAGS******" &&\
     echo "*****DEBUT_VERIF_MISE_EN_FORME_SEARCH******" &&\
     $smoketest find "t.*che" > ci_cd/cache/.search_mise_en_forme &&\
     diff ci_cd/cache/.search_mise_en_forme ci_cd/.search_mise_en_forme.expected && echo "comparaison mise en forme ok" &&\
