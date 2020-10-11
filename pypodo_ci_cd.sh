@@ -76,6 +76,8 @@ dockerci () {
     $smoketest untag retag 3 &&\
     $smoketest tag newtag 3 3 2 &&\
     $smoketest list &&\
+    $smoketest tag &&\
+    $smoketest untag &&\
     $smoketest backup &&\
     echo "*****FIN_SMOKE_TEST******" &&\
     echo "" &&\
@@ -96,7 +98,11 @@ dockerci () {
     echo "*****DEBUT_VERIF_MISE_EN_FORME_TODO******" &&\
     $smoketest list > ci_cd/cache/.todo_mise_en_forme &&\
     diff ci_cd/cache/.todo_mise_en_forme ci_cd/.todo_mise_en_forme.expected && echo "comparaison mise en forme ok" &&\
-    echo "*****FIN_VERIF_MISE_EN_FORME_TODO******"
+    echo "*****FIN_VERIF_MISE_EN_FORME_TODO******"  &&\
+    echo "*****DEBUT_VERIF_MISE_EN_FORME_LISTE_TAGS******" &&\
+    $smoketest tag > ci_cd/cache/.tags_mise_en_forme &&\
+    diff ci_cd/cache/.tags_mise_en_forme ci_cd/.tags_mise_en_forme.expected && echo "comparaison mise en forme ok" &&\
+    echo "*****FIN_VERIF_MISE_EN_FORME_LISTE_TAGS******"
 }
 
 
@@ -147,9 +153,9 @@ then
         else
             echo -e "$red""CI_CD DOCKER KO""\e[39m"
         fi
-    else 
+    else
         echo -e "$red""KO - bad params : docker (ci/cd) [fast]""\e[39m"
-    fi   
+    fi
     
 elif [[ $1 = "pip" ]]
 then
@@ -171,9 +177,9 @@ then
         else
             echo -e "$red""CI_CD PIP KO""\e[39m"
         fi
-    else 
+    else
         echo -e "$red""KO - bad params : pip (ci/cd) [fast]""\e[39m"
-    fi      
+    fi
     
 elif [[ $1 = "full" ]]
 then
