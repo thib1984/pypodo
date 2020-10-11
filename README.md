@@ -136,6 +136,7 @@ git push
 ## Test
 
 ```
+#in the root of the project
 python3 -m unittest -v pypodo/__pypodo__test.py # to execute unit tests
 coverage run && coverage html #to generate html report in htmlcov
 mutatest #to test mutations
