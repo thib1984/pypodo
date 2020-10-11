@@ -102,6 +102,8 @@ print the todolist filtered to the tag '_name_of_tag_' :
 
 - ``pypodo backup`` : backup the actual .todo in a backup folder with a name suffixed by a timestamp
 
+- ``pypodo find "t.*he"`` : filter the todolist on the parameter (regex format)
+
 
 ## Alias
 
@@ -118,6 +120,7 @@ alias td='pypodo del'
 alias ts='pypodo sort'
 alias tu='pypodo untag'
 alias tb='pypodo backup'
+alias tf='pypodo find'
 ```
 
 to improve your velocity!
