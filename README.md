@@ -1,6 +1,6 @@
 # pypodo
 
-**pypodo** (\pipudu\\) is a pip package : a todolist tool which works with a .todo file positionned the root of the home directory
+**pypodo** (\pipudu\\) is a pip package (or docker image if you want, see below!) : a todolist tool which works with a .todo file positionned the root of the home directory
 
 ## Tanks to contributors
 
@@ -19,37 +19,6 @@ pip3 install --user git+https://github.com/thib1984/pypodo.git#egg=pypodo #Insta
 pip3 install --user git+https://github.com/thib1984/pypodo.git#egg=pypodo --upgrade #Upgrade
 pip3 uninstall pypodo #Uninstall
 ```
-
-## Docker usage
-
-If you want, you can use **pypodo** as a docker image.
-
-```
-git clone https://github.com/thib1984/pypodo.git
-cd pypodo
-docker build -t pypodo .
-``` 
-to construct the docker image 
-And your pypodo app is available 🤘 ! 
-
-and
-```
-export PYPODO_FILE=<path of your pypodo file>
-touch $PYPODO_FILE
-export PYPODO_BACKUP=<path of your pypodo backup folder>
-mkdir -p $PYPODO_BACKUP  
-docker run --rm --mount type=bind,source=${PYPODO_FILE},target=/root/.todo --mount type=bind,source=${PYPODO_BACKUP},target=/root/.todo_backup pypodo
-```
-to use it
-
-If you don't want to write all this command at each time, you can create an alias : 
-```
-alias pypodo="export PYPODO_FILE=<path of your pypodo file> && touch $PYPODO_FILE && export PYPODO_BACKUP=<path of your pypodo backup folder> && mkdir -p $PYPODO_BACKUP  && docker run --rm --mount type=bind,source=${PYPODO_FILE},target=/root/.todo --mount type=bind,source=${PYPODO_BACKUP},target=/root/.todo_backup pypodo"
-```
-
-or for a full time usage, change your ```.bash_profile``` file, and if you want use aliases in alias section after!
-
-To remove docker app, just : ``docker rmi pypodo``
 
 ## Utilisation
 
@@ -109,6 +78,37 @@ print the todolist filtered to the tag '_name_of_tag_' :
 - ``pypodo backup`` : backup the actual .todo in a backup folder with a name suffixed by a timestamp
 
 - ``pypodo find "t.*he"`` : filter the todolist on the parameter (regex format)
+
+## Docker usage
+
+If you want, you can use **pypodo** as a docker image.
+
+```
+git clone https://github.com/thib1984/pypodo.git
+cd pypodo
+docker build -t pypodo .
+``` 
+to construct the docker image 
+And your pypodo app is available 🤘 ! 
+
+and
+```
+export PYPODO_FILE=<path of your pypodo file>
+touch $PYPODO_FILE
+export PYPODO_BACKUP=<path of your pypodo backup folder>
+mkdir -p $PYPODO_BACKUP  
+docker run --rm --mount type=bind,source=${PYPODO_FILE},target=/root/.todo --mount type=bind,source=${PYPODO_BACKUP},target=/root/.todo_backup pypodo
+```
+to use it
+
+If you don't want to write all this command at each time, you can create an alias : 
+```
+alias pypodo="export PYPODO_FILE=<path of your pypodo file> && touch $PYPODO_FILE && export PYPODO_BACKUP=<path of your pypodo backup folder> && mkdir -p $PYPODO_BACKUP  && docker run --rm --mount type=bind,source=${PYPODO_FILE},target=/root/.todo --mount type=bind,source=${PYPODO_BACKUP},target=/root/.todo_backup pypodo"
+```
+
+or for a full time usage, change your ```.bash_profile``` file, and if you want use aliases in alias section after!
+
+To remove docker app, just : ``docker rmi pypodo``
 
 
 ## Alias
