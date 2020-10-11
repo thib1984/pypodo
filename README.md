@@ -80,6 +80,8 @@ print the todolist filtered to the tag '_name_of_tag_' :
 1 to do work #name_of_tag
 ```
 
+- `` pypodo list "name_of_tag" "other_tag"`` : print the todolist filtered to tasks with the 2 tags together
+
 - ``pypodo del 2``  : delete the second task of the todolist
 
 - ``pypodo del 1 2`` : remove the 2 tasks 
