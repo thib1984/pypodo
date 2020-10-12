@@ -1,4 +1,4 @@
-FROM python:3.8
+FROM python:3.8-alpine 
 WORKDIR /pypodo
 COPY pypodo/ pypodo/
 COPY setup.py .
