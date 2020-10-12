@@ -30,6 +30,8 @@ mutatest #to test mutations #to generate mutations
 pylint pypodo/__pypodo__.py #to evaluate quality of code unit tests
 ```
 
+:warning: if you observe unexpecting ko tests, launch ``mutatest`` once. A mutation could stay if a previous run is stopped.
+
 ##  Local CI/CD
 
 If you want, you can use "local" CI/CD with pip or docker. Add the "fast" parameter desactivates the mutation testing who takes a lot of time.
@@ -51,3 +53,7 @@ So, choose one of these commands :
 ```
 
 You can now verify, at the root of the projetc, the **test.log**, **mutation.log**, **htmlcov** folder and **pylint.log** to view results of the ci/cd.
+
+Example of script : 
+
+![image](https://user-images.githubusercontent.com/45128847/95779511-7a512f00-0cca-11eb-94c5-5d7e8af451d8.png)
