@@ -17,41 +17,41 @@ folder_log_coverage=./htmlcov
 dockerci () {
     #partie configuration
     printinfo "configuration running..."
-    (rm *.log
-        rm ci_cd/cache/*
-        touch $file_log_coverage $file_log_mutation $file_log_configuration $file_log_build_docker_test $file_log_test $file_log_pylint $file_log_build_docker_prod
+    export PYPODO_FILE=/tmp/.todo
+    export PYPODO_BACKUP=/tmp/.todo_backup
+    smoketest="docker run --rm --mount type=bind,source=${PYPODO_FILE},target=/root/.todo --mount type=bind,source=${PYPODO_BACKUP},target=/root/.todo_backup pypodo_test"
+    dockerpypodorun="docker run --mount type=bind,source=${PYPODO_FILE},target=/root/.todo --mount type=bind,source=${PYPODO_BACKUP},target=/root/.todo_backup -ti"
+    rm *.log 2> /dev/null
+    touch $file_log_mutation
+    (rm ci_cd/cache/*
+        touch $file_log_coverage $file_log_build_docker_test $file_log_test $file_log_pylint $file_log_build_docker_prod
         docker rm pypodo_mutation
         docker rm pypodo_coverage
         docker rm pypodo_coverage_html
         docker rmi pypodo_coverage
         docker rmi pypodo_test
-    docker rmi pypodo_coverage_html) 1>> $file_log_configuration 2>> $file_log_configuration
-    #for github?
-    export COMPOSE_INTERACTIVE_NO_CLI=1
-    export PYPODO_FILE=/tmp/.todo && touch $PYPODO_FILE && rm $PYPODO_FILE && touch $PYPODO_FILE 2>> $file_log_configuration
-    export PYPODO_BACKUP=/tmp/.todo_backup && rm -rf $PYPODO_BACKUP && mkdir $PYPODO_BACKUP 2>> $file_log_configuration
-    smoketest="docker run --rm --mount type=bind,source=${PYPODO_FILE},target=/root/.todo --mount type=bind,source=${PYPODO_BACKUP},target=/root/.todo_backup pypodo_test" 2>> $file_log_configuration
-    dockerpypodorun="docker run --mount type=bind,source=${PYPODO_FILE},target=/root/.todo --mount type=bind,source=${PYPODO_BACKUP},target=/root/.todo_backup -i" 2>> $file_log_configuration
-    printinfo "configuration ok, see output in $file_log_configuration"
+        touch $PYPODO_FILE && rm $PYPODO_FILE && touch $PYPODO_FILE && rm -rf $PYPODO_BACKUP && mkdir $PYPODO_BACKUP 
+    docker rmi pypodo_coverage_html) &>> $file_log_configuration
+    printinfo "configuration finished, see output in $file_log_configuration"
     #partie build
     printinfo "docker build running..."
     docker build -t pypodo_test . --no-cache 1>>$file_log_build_docker_test 2>>$file_log_build_docker_test
     if [[ $? = 0 ]]
     then
-        printinfo "docker build ok, see output in .$file_log_build_docker_test"
+        printinfo "docker build ok, see output in $file_log_build_docker_test"
     else
-        printerror "docker build ko, see output in .$file_log_build_docker_test"
+        printerror "docker build ko, see output in $file_log_build_docker_test"
         return 1
     fi
     #partie pylint
     printinfo "pylint running..."
-    $dockerpypodorun --rm --entrypoint="pylint" pypodo_test pypodo/__pypodo__.py
+    $dockerpypodorun --rm --entrypoint="pylint" pypodo_test pypodo/__pypodo__.py 2>>$file_log_pylint 1> $file_log_pylint
         if [[ $? = 1 ]]
     then
-        printerror "pylint ok, see output in $file_log_pylint"
+        printerror "pylint ko, see output in $file_log_pylint"
         return 1
     else
-        printinfo "pylint ko, see output in $file_log_pylint"
+        printinfo "pylint ok, see output in $file_log_pylint"
     fi
     printinfo "unittest running..."
     #partie unittest
@@ -182,10 +182,10 @@ pipci () {
     pylint pypodo/__pypodo__.py  2> $file_log_pylint 1> $file_log_pylint
     if [[ $? = 1 ]]
     then
-        printerror "pylint ko, see output in $file_log_pylint"
+        printerror "pylint ko, see output in pylint.log"
         return 1
     else
-        printinfo "pylint ok, see output in $file_log_pylint"
+        printinfo "pylint ok, see output in pylint.log"
     fi
     #partie unittest
     printinfo "unittest running..."
@@ -289,7 +289,6 @@ then
             printinfo "docker ci_cd ok"
         else
             printerror "docker ci_cd ko"
-            exit 1
         fi
     else
         printerror "ko - bad params : docker (ci/cd) [fast]"
@@ -305,7 +304,6 @@ then
             printinfo "pip ci ok"
         else
             printerror "pip ci ko"
-            exit 1
         fi
     elif [[ $2 = "cd" ]]
     then
@@ -315,7 +313,6 @@ then
             printinfo "pip ci_cd ok"
         else
             printerror "pip ci_cd ko"
-            exit 1
         fi
     else
         printerror "ko - bad params : pip (ci/cd) [fast]"
@@ -329,7 +326,6 @@ then
         printinfo "CI_CD FULL OK"
     else
         printerror "CI_CD FULL KO"
-        exit 1
     fi
 else
     printerror "ko - bad params : (docker/pip) (ci/cd) [fast] or full [fast]"
