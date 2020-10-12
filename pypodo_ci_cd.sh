@@ -43,13 +43,13 @@ dockerci () {
     fi
     #partie pylint
     printinfo "pylint running..."
-    $dockerpypodorun --rm --entrypoint="pylint" pypodo_test pypodo/__pypodo__.py 2>>$file_log_pylint 1> $file_log_pylint
-        if [[ $? = 1 ]]
+    $dockerpypodorun --rm --entrypoint="pylint" pypodo_test pypodo/__pypodo__.py
+    if [[ $? = 1 ]]
     then
         printerror "pylint ok, see output in $file_log_pylint"
         return 1
     else
-        printinfo "pylint ok, see output in $file_log_pylint"
+        printinfo "pylint ko, see output in $file_log_pylint"
     fi
     printinfo "unittest running..."
     #partie unittest
