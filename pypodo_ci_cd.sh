@@ -11,7 +11,7 @@ dockerci () {
     docker rmi pypodo_test
     docker rm pypodo_coverage_html
     docker rmi pypodo_coverage_html
-    rm ci_cd/cache/.todo_mise_en_forme
+    rm ci_cd/cache/*
     rm -rf htmlcov/*
     rm mutation.log
     rm pylint.log
@@ -74,23 +74,43 @@ dockerci () {
     echo "" &&\
     echo "" &&\
     echo "*****DEBUT_SMOKE_TEST******" &&\
+    (echo pypodo list &&\
     $smoketest list  &&\
+    echo pypodo add "tache1" &&\
     $smoketest add "tache1" &&\
+    echo pypodo add "tache2 #montag" &&\
     $smoketest add "tache2 #montag" &&\
+    echo pypodo add "tache3 #urgent" &&\
     $smoketest add "tache3 #urgent" &&\
-    $smoketest list && $smoketest del 2 &&\
+    echo pypodo list &&\
+    $smoketest list &&\
+    echo pypodo del 2 &&\
+    $smoketest del 2 &&\
+    echo pypodo tag montag2 3 &&\
     $smoketest tag montag2 3 &&\
+    echo pypodo ag urgente 3 &&\
     $smoketest tag urgente 3 &&\
+    echo pypodo sort &&
     $smoketest sort &&\
     $smoketest add "mon autre tache #tag #retag" &&\
+    echo pypodo list tag retag &&\
     $smoketest list tag retag &&\
+    echo pypodo untag retag 3 &&\
     $smoketest untag retag 3 &&\
+    echo pypodo tag newtag 3 3 2 &&\
     $smoketest tag newtag 3 3 2 &&\
+    echo pypodo list &&\
     $smoketest list &&\
+    echo pypodo tag &&\
     $smoketest tag &&\
+    echo pypodo untag &&\
     $smoketest untag &&\
-    $smoketest find "t.*che" &&\
-    $smoketest backup &&\
+    echo pypodo find "t.*che" &&\
+    $smoketest find "t.*che") > ci_cd/cache/log &&\
+    $smoketest backup > ci_cd/cache/log_backup &&\
+    ##ajouter log si ko
+    diff ci_cd/cache/log ci_cd/log.expected && echo "log ok" &&\
+    grep "\[32minfo : creating todolist backup - .todo[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]" ci_cd/cache/log_backup && echo "log backup ok" &&\
     echo "*****FIN_SMOKE_TEST******" &&\
     echo "" &&\
     echo "" &&\
