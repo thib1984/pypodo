@@ -46,36 +46,36 @@ dockerci () {
     diff <(echo pypodo list && $smoketest list && echo pypodo add "tache1" && $smoketest add "tache1" && echo pypodo add "tache2 #montag" && $smoketest add "tache2 #montag" && echo pypodo add "tache3 #urgent" && $smoketest add "tache3 #urgent" && echo pypodo list && $smoketest list && echo pypodo del 2 && $smoketest del 2 && echo pypodo tag montag2 3 && $smoketest tag montag2 3 && echo pypodo ag urgente 3 && $smoketest tag urgente 3 && echo pypodo sort && $smoketest sort && $smoketest add "mon autre tache #tag #retag" && echo pypodo list tag retag && $smoketest list tag retag && echo pypodo untag retag 3 && $smoketest untag retag 3 && echo pypodo tag newtag 3 3 2 && $smoketest tag newtag 3 3 2 && echo pypodo list && $smoketest list && echo pypodo tag && $smoketest tag && echo pypodo untag && $smoketest untag && echo pypodo find "t.*che" && $smoketest find "t.*che") <(cat ci_cd/log.expected)
     if [[ $? = 0 ]]
     then
-        printinfo "test end-to-end 1/4 ok, see output in $file_log_end_to_end"
+        printinfo "test end-to-end 1/4 ok"
     else
-        printerror "test end-to-end 1/4 ko, see output in $file_log_end_to_end"
+        printerror "test end-to-end 1/4 ko"
         return 1
     fi
     printinfo "test end-to-end 2/4 running..."
-    $smoketest backup | grep "\[32minfo : creating todolist backup - .todo[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]"
+    $smoketest backup | grep "\[32minfo : creating todolist backup - .todo[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]" > /dev/null
     if [[ $? = 0 ]]
     then
-        printinfo "test end-to-end 2/4 ok, see output in $file_log_end_to_end"
+        printinfo "test end-to-end 2/4 ok"
     else
-        printerror "test end-to-end 2/4 ko, see output in $file_log_end_to_end"
+        printerror "test end-to-end 2/4 ko"
         return 1
     fi
     printinfo "test end-to-end 3/3 running..."
     diff ${PYPODO_FILE} ci_cd/.todo.expected >> $file_log_end_to_end
     if [[ $? = 0 ]]
     then
-        printinfo "test end-to-end 3/4 ok, see output in $file_log_end_to_end"
+        printinfo "test end-to-end 3/4 ok"
     else
-        printerror "test end-to-end 3/4 ko, see output in $file_log_end_to_end"
+        printerror "test end-to-end 3/4 ko"
         return 1
     fi
     printinfo "test end-to-end 4/4 running..."
     diff ${PYPODO_BACKUP}/.todo* ci_cd/.todo.expected >> $file_log_end_to_end
     if [[ $? = 0 ]]
     then
-        printinfo "test end-to-end 4/4 ok, see output in $file_log_end_to_end"
+        printinfo "test end-to-end 4/4 ok"
     else
-        printerror "test end-to-end 4/4 ko, see output in $file_log_end_to_end"
+        printerror "test end-to-end 4/4 ko"
         return 1
     fi
 }
