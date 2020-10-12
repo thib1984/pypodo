@@ -6,6 +6,4 @@ venv
 /.vscode
 /ci_cd/cache/**
 /htmlcov/**
-mutation.log
-test.log
-pylint.log
+*.log
