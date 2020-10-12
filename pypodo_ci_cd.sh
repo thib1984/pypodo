@@ -25,7 +25,9 @@ dockerci () {
         docker rm pypodo_coverage_html
         docker rmi pypodo_coverage
         docker rmi pypodo_test
-    docker rmi pypodo_coverage_html) 
+    docker rmi pypodo_coverage_html) 1>> $file_log_configuration 2>> $file_log_configuration
+    #for github?
+    export COMPOSE_INTERACTIVE_NO_CLI=1
     export PYPODO_FILE=/tmp/.todo && touch $PYPODO_FILE && rm $PYPODO_FILE && touch $PYPODO_FILE 2>> $file_log_configuration
     export PYPODO_BACKUP=/tmp/.todo_backup && rm -rf $PYPODO_BACKUP && mkdir $PYPODO_BACKUP 2>> $file_log_configuration
     smoketest="docker run --rm --mount type=bind,source=${PYPODO_FILE},target=/root/.todo --mount type=bind,source=${PYPODO_BACKUP},target=/root/.todo_backup pypodo_test" 2>> $file_log_configuration
@@ -44,7 +46,7 @@ dockerci () {
     #partie pylint
     printinfo "pylint running..."
     $dockerpypodorun --rm --entrypoint="pylint" pypodo_test pypodo/__pypodo__.py 2>>$file_log_pylint 1> $file_log_pylint
-    if [[ $? = 1 ]]
+        if [[ $? = 1 ]]
     then
         printerror "pylint ok, see output in $file_log_pylint"
         return 1
