@@ -15,7 +15,7 @@ jobs:
         uses: actions/checkout@v2
       - name: Launch Tests
         uses: docker-practice/actions-setup-docker@master
-      - run: ./pypodo_ci_cd.sh docker cd
+      - run: ./pypodo_github.sh
       - name: Push to Docker Hub
         uses: docker/build-push-action@v1
         with:
