@@ -52,8 +52,7 @@ dockerci () {
         return 1
     fi
     printinfo "test end-to-end 2/4 running..."
-    $smoketest backup
-    grep "\[32minfo : creating todolist backup - .todo[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]" ci_cd/cache/log_backup >> $file_log_end_to_end
+    $smoketest backup | grep "\[32minfo : creating todolist backup - .todo[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]"
     if [[ $? = 0 ]]
     then
         printinfo "test end-to-end 2/4 ok, see output in $file_log_end_to_end"
