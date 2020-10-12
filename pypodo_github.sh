@@ -75,8 +75,8 @@ dockerci () {
         echo pypodo untag
         $smoketest untag
         echo pypodo find "t.*che"
-    $smoketest find "t.*che") > ci_cd/cache/log
-    $smoketest backup > ci_cd/cache/log_backup
+    $smoketest find "t.*che")
+    $smoketest backup
     diff ci_cd/cache/log ci_cd/log.expected >> $file_log_end_to_end
     if [[ $? = 0 ]]
     then
