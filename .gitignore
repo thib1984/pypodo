@@ -7,3 +7,6 @@ venv
 /ci_cd/cache/**
 /htmlcov/**
 *.log
+build/
+dist/
+pypodo.egg-info/
