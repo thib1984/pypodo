@@ -20,7 +20,7 @@ jobs:
       - name: install dependencies python3
         run: |
           python -m pip install --upgrade pip
-          pip install mutatest coverage pylint
+          pip install mutatest coverage pylint colorama termcolor
       - name: pylint
         run: |
           pylint pypodo/__pypodo__.py
