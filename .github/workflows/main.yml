@@ -38,3 +38,8 @@ jobs:
         uses: docker-practice/actions-setup-docker@master
       - name : run test
         run: ./pypodo_github.sh
+      - name: publish to pypi
+        uses: pypa/gh-action-pypi-publish@master
+        with:
+          user: ${{ PYPI_USER }}
+          password: ${{ PYPI_PASSWORD }}
