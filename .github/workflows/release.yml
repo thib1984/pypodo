@@ -2,8 +2,8 @@ name: pipeline release
 
 on:
   release:
-    branches: [ master ]
-
+    types:
+      - created
 jobs:
   push_to_registry:
     name: run tests + push docker image
