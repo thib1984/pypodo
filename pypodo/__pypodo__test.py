@@ -16,7 +16,6 @@ class TestStringMethods(unittest.TestCase):
     @patch('builtins.open', new_callable=mock_open, read_data='1 ma tache #test\n2 ma seconde tache #test\n3 ma seconde tache #linux')
     @patch('sys.stdout', new_callable=StringIO)
     def test_find_retourne_erreur(self, mock_print, mock_open):
-        print(STR_PATH_HOME__TODO_)
         with patch.object(sys, 'argv', [pypodo, find]):
             find(mock_open)
             self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(

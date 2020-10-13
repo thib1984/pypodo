@@ -209,8 +209,7 @@ def sort(open=open):
 
 
 def check(open=open):
-    print(STR_PATH_HOME__TODO_)
-    file_exists = os.path.isfile(STR_PATH_HOME__TODO_)
+    file_exists = os.path.exists(STR_PATH_HOME__TODO_)
     if file_exists:
         with open(STR_PATH_HOME__TODO_, 'r') as f:
             error = 'false'
@@ -223,8 +222,8 @@ def check(open=open):
         if error == 'true':
             printerror("verify the .todo file")
     else:
-        open(STR_PATH_HOME__TODO_, "w")
-        printinfo("creating .todolist file")
+        open(STR_PATH_HOME__TODO_, "a")
+        #printinfo("creating .todolist file")
 
 # untag tasks
 
