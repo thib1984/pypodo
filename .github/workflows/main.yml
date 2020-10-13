@@ -1,4 +1,4 @@
-name: pipeline ci/cd
+name: pipeline ci
 
 on:
   push:
@@ -38,10 +38,3 @@ jobs:
         uses: docker-practice/actions-setup-docker@master
       - name : run test
         run: ./pypodo_github.sh
-      - name: push on docker hub
-        uses: docker/build-push-action@v1
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-          repository: thibaultgarcon/pypodo
-          tag_with_ref: true
