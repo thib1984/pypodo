@@ -210,6 +210,7 @@ def sort(open=open):
 
 def check(open=open):
     file_exists = os.path.isfile(STR_PATH_HOME__TODO_)
+    file_exists = 'true'
     if file_exists:
         with open(STR_PATH_HOME__TODO_, 'r') as f:
             error = 'false'
