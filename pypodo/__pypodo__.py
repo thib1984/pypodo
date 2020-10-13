@@ -209,6 +209,7 @@ def sort(open=open):
 
 
 def check(open=open):
+    print(STR_PATH_HOME__TODO_)
     file_exists = os.path.isfile(STR_PATH_HOME__TODO_)
     if file_exists:
         with open(STR_PATH_HOME__TODO_, 'r') as f:

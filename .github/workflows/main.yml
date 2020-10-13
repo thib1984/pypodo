@@ -27,12 +27,10 @@ jobs:
         continue-on-error: true       
       - name: pytest
         run: |
-          python3 -m unittest -v pypodo/__pypodo__test.py
-        continue-on-error: true              
+          python3 -m unittest -v pypodo/__pypodo__test.py        
       - name: mutatest
         run: |
-          mutatest 
-        continue-on-error: true              
+          mutatest            
       - name: coverage
         run: |
           coverage run && coverage info                 
