@@ -7,10 +7,12 @@
 :warning: Not compatible with python2 who is deprecated! Use python3
 
 ```
-pip3 install --user git+https://github.com/thib1984/pypodo.git#egg=pypodo #Installation
-pip3 install --user git+https://github.com/thib1984/pypodo.git#egg=pypodo --upgrade #Upgrade
+pip3 install --user pypodo #Installation
+pip3 install --user pypodo --upgrade #Upgrade
 pip3 uninstall pypodo #Uninstall
 ```
+
+[https://pypi.org/project/pypodo/](https://pypi.org/project/pypodo/)
 
 ## Utilisation
 
@@ -83,10 +85,12 @@ The indexes are in blue, the tasks in green, and the tags in yellow or red.
 If you want, you can use **pypodo** as a docker image.
 
 ```
-docker pull thibaultgarcon/pypodo
+docker pull thibaultgarcon/pypodo:latest
 ``` 
 to pull the docker image 
 And your pypodo app is available 🤘 ! 
+
+[https://hub.docker.com/r/thibaultgarcon/pypodo](https://hub.docker.com/r/thibaultgarcon/pypodo)
 
 and
 ```
@@ -138,7 +142,7 @@ to improve your velocity!
 
 ## For contributors :construction_worker:
 
-[Go to CONTRIBUTING.md](CONTRIBUTING.md)
+[Go to CONTRIBUTING.md](https://github.com/thib1984/pypodo/blob/master/CONTRIBUTING.md)
 
 
 ## Tanks to contributors 
