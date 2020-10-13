@@ -8,7 +8,7 @@ on:
 
 jobs:
   push_to_registry:
-    name: run tests
+    name: run tests and metrics
     runs-on: ubuntu-latest
     steps:
       - name: checkout the repo

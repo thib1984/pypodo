@@ -6,7 +6,7 @@ on:
       - created
 jobs:
   push_to_registry:
-    name: run tests + push docker image
+    name: run tests and metrics + push docker image and pip package
     runs-on: ubuntu-latest
     steps:
       - name: checkout the repo
