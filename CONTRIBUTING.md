@@ -57,3 +57,17 @@ You can now verify, at the root of the projetc, the **test.log**, **mutation.log
 Example of script : 
 
 ![image](https://user-images.githubusercontent.com/45128847/95779511-7a512f00-0cca-11eb-94c5-5d7e8af451d8.png)
+
+## Construct app directly
+
+```
+pip3 install --user .
+``` 
+for pi
+
+```
+docker build -t pypodo .
+``` 
+for docker
+
+

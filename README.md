@@ -83,11 +83,9 @@ The indexes are in blue, the tasks in green, and the tags in yellow or red.
 If you want, you can use **pypodo** as a docker image.
 
 ```
-git clone https://github.com/thib1984/pypodo.git
-cd pypodo
-docker build -t pypodo .
+docker pull thibaultgarcon/pypodo
 ``` 
-to construct the docker image 
+to pull the docker image 
 And your pypodo app is available 🤘 ! 
 
 and
@@ -96,13 +94,21 @@ export PYPODO_FILE=<path of your pypodo file>
 touch $PYPODO_FILE
 export PYPODO_BACKUP=<path of your pypodo backup folder>
 mkdir -p $PYPODO_BACKUP  
-docker run --rm --mount type=bind,source=${PYPODO_FILE},target=/root/.todo --mount type=bind,source=${PYPODO_BACKUP},target=/root/.todo_backup pypodo
+docker run --rm --mount type=bind,source=${PYPODO_FILE},target=/root/.todo --mount type=bind,source=${PYPODO_BACKUP},target=/root/.todo_backup thibaultgarcon/pypodo
 ```
-to use it
+to use it (display help message), add "list", "add" after the last command if you want.
 
 If you don't want to write all this command at each time, you can create an alias : 
 ```
-alias pypodo="export PYPODO_FILE=<path of your pypodo file> && touch $PYPODO_FILE && export PYPODO_BACKUP=<path of your pypodo backup folder> && mkdir -p $PYPODO_BACKUP  && docker run --rm --mount type=bind,source=${PYPODO_FILE},target=/root/.todo --mount type=bind,source=${PYPODO_BACKUP},target=/root/.todo_backup pypodo"
+alias pypodo="export PYPODO_FILE=<path of your pypodo file> && touch $PYPODO_FILE && export PYPODO_BACKUP=<path of your pypodo backup folder> && mkdir -p $PYPODO_BACKUP  && docker run --rm --mount type=bind,source=${PYPODO_FILE},target=/root/.todo --mount type=bind,source=${PYPODO_BACKUP},target=/root/.todo_backup thibaultgarcon/pypodo"
+```
+
+and
+
+```
+pypodo list
+pypodo sort
+...
 ```
 
 or for a full time usage, change your ```.bash_profile``` file, and if you want use aliases in alias section after!

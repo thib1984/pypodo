@@ -33,6 +33,7 @@ dockerci () {
         return 1
     fi
     #partie unittest
+    printinfo "unittest running..."
     $dockerpypodorun --rm --entrypoint="python" pypodo_test -m unittest -v pypodo/__pypodo__test.py
     if [[ $? = 0 ]]
     then
