@@ -16,7 +16,7 @@ jobs:
       - name: install python3
         uses: actions/setup-python@v2
         with:
-          python-version: '3.8.0'
+          python-version: '3.8.5'
       - name: install dependencies python3
         run: |
           python3 -m pip install --upgrade pip
