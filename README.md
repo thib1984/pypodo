@@ -113,7 +113,7 @@ pypodo sort
 
 or for a full time usage, change your ```.bash_profile``` file, and if you want use aliases in alias section after!
 
-To remove docker app, just : ``docker rmi pypodo``
+To remove docker app, just : ``docker rmi thibaultgarcon/pypodo``
 
 
 ## Alias [optionnal]
