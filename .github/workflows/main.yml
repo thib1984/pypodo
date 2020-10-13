@@ -20,7 +20,7 @@ jobs:
       - name: install dependencies python3
         run: |
           python3 -m pip install --upgrade pip
-          pip install mutatest coverage pylint colorama termcolor pep517
+          pip install mutatest coverage pylint colorama termcolor
       - name: pylint
         run: |
           pylint pypodo/__pypodo__.py
@@ -38,10 +38,4 @@ jobs:
         uses: docker-practice/actions-setup-docker@master
       - name : run test
         run: ./pypodo_github.sh
-      - name: build pip
-        run: python3 -m pep517.build --source --binary --out-dir dist/ .
-      - name: publish to pypi
-        uses: pypa/gh-action-pypi-publish@master
-        with:
-          user: ${{ secrets.PYPI_USER }}
-          password: ${{ secrets.PYPI_PASSWORD }}
+
