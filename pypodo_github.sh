@@ -33,15 +33,15 @@ dockerci () {
         return 1
     fi
     #partie unittest
-    printinfo "unittest running..."
-    $dockerpypodorun --rm --entrypoint="python" pypodo_test -m unittest -v pypodo/__pypodo__test.py
-    if [[ $? = 0 ]]
-    then
-        printinfo "unittest ok"
-    else
-        printerror "unittest ko"
-        return 1
-    fi
+    #printinfo "unittest running..."
+    #$dockerpypodorun --rm --entrypoint="python" pypodo_test -m unittest -v pypodo/__pypodo__test.py
+    #if [[ $? = 0 ]]
+    #then
+    #    printinfo "unittest ok"
+    #else
+    #    printerror "unittest ko"
+    #    return 1
+    #fi
     #partie end-to-end
     printinfo "end-to-end 1/4 running..."
     diff <(echo pypodo list && $smoketest list && echo pypodo add "tache1" && $smoketest add "tache1" && echo pypodo add "tache2 #montag" && $smoketest add "tache2 #montag" && echo pypodo add "tache3 #urgent" && $smoketest add "tache3 #urgent" && echo pypodo list && $smoketest list && echo pypodo del 2 && $smoketest del 2 && echo pypodo tag montag2 3 && $smoketest tag montag2 3 && echo pypodo ag urgente 3 && $smoketest tag urgente 3 && echo pypodo sort && $smoketest sort && $smoketest add "mon autre tache #tag #retag" && echo pypodo list tag retag && $smoketest list tag retag && echo pypodo untag retag 3 && $smoketest untag retag 3 && echo pypodo tag newtag 3 3 2 && $smoketest tag newtag 3 3 2 && echo pypodo list && $smoketest list && echo pypodo tag && $smoketest tag && echo pypodo untag && $smoketest untag && echo pypodo find "t.*che" && $smoketest find "t.*che") <(cat ci_cd/log.expected)
