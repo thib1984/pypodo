@@ -33,7 +33,7 @@ jobs:
           mutatest 
       - name: coverage
         run: |
-          coverage run && overage info                 
+          coverage run && coverage info                 
       - name: install docker
         uses: docker-practice/actions-setup-docker@master
       - name : run test
