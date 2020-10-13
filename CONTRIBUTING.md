@@ -66,8 +66,13 @@ pip3 install --user .
 for pi
 
 ```
-docker build -t pypodo .
+docker build -t thibaultgarcon/pypodo .
 ``` 
 for docker
+
+## Github Actions
+
+For each commit in head master : https://github.com/thib1984/pypodo/actions?query=workflow%3A%22pipeline+ci%22 (run tests and metrics -mutatest, pylint...-)
+For each release : https://github.com/thib1984/pypodo/actions?query=workflow%3A%22pipeline+release%22 (run tests and metrics -mutatest, pylint...- and push pip and docker image)
 
 

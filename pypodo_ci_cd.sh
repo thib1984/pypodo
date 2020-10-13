@@ -19,7 +19,7 @@ dockerci () {
     printinfo "configuration running..."
     export PYPODO_FILE=/tmp/.todo
     export PYPODO_BACKUP=/tmp/.todo_backup
-    smoketest="docker run --rm --mount type=bind,source=${PYPODO_FILE},target=/root/.todo --mount type=bind,source=${PYPODO_BACKUP},target=/root/.todo_backup pypodo_test"
+    smoketest="docker run --rm --mount type=bind,source=${PYPODO_FILE},target=/root/.todo --mount type=bind,source=${PYPODO_BACKUP},target=/root/.todo_backup thibaultgarcon/pypodo_test"
     dockerpypodorun="docker run --mount type=bind,source=${PYPODO_FILE},target=/root/.todo --mount type=bind,source=${PYPODO_BACKUP},target=/root/.todo_backup -ti"
     rm *.log 2> /dev/null
     touch $file_log_mutation
@@ -29,13 +29,13 @@ dockerci () {
         docker rm pypodo_coverage
         docker rm pypodo_coverage_html
         docker rmi pypodo_coverage
-        docker rmi pypodo_test
+        docker rmi thibaultgarcon/pypodo_test
         touch $PYPODO_FILE && rm $PYPODO_FILE && touch $PYPODO_FILE && rm -rf $PYPODO_BACKUP && mkdir $PYPODO_BACKUP 
     docker rmi pypodo_coverage_html) &>> $file_log_configuration
     printinfo "configuration finished, see output in $file_log_configuration"
     #partie build
     printinfo "docker build running..."
-    docker build -t pypodo_test . --no-cache 1>>$file_log_build_docker_test 2>>$file_log_build_docker_test
+    docker build -t thibaultgarcon/pypodo_test . --no-cache 1>>$file_log_build_docker_test 2>>$file_log_build_docker_test
     if [[ $? = 0 ]]
     then
         printinfo "docker build ok, see output in $file_log_build_docker_test"
@@ -234,7 +234,7 @@ pipci () {
 }
 
 dockercd () {
-    docker build -t pypodo . --no-cache 1>> $file_log_build_docker_prod 2>> $file_log_build_docker_prod
+    docker build -t thibaultgarcon/pypodo . --no-cache 1>> $file_log_build_docker_prod 2>> $file_log_build_docker_prod
     if [[ $? = 0 ]]
     then
         printinfo "docker build ok, see output in $file_log_build_docker_prod "
