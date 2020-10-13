@@ -1,4 +1,4 @@
-name: CI
+name: run test + push docker image
 
 on:
   push:
@@ -11,12 +11,13 @@ jobs:
     name: Push Docker image to Docker Hub
     runs-on: ubuntu-latest
     steps:
-      - name: Check out the repo
+      - name: checkout the repo
         uses: actions/checkout@v2
-      - name: Launch Tests
+      - name: install docker
         uses: docker-practice/actions-setup-docker@master
-      - run: ./pypodo_github.sh
-      - name: Push to Docker Hub
+      - name : run test
+        run: ./pypodo_github.sh
+      - name: push on docker hub
         uses: docker/build-push-action@v1
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
