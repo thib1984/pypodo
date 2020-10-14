@@ -15,8 +15,7 @@ REGEX_SPACE_OR_ENDLINE = "( |$)"
 
 
 def help(open=open):
-    if len(sys.argv) == 2:
-        help_txt = """\
+    help_txt = """\
         
     NAME
         pypodo
@@ -47,9 +46,7 @@ def help(open=open):
         find  : filter the todo list on the paramter (regex accepted)
                 pypodo filter "ta.*che"	#filter on the regex ta.*che	                             			
         """
-        print(help_txt)
-    else:
-        printerror("0 parameter is needed for pypodo help")
+    print(help_txt)
 
 
 # list the .todo possibly filtered on the tags corresponding to the parameter

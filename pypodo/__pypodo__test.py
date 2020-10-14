@@ -47,14 +47,6 @@ class TestStringMethods(unittest.TestCase):
 
     @patch('builtins.open', new_callable=mock_open)
     @patch('sys.stdout', new_callable=StringIO)
-    def test_help_with_parameters_return_error(self, mock_print, mock_open):
-        with patch.object(sys, 'argv', [pypodo, help, "toto"]):
-            help(mock_open)
-            self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
-                '\n')), "error : 0 parameter is needed for pypodo help")
-
-    @patch('builtins.open', new_callable=mock_open)
-    @patch('sys.stdout', new_callable=StringIO)
     def test_backup_with_parameters_return_error(self, mock_print, mock_open):
         with patch.object(sys, 'argv', [pypodo, backup, "toto"]):
             backup(mock_open)

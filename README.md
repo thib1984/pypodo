@@ -84,40 +84,20 @@ The indexes are in blue, the tasks in green, and the tags in yellow or red.
 
 If you want, you can use **pypodo** as a docker image.
 
-```
-docker pull thibaultgarcon/pypodo:latest
-``` 
-to pull the docker image 
-And your pypodo app is available 🤘 ! 
-
-[https://hub.docker.com/r/thibaultgarcon/pypodo](https://hub.docker.com/r/thibaultgarcon/pypodo)
-
-and
-```
-export PYPODO_FILE=<path of your pypodo file>
-touch $PYPODO_FILE
-export PYPODO_BACKUP=<path of your pypodo backup folder>
-mkdir -p $PYPODO_BACKUP  
-docker run --rm --mount type=bind,source=${PYPODO_FILE},target=/root/.todo --mount type=bind,source=${PYPODO_BACKUP},target=/root/.todo_backup thibaultgarcon/pypodo
-```
-to use it (display help message), add "list", "add" after the last command if you want.
-
-If you don't want to write all this command at each time, you can create an alias : 
-```
-alias pypodo="export PYPODO_FILE=<path of your pypodo file> && touch $PYPODO_FILE && export PYPODO_BACKUP=<path of your pypodo backup folder> && mkdir -p $PYPODO_BACKUP  && docker run --rm --mount type=bind,source=${PYPODO_FILE},target=/root/.todo --mount type=bind,source=${PYPODO_BACKUP},target=/root/.todo_backup thibaultgarcon/pypodo"
-```
-
-and
+Copy file [docker-pypodo.sh](https://github.com/thib1984/pypodo/blob/master/docker-pypodo.sh) on your PC.
+Give execution permission with ``chmod u+x ./docker-pypodo.sh``
+Correct the two variables if you want :
 
 ```
-pypodo list
-pypodo sort
-...
+PYPODO_FILE=~/.todo
+PYPODO_BACKUP=~/.todo_backup
 ```
 
-or for a full time usage, change your ```.bash_profile``` file, and if you want use aliases in alias section after!
+and test you app! :
 
-To remove docker app, just : ``docker rmi thibaultgarcon/pypodo``
+```
+./docker-pypodo.sh help
+```
 
 
 ## Alias [optionnal]
@@ -125,8 +105,8 @@ To remove docker app, just : ``docker rmi thibaultgarcon/pypodo``
 You can use alias as
 
 ```
-#uncomment if you use docker app only
-#alias pypodo="export PYPODO_FILE=<path of your pypodo file> && touch $PYPODO_FILE && export PYPODO_BACKUP=<path of your pypodo backup folder> && mkdir -p $PYPODO_BACKUP  && docker run --rm --mount type=bind,source=${PYPODO_FILE},target=/root/.todo --mount type=bind,source=${PYPODO_BACKUP},target=/root/.todo_backup pypodo"
+#uncomment if you use docker app only with the correct directory
+#alias pypodo=~/docker-pypodo.sh
 #for all apps
 alias tl='pypodo list'
 alias ta='pypodo add'
