@@ -99,6 +99,7 @@ and test you app! :
 ./docker-pypodo.sh help
 ```
 
+Replace ``pypodo`` with ``./docker-pypodo.sh`` or use an alias (see below)
 
 ## Alias [optionnal]
 

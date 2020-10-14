@@ -9,9 +9,9 @@ PYPODO_BACKUP=~/.todo_backup
 touch $PYPODO_FILE
 mkdir -p $PYPODO_BACKUP
 
-#on dl l image si inexistante
+#download image if it dooes not exist
 docker images | grep "thibaultgarcon/pypodo " >/dev/null || docker pull thibaultgarcon/pypodo
-#on lance le conteneur si absent
+#run the container if it dooes not run
 docker ps | grep "pypodo " >/dev/null || docker run -d --rm --name "pypodo" --mount type=bind,source=${PYPODO_FILE},target=/root/.todo --mount type=bind,source=${PYPODO_BACKUP},target=/root/.todo_backup --entrypoint="sleep" thibaultgarcon/pypodo 43200 > /dev/null
 
 #prepa args
@@ -23,5 +23,5 @@ for x in "${@}" ; do
     _args=$_args" "$x
 done
 
-#on execute la commande
+#execute command
 docker exec -ti pypodo sh -c "pypodo $_args"

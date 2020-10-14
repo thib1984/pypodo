@@ -15,7 +15,7 @@ file_log_install=./install.log
 folder_log_coverage=./htmlcov
 
 dockerci () {
-    #partie configuration
+    #configuration
     printinfo "configuration running..."
     export PYPODO_FILE=/tmp/.todo
     export PYPODO_BACKUP=/tmp/.todo_backup
@@ -33,7 +33,7 @@ dockerci () {
         touch $PYPODO_FILE && rm $PYPODO_FILE && touch $PYPODO_FILE && rm -rf $PYPODO_BACKUP && mkdir $PYPODO_BACKUP 
     docker rmi pypodo_coverage_html) &>> $file_log_configuration
     printinfo "configuration finished, see output in $file_log_configuration"
-    #partie build
+    #build
     printinfo "docker build running..."
     docker build -t thibaultgarcon/pypodo_test . --no-cache 1>>$file_log_build_docker_test 2>>$file_log_build_docker_test
     if [[ $? = 0 ]]
@@ -43,7 +43,7 @@ dockerci () {
         printerror "docker build ko, see output in $file_log_build_docker_test"
         return 1
     fi
-    #partie pylint
+    #pylint
     printinfo "pylint running..."
     $dockerpypodorun --rm --entrypoint="pylint" pypodo_test pypodo/__pypodo__.py 2>>$file_log_pylint 1> $file_log_pylint
         if [[ $? = 1 ]]
@@ -54,7 +54,7 @@ dockerci () {
         printinfo "pylint ok, see output in $file_log_pylint"
     fi
     printinfo "unittest running..."
-    #partie unittest
+    #unittest
     $dockerpypodorun --rm --entrypoint="python" pypodo_test -m unittest -v pypodo/__pypodo__test.py > $file_log_test
     if [[ $? = 0 ]]
     then
@@ -63,7 +63,7 @@ dockerci () {
         printerror "unittest ko, see output in $file_log_test"
         return 1
     fi
-    #partie coverage
+    #coverage
     printinfo "coverage run running..."
     $dockerpypodorun --name pypodo_coverage --entrypoint="coverage" pypodo_test run 1>> $file_log_coverage 2>> $file_log_coverage
     if [[ $? = 0 ]]
@@ -77,7 +77,7 @@ dockerci () {
     docker run -it --name pypodo_coverage_html --entrypoint="coverage" pypodo_coverage html
     docker cp pypodo_coverage_html:/pypodo/$folder_log_coverage .
     printinfo "coverage run  ok, see output in $folder_log_coverage/index.html"
-    #partie mutatest
+    #mutatest
     if [[ $1 = "fast" ]]
     then
         printwarning "mutatest disabled"
@@ -93,7 +93,7 @@ dockerci () {
             return 1
         fi
     fi
-    #partie end-to-end
+    #end-to-end
     printinfo "end-to-end 1/4 running..."
     (echo pypodo list
         $smoketest list
@@ -138,7 +138,7 @@ dockerci () {
         return 1
     fi
     printinfo "test end-to-end 2/4 running..."
-    grep "\[32minfo : creating todolist backup - .todo[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]" ci_cd/cache/log_backup >> $file_log_end_to_end
+    grep "\[32minfo    : creating todolist backup - .todo[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]" ci_cd/cache/log_backup >> $file_log_end_to_end
     if [[ $? = 0 ]]
     then
         printinfo "test end-to-end 2/4 ok, see output in $file_log_end_to_end"
@@ -168,7 +168,7 @@ dockerci () {
 
 
 pipci () {
-    #partie configuration
+    #configuration
     printinfo "configuration running..."
     (rm -rf htmlcov/*
         rm *.log
@@ -177,7 +177,7 @@ pipci () {
         pip3 install coverage
     pip3 install pylint) 1>> $file_log_configuration 2>> $file_log_configuration
     printinfo "configuration ok, see output in configuration.log"
-    #partie pylint
+    #pylint
     printinfo "pylint running..."
     pylint pypodo/__pypodo__.py  2> $file_log_pylint 1> $file_log_pylint
     if [[ $? = 1 ]]
@@ -187,7 +187,7 @@ pipci () {
     else
         printinfo "pylint ok, see output in pylint.log"
     fi
-    #partie unittest
+    #unittest
     printinfo "unittest running..."
     python3 -m unittest -v pypodo/__pypodo__test.py 2> $file_log_test
     if [[ $? = 0 ]]
@@ -197,7 +197,7 @@ pipci () {
         printerror "unittest ko, see output in $file_log_test"
         return 1
     fi
-    #partie coverage
+    #coverage
     printinfo "coverage run running..."
     coverage run 1>> $file_log_coverage 2>> $file_log_coverage
     if [[ $? = 0 ]]
@@ -216,7 +216,7 @@ pipci () {
         printerror "coverage html, see output in $folder_log_coverage"
         return 1
     fi
-    #partie mutatest
+    #mutatest
     if [[ $1 = "fast" ]]
     then
         printwarning "mutatest disabled"
@@ -245,7 +245,7 @@ dockercd () {
 }
 
 pipcd () {
-    #partie install
+    #install
     printinfo "pip3 install running..."
     pip3 install --user . 2>> $file_log_install 1>> $file_log_install
     if [[ $? = 0 ]]
