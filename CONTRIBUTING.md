@@ -1,7 +1,7 @@
 ## Work with Github
 
 ```
-git clone https://github.com/thib1984/pypodo.git #or your fork repo ;)
+git clone https://github.com/thib1984/pypodo.git #or your fork repo :)
 cd pypodo
 #work with git
 git add .
