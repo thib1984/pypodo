@@ -75,7 +75,7 @@ def list(open=open):
                     if display:
                         printlinetodo(line)
                         empty = False
-        if empty :
+        if empty:
             if len(sys.argv) >= 3:
                 printwarning("the filtered todolist is empty")
             else:
@@ -94,7 +94,7 @@ def listnotag(open=open):
                     if not '#' in line:
                         printlinetodo(line)
                         empty = False
-            if empty :
+            if empty:
                 printwarning("the filtered todolist with no tag is empty")
 
 # list the .todo possibly filtered on the tags corresponding to the parameter
@@ -114,7 +114,7 @@ def listtag(open=open):
                             my_list.append(part)
                             empty = False
                 print(colored("\n".join(sorted(set(my_list))), "green"))
-            if empty :
+            if empty:
                 printwarning("the filtered todolist with no tag is empty")
 
 
@@ -198,13 +198,13 @@ def sort(open=open):
                     index = index+1
                     f.write(replaced)
                     empty = False
-            if empty :
+            if empty:
                 printwarning("the todolist is empty - nothing to do")
             else:
                 printinfo("the todolist is sorted")
                 list(open)
 
-# various checks on the todo file
+# various checks on the todo files
 
 
 def check(open=open):
@@ -218,7 +218,7 @@ def check(open=open):
                     printwarning(
                         "this line has not a valid format in .todo - "+line.rstrip('\n'))
                     error = True
-        if error :
+        if error:
             printerror("verify the .todo file")
             return False
         else:
@@ -335,7 +335,7 @@ def find(open=open):
                     if re.findall(search, line.rstrip('\n')):
                         printlinetodo(line)
                         empty = False
-            if empty :
+            if empty:
                 printwarning("the filtered todolist is empty")
 
 
