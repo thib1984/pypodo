@@ -13,7 +13,7 @@ STR_PATH_HOME__TODO_ = str(Path.home()) + '/.todo'
 class TestStringMethods(unittest.TestCase):
 
     # errors
-    @patch('os.path.isfile')   
+    @patch('os.path.isfile')
     @patch('builtins.open', new_callable=mock_open, read_data='1 ma tache #test\n2 ma seconde tache #test\n3 ma seconde tache #linux')
     @patch('sys.stdout', new_callable=StringIO)
     def test_find_no_parameter_return_error(self, mock_print, mock_open, mock_isfile):
@@ -32,7 +32,7 @@ class TestStringMethods(unittest.TestCase):
             add(mock_open)
             self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
                 '\n')), 'error   : 1 or more parameter is needed for pypodo add - tasks')
-    
+
     @patch('os.path.isfile')
     @patch('builtins.open', new_callable=mock_open)
     @patch('sys.stdout', new_callable=StringIO)
@@ -72,6 +72,25 @@ class TestStringMethods(unittest.TestCase):
             sort(mock_open)
             self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
                 '\n')), "warning : the todolist is empty - nothing to do")
+
+    @patch('os.path.isfile')
+    @patch('builtins.open', new_callable=mock_open, read_data='2 ma tache #test\n4 ma seconde tache')
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_sort_if_todo_with_tasks(self, mock_print, mock_open, mock_isfile):
+        with patch.object(sys, 'argv', [pypodo, sort]):
+            mock_isfile.return_value = True
+            sort(mock_open)
+            mock_open().write.assert_called_with('2 ma seconde tache')
+
+    @patch('os.path.isfile')
+    @patch('builtins.open', new_callable=mock_open, read_data='1 ma tache #te#st\na ma seconde tache\n3 ma seconde tache')
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_sort_if_todo_with_invalids_tasks(self, mock_print, mock_open, mock_isfile):
+        with patch.object(sys, 'argv', [pypodo, list]):
+            mock_isfile.return_value = True
+            list(mock_open)
+            self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
+                '\n')), "warning : this line has not a valid format in .todo - 1 ma tache #te#st\nwarning : this line has not a valid format in .todo - a ma seconde tache\nerror   : verify the .todo file")
 
     @patch('os.path.isfile')
     @patch('builtins.open', new_callable=mock_open)
@@ -140,7 +159,7 @@ class TestStringMethods(unittest.TestCase):
     @patch('os.path.isfile')
     @patch('builtins.open', new_callable=mock_open)
     @patch('sys.stdout', new_callable=StringIO)
-    def test_add_task(self, mock_print, mock_open, mock_isfile):
+    def test_add_task_todolist_empty(self, mock_print, mock_open, mock_isfile):
         with patch.object(sys, 'argv', [pypodo, add, 'task3']):
             mock_isfile.return_value = True
             add(mock_open)
@@ -148,6 +167,18 @@ class TestStringMethods(unittest.TestCase):
             mock_open().write.assert_called_once_with('1 task3\n')
             self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
                 '\n')), 'info    : task is added to the todolist - 1 task3')
+
+    @patch('os.path.isfile')
+    @patch('builtins.open', new_callable=mock_open, read_data='1 ma tache #test\n4 ma seconde tache')
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_add_task_todolist_not_empty(self, mock_print, mock_open, mock_isfile):
+        with patch.object(sys, 'argv', [pypodo, add, 'task3']):
+            mock_isfile.return_value = True
+            add(mock_open)
+            mock_open.assert_called_with(STR_PATH_HOME__TODO_, 'a')
+            mock_open().write.assert_called_once_with('5 task3\n')
+            self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
+                '\n')), 'info    : task is added to the todolist - 5 task3')
 
     @patch('os.path.isfile')
     @patch('builtins.open', new_callable=mock_open, read_data='1 ma tache #test\n2 ma seconde tache')
@@ -160,6 +191,29 @@ class TestStringMethods(unittest.TestCase):
             mock_open().write.assert_called_once_with('1 ma tache #test\n')
             self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
                 '\n')), 'info    : task deleted from the todolist - 2 ma seconde tache')
+
+    @patch('os.path.isfile')
+    @patch('builtins.open', new_callable=mock_open, read_data='1 ma tache #test #toto\n2 ma seconde tache #tost #titi\n3 ma seconde tache #test #titi')
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_untag_task(self, mock_print, mock_open, mock_isfile):
+        with patch.object(sys, 'argv', [pypodo, untag, 'test', '1', '2', '3']):
+            mock_isfile.return_value = True
+            untag(mock_open)
+            mock_open.assert_called_with(STR_PATH_HOME__TODO_, 'w')
+            mock_open().write.assert_called_with('3 ma seconde tache #titi\n')
+            self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
+                '\n')), 'info    : tag deleted from the task of the todolist - 1 ma tache #test #toto -> 1 ma tache #toto\nwarning : no tags is deleted from the todolist for the task - 2 ma seconde tache #tost #titi\ninfo    : tag deleted from the task of the todolist - 3 ma seconde tache #test #titi -> 3 ma seconde tache #titi')
+
+    @patch('os.path.isfile')
+    @patch('builtins.open', new_callable=mock_open, read_data='1 ma tache\n2 ma seconde tache #tost')
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_tag_task(self, mock_print, mock_open, mock_isfile):
+        with patch.object(sys, 'argv', [pypodo, tag, 'test', '1', '2', '3']):
+            mock_isfile.return_value = True
+            tag(mock_open)
+            mock_open.assert_called_with(STR_PATH_HOME__TODO_, 'w')
+            self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
+                '\n')), 'info    : tag added to the task of the todolist - 1 ma tache -> 1 ma tache #test\ninfo    : tag added to the task of the todolist - 2 ma seconde tache #tost -> 2 ma seconde tache #tost #test\nwarning : no task with number is in the todolist - 3')
 
     @patch('os.path.isfile')
     @patch('builtins.open', new_callable=mock_open, read_data='1 ma tache #test\n2 ma seconde tache\n')
@@ -191,7 +245,7 @@ class TestStringMethods(unittest.TestCase):
             mock_isfile.return_value = True
             find(mock_open)
             self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
-                '\n')), "warning : the filtered todolist is empty")                  
+                '\n')), "warning : the filtered todolist is empty")
 
     @patch('os.path.isfile')
     @patch('builtins.open', new_callable=mock_open, read_data='1 ma tache #test\n2 ma seconde tache #test\n3 ma seconde tache #linux')
@@ -201,7 +255,7 @@ class TestStringMethods(unittest.TestCase):
             mock_isfile.return_value = True
             find(mock_open)
             self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
-                '\n')), "1 ma tache #test")  
+                '\n')), "1 ma tache #test")
 
     @patch('os.path.isfile')
     @patch('builtins.open', new_callable=mock_open, read_data='1 ma tache #test\n2 ma seconde tache #test\n3 ma seconde tache #linux')
@@ -211,8 +265,8 @@ class TestStringMethods(unittest.TestCase):
             mock_isfile.return_value = True
             find(mock_open)
             self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
-                '\n')), "3 ma seconde tache #linux")    
-                       
+                '\n')), "3 ma seconde tache #linux")
+
     @patch('os.path.isfile')
     @patch('builtins.open', new_callable=mock_open)
     @patch('sys.stdout', new_callable=StringIO)
@@ -221,7 +275,8 @@ class TestStringMethods(unittest.TestCase):
         with patch.object(sys, 'argv', [pypodo, find, "li.+x"]):
             find(mock_open)
             self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
-                '\n')), "info    : creating .todolist file\nwarning : the filtered todolist is empty")    
+                '\n')), "info    : creating .todolist file\nwarning : the filtered todolist is empty")
+
 
 def escape_ansi(line):
     ansi_escape = re.compile(r'(?:\x1B[@-_]|[\x80-\x9F])[0-?]*[ -/]*[@-~]')

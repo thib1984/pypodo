@@ -55,154 +55,158 @@ def help(open=open):
 
 
 def list(open=open):
-    check(open)
+    if check(open):
 
-    empty = True
-    with open(STR_PATH_HOME__TODO_, 'r') as f:
-        for line in f.readlines():
-            # without filter -> we print all
-            if len(sys.argv) == 2:
-                printlinetodo(line)
-                empty = False
-            # with filter -> we check tag
-            else:
-                display = True
-                for x in range(2, len(sys.argv)):
-                    tag = sys.argv[x]
-                    if not re.findall("#"+re.escape(tag)+REGEX_SPACE_OR_ENDLINE, line.rstrip('\n')):
-                        display = False
-                # regex to search tags "#toto " or "#toto" at the end of the line
-                if display == True:
+        empty = True
+        with open(STR_PATH_HOME__TODO_, 'r') as f:
+            for line in f.readlines():
+                # without filter -> we print all
+                if len(sys.argv) == 2:
                     printlinetodo(line)
                     empty = False
-    if empty == True:
-        if len(sys.argv) >= 3:
-            printwarning("the filtered todolist is empty")
-        else:
-            printwarning("the todolist is empty")
+                # with filter -> we check tag
+                else:
+                    display = True
+                    for x in range(2, len(sys.argv)):
+                        tag = sys.argv[x]
+                        if not re.findall("#"+re.escape(tag)+REGEX_SPACE_OR_ENDLINE, line.rstrip('\n')):
+                            display = False
+                    # regex to search tags "#toto " or "#toto" at the end of the line
+                    if display:
+                        printlinetodo(line)
+                        empty = False
+        if empty :
+            if len(sys.argv) >= 3:
+                printwarning("the filtered todolist is empty")
+            else:
+                printwarning("the todolist is empty")
 
 
 # list the .todo possibly filtered on the tags corresponding to the parameter
 def listnotag(open=open):
-    check(open)
-    if len(sys.argv) > 2:
-        printerror("0 parameter is needed for pypodo listnotag")
-    else:
-        empty = True
-        with open(STR_PATH_HOME__TODO_, 'r') as f:
-            for line in f.readlines():
-                if not '#' in line:
-                    printlinetodo(line)
-                    empty = False
-        if empty == True:
-            printwarning("the filtered todolist with no tag is empty")
+    if check(open):
+        if len(sys.argv) > 2:
+            printerror("0 parameter is needed for pypodo listnotag")
+        else:
+            empty = True
+            with open(STR_PATH_HOME__TODO_, 'r') as f:
+                for line in f.readlines():
+                    if not '#' in line:
+                        printlinetodo(line)
+                        empty = False
+            if empty :
+                printwarning("the filtered todolist with no tag is empty")
 
 # list the .todo possibly filtered on the tags corresponding to the parameter
+
+
 def listtag(open=open):
-    check(open)
-    if len(sys.argv) > 2:
-        printerror("0 parameter is needed for pypodo listtag")
-    else:
-        empty = True
-        with open(STR_PATH_HOME__TODO_, 'r') as f:
-            my_list = []
-            for line in f.readlines():
-                for part in line.split():
-                    if "#" in part:
-                        my_list.append(part)
-                        empty = False
-            print(colored("\n".join(sorted(set(my_list))), "green"))
-        if empty == True:
-            printwarning("the filtered todolist with no tag is empty")
+    if check(open):
+        if len(sys.argv) > 2:
+            printerror("0 parameter is needed for pypodo listtag")
+        else:
+            empty = True
+            with open(STR_PATH_HOME__TODO_, 'r') as f:
+                my_list = []
+                for line in f.readlines():
+                    for part in line.split():
+                        if "#" in part:
+                            my_list.append(part)
+                            empty = False
+                print(colored("\n".join(sorted(set(my_list))), "green"))
+            if empty :
+                printwarning("the filtered todolist with no tag is empty")
 
 
 # adds the tasks as a parameter to the todolist (by calculating their indexes).
 def add(open=open):
-    check(open)
-    if len(sys.argv) < 3:
-        print("error   : 1 or more parameter is needed for pypodo add - tasks")
-    else:
-        # loop on the indexes
-        for x in range(2, len(sys.argv)):
-            task = sys.argv[x]
-            # check format : words* #tag1 #tag2 : task at free format, tags in one word prefixed by #
-            if not re.findall("^([^# ])([^#])*( #[^ #]+)*$", task):
-                printwarning("the task has not a valid format - "+task)
-            else:
-                with open(STR_PATH_HOME__TODO_, 'r') as f:
-                    lines = f.readlines()
-                # index calculation
-                if len(lines) > 0:
-                    last_line = lines[len(lines)-1]
-                    index = int(last_line.split()[0])+1
+    if check(open):
+        if len(sys.argv) < 3:
+            print("error   : 1 or more parameter is needed for pypodo add - tasks")
+        else:
+            # loop on the indexes
+            for x in range(2, len(sys.argv)):
+                task = sys.argv[x]
+                # check format : words* #tag1 #tag2 : task at free format, tags in one word prefixed by #
+                if not re.findall("^([^# ])([^#])*( #[^ #]+)*$", task):
+                    printwarning("the task has not a valid format - "+task)
                 else:
-                    index = 1
-                # adding task to the todolist
-                with open(STR_PATH_HOME__TODO_, 'a') as f:
-                    f.write(str(index)+" "+task+'\n')
-                    printinfo("task is added to the todolist - " +
-                              str(index)+" "+task)
+                    with open(STR_PATH_HOME__TODO_, 'r') as f:
+                        lines = f.readlines()
+                    # index calculation
+                    if len(lines) > 0:
+                        last_line = lines[len(lines)-1]
+                        index = int(last_line.split()[0])+1
+                    else:
+                        index = 1
+                    # adding task to the todolist
+                    with open(STR_PATH_HOME__TODO_, 'a') as f:
+                        f.write(str(index)+" "+task+'\n')
+                        printinfo("task is added to the todolist - " +
+                                  str(index)+" "+task)
 
 # removes the tasks whose indexes are provided as a parameter
 
 
 def delete(open=open):
-    check(open)
-    if len(sys.argv) >= 3:
-        # loop on the indexes
-        for x in range(2, len(sys.argv)):
-            index = sys.argv[x]
-            # check the numeric format of the index
+    if check(open):
+        if len(sys.argv) >= 3:
+            # loop on the indexes
+            for x in range(2, len(sys.argv)):
+                index = sys.argv[x]
+                # check the numeric format of the index
 
-            if not re.findall(REGEX_INDEX, index):
-                printwarning(
-                    "the index to delete is not in numeric format - " + index)
-            else:
-                index_existant = False
-                with open(STR_PATH_HOME__TODO_, 'r') as f:
-                    lines = f.readlines()
-                with open(STR_PATH_HOME__TODO_, 'w') as f:
-                    for line in lines:
-                        # if the current row doesn't contain the index it is kept
-                        if not re.findall("^"+index+' ', line):
-                            f.write(line)
-                        # else it is deleted by not being copied
-                        else:
-                            printinfo(
-                                "task deleted from the todolist - " + line.rstrip('\n'))
-                            index_existant = True
-                if index_existant == False:
+                if not re.findall(REGEX_INDEX, index):
                     printwarning(
-                        "no task is deleted from the todolist, not existing index - " + index)
-    else:
-        printerror(
-            "1 or more parameter is needed for pypodo del - indexes to delete in numeric format")
+                        "the index to delete is not in numeric format - " + index)
+                else:
+                    index_existant = False
+                    with open(STR_PATH_HOME__TODO_, 'r') as f:
+                        lines = f.readlines()
+                    with open(STR_PATH_HOME__TODO_, 'w') as f:
+                        for line in lines:
+                            # if the current row doesn't contain the index it is kept
+                            if not re.findall("^"+index+' ', line):
+                                f.write(line)
+                            # else it is deleted by not being copied
+                            else:
+                                printinfo(
+                                    "task deleted from the todolist - " + line.rstrip('\n'))
+                                index_existant = True
+                    if not index_existant:
+                        printwarning(
+                            "no task is deleted from the todolist, not existing index - " + index)
+        else:
+            printerror(
+                "1 or more parameter is needed for pypodo del - indexes to delete in numeric format")
 
 
 # sort the list in successive ascending order
 def sort(open=open):
-    check(open)
-    if len(sys.argv) != 2:
-        printerror("0 parameter is needed for pypodo sort")
-    else:
-        empty = True
-        index = 1
-        with open(STR_PATH_HOME__TODO_, 'r') as f:
-            lines = f.readlines()
-        with open(STR_PATH_HOME__TODO_, 'w') as f:
-            for line in lines:
-                # we replace the existing index by the current index that we increment
-                replaced = re.sub("^\\d+ ", str(index)+" ", line)
-                index = index+1
-                f.write(replaced)
-                empty = False
-        if empty == True:
-            printwarning("the todolist is empty - nothing to do")
+    if check(open):
+        if len(sys.argv) != 2:
+            printerror("0 parameter is needed for pypodo sort")
         else:
-            printinfo("the todolist is sorted")
-            list(open)
+            empty = True
+            index = 1
+            with open(STR_PATH_HOME__TODO_, 'r') as f:
+                lines = f.readlines()
+            with open(STR_PATH_HOME__TODO_, 'w') as f:
+                for line in lines:
+                    # we replace the existing index by the current index that we increment
+                    replaced = re.sub("^\\d+ ", str(index)+" ", line)
+                    index = index+1
+                    f.write(replaced)
+                    empty = False
+            if empty :
+                printwarning("the todolist is empty - nothing to do")
+            else:
+                printinfo("the todolist is sorted")
+                list(open)
 
 # various checks on the todo file
+
+
 def check(open=open):
     file_exists = os.path.isfile(STR_PATH_HOME__TODO_)
     if file_exists:
@@ -214,119 +218,125 @@ def check(open=open):
                     printwarning(
                         "this line has not a valid format in .todo - "+line.rstrip('\n'))
                     error = True
-        if error == True:
+        if error :
             printerror("verify the .todo file")
+            return False
+        else:
+            return True
     else:
         printinfo("creating .todolist file")
         open(STR_PATH_HOME__TODO_, "a")
+        return True
 
 # untag tasks
+
+
 def untag(open=open):
-    check(open)
-    if len(sys.argv) == 2:
-        listnotag(open)
-    elif len(sys.argv) >= 4:
-        tag = sys.argv[2]
-        if not re.findall("^[^ #]+$", tag):
-            printerror("the tag has not a valid format - "+tag)
-        # loop on the indexes
-        for x in range(3, len(sys.argv)):
-            index = sys.argv[x]
-            if not re.findall(REGEX_INDEX, index):
-                printwarning(
-                    "the index to untag is not in numeric format - " + index)
-            else:
-                index_trouve = False
-                with open(STR_PATH_HOME__TODO_, 'r') as f:
-                    lines = f.readlines()
-                with open(STR_PATH_HOME__TODO_, 'w') as f:
-                    for line in lines:
-                        if not re.findall("^"+index+' ', line):
-                            f.write(line)
-                        else:
-                            if re.findall("#"+re.escape(tag)+REGEX_SPACE_OR_ENDLINE, line.rstrip('\n')):
-                                f.write(re.sub("#"+re.escape(tag)+REGEX_SPACE_OR_ENDLINE,
-                                               "", line).rstrip('\n').rstrip()+'\n')
-                                printinfo("tag deleted from the task of the todolist - " + line.rstrip(
-                                    '\n') + " -> " + re.sub("#"+re.escape(tag)+REGEX_SPACE_OR_ENDLINE, "", line.rstrip('\n')))
-                            else:
+    if check(open):
+        if len(sys.argv) == 2:
+            listnotag(open)
+        elif len(sys.argv) >= 4:
+            tag = sys.argv[2]
+            if not re.findall("^[^ #]+$", tag):
+                printerror("the tag has not a valid format - "+tag)
+            # loop on the indexes
+            for x in range(3, len(sys.argv)):
+                index = sys.argv[x]
+                if not re.findall(REGEX_INDEX, index):
+                    printwarning(
+                        "the index to untag is not in numeric format - " + index)
+                else:
+                    index_trouve = False
+                    with open(STR_PATH_HOME__TODO_, 'r') as f:
+                        lines = f.readlines()
+                    with open(STR_PATH_HOME__TODO_, 'w') as f:
+                        for line in lines:
+                            if not re.findall("^"+index+' ', line):
                                 f.write(line)
-                                printwarning(
-                                    "no tags is deleted from the todolist for the task - "+line.rstrip('\n'))
-                            index_trouve = True
-                if index_trouve == False:
-                    printwarning("no task with index - "+index)
-    else:
-        printerror(
-            "0,2 or more parameters is needed for pypodo untag : the tag to delete and the indexes of the task whose tags to delete - nothing to list task without tags")
+                            else:
+                                if re.findall("#"+re.escape(tag)+REGEX_SPACE_OR_ENDLINE, line.rstrip('\n')):
+                                    f.write(re.sub("#"+re.escape(tag)+REGEX_SPACE_OR_ENDLINE,
+                                                   "", line).rstrip('\n').rstrip()+'\n')
+                                    printinfo("tag deleted from the task of the todolist - " + line.rstrip(
+                                        '\n') + " -> " + re.sub("#"+re.escape(tag)+REGEX_SPACE_OR_ENDLINE, "", line.rstrip('\n')))
+                                else:
+                                    f.write(line)
+                                    printwarning(
+                                        "no tags is deleted from the todolist for the task - "+line.rstrip('\n'))
+                                index_trouve = True
+                    if not index_trouve:
+                        printwarning("no task with index - "+index)
+        else:
+            printerror(
+                "0,2 or more parameters is needed for pypodo untag : the tag to delete and the indexes of the task whose tags to delete - nothing to list task without tags")
 
 
 # tagging task
 def tag(open=open):
-    check(open)
-    if len(sys.argv) == 2:
-        listtag(open)
-    elif len(sys.argv) >= 4:
-        tag = sys.argv[2]
-        if not re.findall("^[^ #]+$", tag):
-            printerror("the tag has not a valid format - "+tag)
-        # loop on the indexes
-        for x in range(3, len(sys.argv)):
-            index = sys.argv[x]
-            if not re.findall(REGEX_INDEX, index):
-                printwarning(
-                    "the index to tag is not in numeric format - " + index)
-            else:
-                index_trouve = False
-                with open(STR_PATH_HOME__TODO_, 'r') as f:
-                    lines = f.readlines()
-                with open(STR_PATH_HOME__TODO_, 'w') as f:
-                    for line in lines:
-                        if not re.findall("^"+index+' ', line):
-                            f.write(line)
-                        else:
-                            f.write(line.rstrip('\n')+" #"+tag+"\n")
-                            printinfo("tag added to the task of the todolist - " +
-                                      line.rstrip('\n') + " -> " + line.rstrip('\n')+" #"+tag)
-                            index_trouve = True
-                if index_trouve == False:
+    if check(open):
+        if len(sys.argv) == 2:
+            listtag(open)
+        elif len(sys.argv) >= 4:
+            tag = sys.argv[2]
+            if not re.findall("^[^ #]+$", tag):
+                printerror("the tag has not a valid format - "+tag)
+            # loop on the indexes
+            for x in range(3, len(sys.argv)):
+                index = sys.argv[x]
+                if not re.findall(REGEX_INDEX, index):
                     printwarning(
-                        "no task with number is in the todolist - "+index)
-    else:
-        printerror(
-            "0,2 or more parameters is needed for pypodo tag : the tag to add and the indexes of the task whose tags to add - nothing to list tags of the todolist")
+                        "the index to tag is not in numeric format - " + index)
+                else:
+                    index_trouve = False
+                    with open(STR_PATH_HOME__TODO_, 'r') as f:
+                        lines = f.readlines()
+                    with open(STR_PATH_HOME__TODO_, 'w') as f:
+                        for line in lines:
+                            if not re.findall("^"+index+' ', line):
+                                f.write(line)
+                            else:
+                                f.write(line.rstrip('\n')+" #"+tag+"\n")
+                                printinfo("tag added to the task of the todolist - " +
+                                          line.rstrip('\n') + " -> " + line.rstrip('\n')+" #"+tag)
+                                index_trouve = True
+                    if not index_trouve:
+                        printwarning(
+                            "no task with number is in the todolist - "+index)
+        else:
+            printerror(
+                "0,2 or more parameters is needed for pypodo tag : the tag to add and the indexes of the task whose tags to add - nothing to list tags of the todolist")
 
 
 def backup(open=open):
-    check(open)
-    if len(sys.argv) > 2:
-        printerror("0 parameter is needed for pypodo backup")
-    else:
-        dir_exists = os.path.exists(STR_PATH_HOME__TODO_BACKUP_FOLDER_)
-        if not dir_exists:
-            os.makedirs(STR_PATH_HOME__TODO_BACKUP_FOLDER_)
-            printinfo("creating todolist backup folder")
-        time_suffix = time.strftime("%Y%m%d%H%M%S")
-        todobackupname = ".todo" + time_suffix
-        backup_name = STR_PATH_HOME__TODO_BACKUP_FOLDER_ + todobackupname
-        copyfile(STR_PATH_HOME__TODO_, backup_name)
-        printinfo("creating todolist backup - " + todobackupname)
+    if check(open):
+        if len(sys.argv) > 2:
+            printerror("0 parameter is needed for pypodo backup")
+        else:
+            dir_exists = os.path.exists(STR_PATH_HOME__TODO_BACKUP_FOLDER_)
+            if not dir_exists:
+                os.makedirs(STR_PATH_HOME__TODO_BACKUP_FOLDER_)
+                printinfo("creating todolist backup folder")
+            time_suffix = time.strftime("%Y%m%d%H%M%S")
+            todobackupname = ".todo" + time_suffix
+            backup_name = STR_PATH_HOME__TODO_BACKUP_FOLDER_ + todobackupname
+            copyfile(STR_PATH_HOME__TODO_, backup_name)
+            printinfo("creating todolist backup - " + todobackupname)
 
 
 def find(open=open):
-    check(open)
-    if len(sys.argv) != 3:
-        printerror("1 parameter is needed for pypodo find")
-    else:
-        empty = True
-        with open(STR_PATH_HOME__TODO_, 'r') as f:
-            for line in f.readlines():
-                search = sys.argv[2]
-                if re.findall(search, line.rstrip('\n')):
-                    printlinetodo(line)
-                    empty = False
-        if empty == True:
-            printwarning("the filtered todolist is empty")
+    if check(open):
+        if len(sys.argv) != 3:
+            printerror("1 parameter is needed for pypodo find")
+        else:
+            empty = True
+            with open(STR_PATH_HOME__TODO_, 'r') as f:
+                for line in f.readlines():
+                    search = sys.argv[2]
+                    if re.findall(search, line.rstrip('\n')):
+                        printlinetodo(line)
+                        empty = False
+            if empty :
+                printwarning("the filtered todolist is empty")
 
 
 def printlinetodo(line):
@@ -351,11 +361,6 @@ def printwarning(text):
 
 def printerror(text):
     print(colored("error   : " + text, "red"))
-
-
-def sort_uniq(sequence):
-    import itertools
-    return (x[0] for x in itertools.groupby(sorted(sequence)))
 
 
 def pypodo():
