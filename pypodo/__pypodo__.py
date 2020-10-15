@@ -75,8 +75,8 @@ def list(open=open):
                 else:
                     display = True
                     for increment in range(2, len(sys.argv)):
-                        tag = sys.argv[increment]
-                        if not re.findall("#"+re.escape(tag)+REGEX_SPACE_OR_ENDLINE, line.rstrip('\n')):
+                        tagtofilter = sys.argv[increment]
+                        if not re.findall("#"+re.escape(tagtofilter)+REGEX_SPACE_OR_ENDLINE, line.rstrip('\n')):
                             display = False
                     # regex to search tags "#toto " or "#toto" at the end of the line
                     if display:
@@ -251,9 +251,9 @@ def untag(open=open):
         if len(sys.argv) == 2:
             listnotag(open)
         elif len(sys.argv) >= 4:
-            tag = sys.argv[2]
-            if not re.findall("^[^ #]+$", tag):
-                printerror("the tag has not a valid format - "+tag)
+            tagtodel = sys.argv[2]
+            if not re.findall("^[^ #]+$", tagtodel):
+                printerror("the tag has not a valid format - "+tagtodel)
             # loop on the indexes
             for increment in range(3, len(sys.argv)):
                 index = sys.argv[increment]
@@ -269,11 +269,11 @@ def untag(open=open):
                             if not re.findall("^"+index+' ', line):
                                 todofile.write(line)
                             else:
-                                if re.findall("#"+re.escape(tag)+REGEX_SPACE_OR_ENDLINE, line.rstrip('\n')):
-                                    todofile.write(re.sub("#"+re.escape(tag)+REGEX_SPACE_OR_ENDLINE,
+                                if re.findall("#"+re.escape(tagtodel)+REGEX_SPACE_OR_ENDLINE, line.rstrip('\n')):
+                                    todofile.write(re.sub("#"+re.escape(tagtodel)+REGEX_SPACE_OR_ENDLINE,
                                                           "", line).rstrip('\n').rstrip()+'\n')
                                     printinfo("tag deleted from the task of the todolist - " + line.rstrip(
-                                        '\n') + " -> " + re.sub("#"+re.escape(tag)+REGEX_SPACE_OR_ENDLINE, "", line.rstrip('\n')))
+                                        '\n') + " -> " + re.sub("#"+re.escape(tagtodel)+REGEX_SPACE_OR_ENDLINE, "", line.rstrip('\n')))
                                 else:
                                     todofile.write(line)
                                     printwarning(
@@ -294,9 +294,9 @@ def tag(open=open):
         if len(sys.argv) == 2:
             listtag(open)
         elif len(sys.argv) >= 4:
-            tag = sys.argv[2]
-            if not re.findall("^[^ #]+$", tag):
-                printerror("the tag has not a valid format - "+tag)
+            tagtoadd = sys.argv[2]
+            if not re.findall("^[^ #]+$", tagtoadd):
+                printerror("the tag has not a valid format - "+tagtoadd)
             # loop on the indexes
             for increment in range(3, len(sys.argv)):
                 index = sys.argv[increment]
@@ -312,9 +312,9 @@ def tag(open=open):
                             if not re.findall("^"+index+' ', line):
                                 todofile.write(line)
                             else:
-                                todofile.write(line.rstrip('\n')+" #"+tag+"\n")
+                                todofile.write(line.rstrip('\n')+" #"+tagtoadd+"\n")
                                 printinfo("tag added to the task of the todolist - " +
-                                          line.rstrip('\n') + " -> " + line.rstrip('\n')+" #"+tag)
+                                          line.rstrip('\n') + " -> " + line.rstrip('\n')+" #"+tagtoadd)
                                 index_trouve = True
                     if not index_trouve:
                         printwarning(
