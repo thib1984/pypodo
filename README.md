@@ -101,6 +101,8 @@ and test you app! :
 
 Replace ``pypodo`` with ``./docker-pypodo.sh`` or use an alias (see below)
 
+You can see [the repo docker](https://hub.docker.com/r/thibaultgarcon/pypodo)
+
 ## Alias [optionnal]
 
 You can use alias as
