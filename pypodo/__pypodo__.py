@@ -337,10 +337,10 @@ def backup(open=open):
                 os.makedirs(STR_PATH_HOME__TODO_BACKUP_FOLDER_)
                 printinfo("creating todolist backup folder")
             time_suffix = time.strftime("%Y%m%d%H%M%S")
-            todobackupname = ".todo" + time_suffix
-            backup_name = STR_PATH_HOME__TODO_BACKUP_FOLDER_ + todobackupname
+            todo_backup_name = ".todo" + time_suffix
+            backup_name = STR_PATH_HOME__TODO_BACKUP_FOLDER_ + todo_backup_name
             copyfile(STR_PATH_HOME__TODO_, backup_name)
-            printinfo("creating todolist backup - " + todobackupname)
+            printinfo("creating todolist backup - " + todo_backup_name)
 
 
 def find(open=open):
