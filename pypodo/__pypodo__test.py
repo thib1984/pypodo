@@ -3,11 +3,14 @@ import sys
 import unittest
 from io import StringIO
 from pathlib import Path
-from unittest.mock import mock_open, patch
+from unittest.mock import mock_open, patch, MagicMock
 
-from pypodo.__pypodo__ import add, delete, list, pypodo, sort, tag, untag, help, backup, find
+sys.modules['shutil'] = MagicMock()
+
+from pypodo.__pypodo__ import add, delete, list, pypodo, sort, tag, untag, backup, find
 
 STR_PATH_HOME__TODO_ = str(Path.home()) + '/.todo'
+STR_PATH_HOME__TODO_BACKUP_FOLDER_ = str(Path.home()) + '/.todo_backup/'
 
 
 class TestStringMethods(unittest.TestCase):
@@ -63,6 +66,28 @@ class TestStringMethods(unittest.TestCase):
             self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
                 '\n')), "error   : 0 parameter is needed for pypodo backup")
 
+
+    @patch('time.strftime')
+    @patch('pypodo.__pypodo__.copyfile')
+    @patch('os.path.isfile')
+    @patch('os.makedirs')
+    @patch('os.path.exists', autospec=True)
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_backup(self, mock_print, mock_open, mock_path_exists, mock_makedirs, mock_isfile, mock_copyfile, mock_strftime):
+        with patch.object(sys, 'argv', [pypodo, backup]):
+            mock_isfile.return_value = True
+            mock_path_exists.return_value = False
+            mock_strftime.return_value = '1'
+            backup(mock_open)
+            mock_path_exists.assert_called_with(STR_PATH_HOME__TODO_BACKUP_FOLDER_)
+            mock_makedirs.assert_called_with(STR_PATH_HOME__TODO_BACKUP_FOLDER_)
+            mock_copyfile.assert_called_with(STR_PATH_HOME__TODO_, STR_PATH_HOME__TODO_BACKUP_FOLDER_ + '.todo1')
+            self.assertIn("info    : creating todolist backup folder", escape_ansi(mock_print.getvalue().rstrip(
+                '\n')))
+            self.assertIn("creating todolist backup - .todo1", escape_ansi(mock_print.getvalue().rstrip(
+                '\n')))
+
     @patch('os.path.isfile')
     @patch('builtins.open', new_callable=mock_open)
     @patch('sys.stdout', new_callable=StringIO)
@@ -75,8 +100,7 @@ class TestStringMethods(unittest.TestCase):
 
     @patch('os.path.isfile')
     @patch('builtins.open', new_callable=mock_open, read_data='2 ma tache #test\n4 ma seconde tache')
-    @patch('sys.stdout', new_callable=StringIO)
-    def test_sort_if_todo_with_tasks(self, mock_print, mock_open, mock_isfile):
+    def test_sort_if_todo_with_tasks(self, mock_open, mock_isfile):
         with patch.object(sys, 'argv', [pypodo, sort]):
             mock_isfile.return_value = True
             sort(mock_open)
