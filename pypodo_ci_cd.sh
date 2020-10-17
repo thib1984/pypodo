@@ -280,6 +280,7 @@ then
             printinfo "docker ci ok"
         else
             printerror "docker ci ko"
+            exit 1
         fi
     elif [[ $2 = "cd" ]]
     then
@@ -289,6 +290,7 @@ then
             printinfo "docker ci_cd ok"
         else
             printerror "docker ci_cd ko"
+            exit 1
         fi
     else
         printerror "ko - bad params : docker (ci/cd) [fast]"
@@ -304,6 +306,7 @@ then
             printinfo "pip ci ok"
         else
             printerror "pip ci ko"
+            exit 1
         fi
     elif [[ $2 = "cd" ]]
     then
@@ -313,6 +316,7 @@ then
             printinfo "pip ci_cd ok"
         else
             printerror "pip ci_cd ko"
+            exit 1
         fi
     else
         printerror "ko - bad params : pip (ci/cd) [fast]"
@@ -323,9 +327,10 @@ then
     dockerci $2 && dockercd && pipcd
     if [[ $? = 0 ]]
     then
-        printinfo "CI_CD FULL OK"
+        printinfo "full ci_cd ok"
     else
-        printerror "CI_CD FULL KO"
+        printerror "full ci_cd ko"
+        exit 1
     fi
 else
     printerror "ko - bad params : (docker/pip) (ci/cd) [fast] or full [fast]"
