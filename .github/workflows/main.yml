@@ -44,5 +44,5 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
           repository: thibaultgarcon/pypodo
-          tags: thibaultgarcon/pypodo:latest
+          tags: latest
 
