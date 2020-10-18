@@ -1,6 +1,6 @@
 # pypodo
 
-**pypodo** (\pipudu\\) is a pip package (or docker image if you want, see below!) : a todolist tool which works with a .todo file positionned the root of the home directory
+**pypodo** (\pipudu\\) is a pip package (or docker image if you want, see below!) : a todolist tool which works with a .todo file positionned the root of the home directory with a mecanism of index and tags.
 
 ## Install/Upgrade/Uninstall
 
@@ -35,7 +35,7 @@ print the todolist with an index for each task :
 2 to do other_work #name_of_other_tag
 3 to do other_big_work #name_of_other_tag
 ```
-
+The tags are colored by default in green. If they are "#urgent" they are colored in red. If they have a date format YYYYmmdd and a gap to actual date less than seven days they are colored in yellow or red if greater than the actual date.
 
 - `` pypodo list "name_of_tag"``
 

@@ -99,10 +99,10 @@ dockerci () {
         $smoketest list
         echo pypodo add "tache1"
         $smoketest add "tache1"
-        echo pypodo add "tache2 #montag"
+        echo pypodo add "tache2 #montag #20190101"
         $smoketest add "tache2 #montag"
         echo pypodo add "tache3 #urgent"
-        $smoketest add "tache3 #urgent"
+        $smoketest add "tache3 #urgent #30000101"
         echo pypodo list
         $smoketest list
         echo pypodo del 2

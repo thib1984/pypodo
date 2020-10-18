@@ -8,6 +8,8 @@ import sys
 import time
 from pathlib import Path
 from shutil import copyfile
+from datetime import datetime
+from datetime import date
 
 from termcolor import colored
 
@@ -105,6 +107,7 @@ def listnotag(open=open):
                         empty = False
             if empty:
                 printwarning("the filtered todolist with no tag is empty")
+
 
 def listtag(open=open):
     """
@@ -312,7 +315,8 @@ def tag(open=open):
                             if not re.findall("^"+index+' ', line):
                                 todofile.write(line)
                             else:
-                                todofile.write(line.rstrip('\n')+" #"+tagtoadd+"\n")
+                                todofile.write(line.rstrip(
+                                    '\n')+" #"+tagtoadd+"\n")
                                 printinfo("tag added to the task of the todolist - " +
                                           line.rstrip('\n') + " -> " + line.rstrip('\n')+" #"+tagtoadd)
                                 index_trouve = True
@@ -362,18 +366,39 @@ def find(open=open):
                 printwarning("the filtered todolist is empty")
 
 
+def test_date(datetime_str):
+    """
+    Comparare date en return alert state
+    """
+    try:
+        datetime_object = datetime.strptime(datetime_str, '%Y%m%d').date()
+    except ValueError:
+        return "ok"
+    if (date.today() - datetime_object).days >= 0:
+        return "alert"
+    if (date.today() - datetime_object).days >= -7:
+        return "warning"
+    return "ok"
+
+
 def printlinetodo(line):
     """
     Display task with colors
     """
     task = colored(
-        re.sub("#.*", "", re.sub("^[^ ]+ ", "", line.rstrip('\n'))), "green")
-    index = colored(line.split(' ', 1)[0], "blue")
-    tags_nocolor = re.sub(
-        "^[^#]+ #", "#", re.sub("^[^#]+$", "", re.sub("^[^ ]+ ", "", line.rstrip('\n'))))
-    tags = re.sub(
-        r"(#[^ #]+"+REGEX_SPACE_OR_ENDLINE+"?)", colored(r"\1", "yellow"), tags_nocolor)
-    tags = re.sub(RED+TAG_URGENT, YELLOW+TAG_URGENT, tags)
+        re.sub(" #.*", "", re.sub("^[^ ]+ ", "", line.rstrip('\n'))), "green")
+    index = colored(line.split(' ', 1)[0], "yellow")
+    tags = ""
+    for part in line.split():
+        if "#" in part:
+            if part == "#urgent":
+                tags = tags+" "+(colored(part, "red"))
+            elif test_date(part[1:]) == "alert":
+                tags = tags+" "+(colored(part, "red"))
+            elif test_date(part[1:]) == "warning":
+                tags = tags+" "+(colored(part, "yellow"))
+            else:
+                tags = tags+" "+(colored(part, "cyan"))
     print(index + " " + task + tags)
 
 
