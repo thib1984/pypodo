@@ -30,7 +30,7 @@ dockerci () {
         docker rm pypodo_coverage_html
         docker rmi pypodo_coverage
         docker rmi thibaultgarcon/pypodo_test
-        touch $PYPODO_FILE && rm $PYPODO_FILE && touch $PYPODO_FILE && rm -rf $PYPODO_BACKUP && mkdir $PYPODO_BACKUP 
+        touch $PYPODO_FILE && rm $PYPODO_FILE && touch $PYPODO_FILE && rm -rf $PYPODO_BACKUP && mkdir $PYPODO_BACKUP
     docker rmi pypodo_coverage_html) &>> $file_log_configuration
     printinfo "configuration finished, see output in $file_log_configuration"
     #build
@@ -46,7 +46,7 @@ dockerci () {
     #pylint
     printinfo "pylint running..."
     $dockerpypodorun --rm --entrypoint="pylint" pypodo_test pypodo/__pypodo__.py 2>>$file_log_pylint 1> $file_log_pylint
-        if [[ $? = 1 ]]
+    if [[ $? = 1 ]]
     then
         printerror "pylint ko, see output in $file_log_pylint"
         return 1
@@ -95,39 +95,7 @@ dockerci () {
     fi
     #end-to-end
     printinfo "end-to-end 1/4 running..."
-    (echo pypodo list
-        $smoketest list
-        echo pypodo add "tache1"
-        $smoketest add "tache1"
-        echo pypodo add "tache2 #montag #20190101"
-        $smoketest add "tache2 #montag #20190101"
-        echo pypodo add "tache3 #urgent #30000101"
-        $smoketest add "tache3 #urgent #30000101"
-        echo pypodo list
-        $smoketest list
-        echo pypodo del 2
-        $smoketest del 2
-        echo pypodo tag montag2 3
-        $smoketest tag montag2 3
-        echo pypodo ag urgente 3
-        $smoketest tag urgente 3
-        echo pypodo sort
-        $smoketest sort
-        $smoketest add "mon autre tache #tag #retag"
-        echo pypodo list tag retag
-        $smoketest list tag retag
-        echo pypodo untag retag 3
-        $smoketest untag retag 3
-        echo pypodo tag newtag 3 3 2
-        $smoketest tag newtag 3 3 2
-        echo pypodo list
-        $smoketest list
-        echo pypodo tag
-        $smoketest tag
-        echo pypodo untag
-        $smoketest untag
-        echo pypodo find "t.*che"
-    $smoketest find "t.*che") > ci_cd/cache/log
+    ./end_to_end.sh "$smoketest" > ci_cd/cache/log
     $smoketest backup > ci_cd/cache/log_backup
     diff ci_cd/cache/log ci_cd/log.expected >> $file_log_end_to_end
     if [[ $? = 0 ]]

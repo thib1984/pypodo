@@ -23,7 +23,7 @@ dockerci () {
     smoketest="docker run --rm --mount type=bind,source=${PYPODO_FILE},target=/root/.todo --mount type=bind,source=${PYPODO_BACKUP},target=/root/.todo_backup thibaultgarcon/pypodo_test"
     rm $PYPODO_FILE
     rm -rf $PYPODO_BACKUP
-    touch $PYPODO_FILE && mkdir $PYPODO_BACKUP 
+    touch $PYPODO_FILE && mkdir $PYPODO_BACKUP
     #build
     printinfo "docker build running..."
     docker build -t thibaultgarcon/pypodo_test . --no-cache
@@ -34,19 +34,8 @@ dockerci () {
         printerror "docker build ko"
         return 1
     fi
-    #unittest
-    #printinfo "unittest running..."
-    #$dockerpypodorun --rm --entrypoint="python" pypodo_test -m unittest -v pypodo/__pypodo__test.py
-    #if [[ $? = 0 ]]
-    #then
-    #    printinfo "unittest ok"
-    #else
-    #    printerror "unittest ko"
-    #    return 1
-    #fi
-    #end-to-end
     printinfo "end-to-end 1/4 running..."
-    diff <(echo pypodo list && $smoketest list && echo pypodo add "tache1" && $smoketest add "tache1" && echo pypodo add "tache2 #montag #20190101" && $smoketest add "tache2 #montag #20190101" && echo pypodo add "tache3 #urgent #30000101" && $smoketest add "tache3 #urgent #30000101" && echo pypodo list && $smoketest list && echo pypodo del 2 && $smoketest del 2 && echo pypodo tag montag2 3 && $smoketest tag montag2 3 && echo pypodo ag urgente 3 && $smoketest tag urgente 3 && echo pypodo sort && $smoketest sort && $smoketest add "mon autre tache #tag #retag" && echo pypodo list tag retag && $smoketest list tag retag && echo pypodo untag retag 3 && $smoketest untag retag 3 && echo pypodo tag newtag 3 3 2 && $smoketest tag newtag 3 3 2 && echo pypodo list && $smoketest list && echo pypodo tag && $smoketest tag && echo pypodo untag && $smoketest untag && echo pypodo find "t.*che" && $smoketest find "t.*che") <(cat ci_cd/log.expected)
+    diff <(./end_to_end.sh "$smoketest") <(cat ci_cd/log.expected)
     if [[ $? = 0 ]]
     then
         printinfo "test end-to-end 1/4 ok"
@@ -99,10 +88,10 @@ printwarning () {
 
 dockerci
 if [[ $? = 0 ]]
-    then
-        printinfo "docker ci ok"
-    else
-        printerror "CI_CD FULL KO"
-        exit 1
-    fi
+then
+    printinfo "docker ci ok"
+else
+    printerror "CI_CD FULL KO"
+    exit 1
+fi
 

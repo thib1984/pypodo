@@ -49,8 +49,7 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
           repository: thibaultgarcon/pypodo
-          tag_with_ref: false
-          push: true         
+          tags: latest   
       - name: build pip
         run: python3 -m pep517.build --source --binary --out-dir dist/ .
       - name: publish to pypi
@@ -58,3 +57,4 @@ jobs:
         with:
           user: ${{ secrets.PYPI_USER }}
           password: ${{ secrets.PYPI_PASSWORD }}          
+  

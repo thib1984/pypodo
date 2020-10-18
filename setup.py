@@ -4,7 +4,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setup(name='pypodo',
-      version='2.1.0',
+      version='2.1.1',
       description='pypodo is a todolist tool which works with a .todo file positionned the root of the home directory : use pypodo to run it. Pypodo has mecanism of index and tags',
       long_description=long_description,
       long_description_content_type="text/markdown",
