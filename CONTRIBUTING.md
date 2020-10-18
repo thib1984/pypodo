@@ -66,7 +66,7 @@ pip3 install --user .
 for pi
 
 ```
-docker build -t thibaultgarcon/pypodo .
+docker build -t thibaultgarcon/pypodo:latest .
 ``` 
 for docker
 

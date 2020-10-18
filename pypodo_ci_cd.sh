@@ -45,7 +45,7 @@ dockerci () {
     fi
     #pylint
     printinfo "pylint running..."
-    $dockerpypodorun --rm --entrypoint="pylint" pypodo_test pypodo/__pypodo__.py 2>>$file_log_pylint 1> $file_log_pylint
+    $dockerpypodorun --rm --entrypoint="pylint" thibaultgarcon/pypodo_test pypodo/__pypodo__.py 2>>$file_log_pylint 1> $file_log_pylint
     if [[ $? = 1 ]]
     then
         printerror "pylint ko, see output in $file_log_pylint"
@@ -55,7 +55,7 @@ dockerci () {
     fi
     printinfo "unittest running..."
     #unittest
-    $dockerpypodorun --rm --entrypoint="python" pypodo_test -m unittest -v pypodo/__pypodo__test.py > $file_log_test
+    $dockerpypodorun --rm --entrypoint="python" thibaultgarcon/pypodo_test -m unittest -v pypodo/__pypodo__test.py > $file_log_test
     if [[ $? = 0 ]]
     then
         printinfo "unittest ok, see output in $file_log_test"
@@ -65,7 +65,7 @@ dockerci () {
     fi
     #coverage
     printinfo "coverage run running..."
-    $dockerpypodorun --name pypodo_coverage --entrypoint="coverage" pypodo_test run 1>> $file_log_coverage 2>> $file_log_coverage
+    $dockerpypodorun --name pypodo_coverage --entrypoint="coverage" thibaultgarcon/pypodo_test run 1>> $file_log_coverage 2>> $file_log_coverage
     if [[ $? = 0 ]]
     then
         printinfo "coverage run  ok, see output in $file_log_coverage"
@@ -83,7 +83,7 @@ dockerci () {
         printwarning "mutatest disabled"
     else
         printinfo "mutatest running..."
-        $dockerpypodorun --name pypodo_mutation --entrypoint="mutatest" pypodo_test > /dev/null 2>> $file_log_mutation
+        $dockerpypodorun --name pypodo_mutation --entrypoint="mutatest" thibaultgarcon/pypodo_test > /dev/null 2>> $file_log_mutation
         if [[ $? = 0 ]]
         then
             printinfo "coverage run  ok, see output in $file_log_mutation"
@@ -202,7 +202,7 @@ pipci () {
 }
 
 dockercd () {
-    docker build -t thibaultgarcon/pypodo . --no-cache 1>> $file_log_build_docker_prod 2>> $file_log_build_docker_prod
+    docker build -t thibaultgarcon/pypodo:latest . --no-cache 1>> $file_log_build_docker_prod 2>> $file_log_build_docker_prod
     if [[ $? = 0 ]]
     then
         printinfo "docker build ok, see output in $file_log_build_docker_prod "
