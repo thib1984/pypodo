@@ -21,6 +21,8 @@ dockerci () {
     export PYPODO_BACKUP=/tmp/.todo_backup
     dockerpypodorun="docker run --mount type=bind,source=${PYPODO_FILE},target=/root/.todo --mount type=bind,source=${PYPODO_BACKUP},target=/root/.todo_backup -i"
     smoketest="docker run --rm --mount type=bind,source=${PYPODO_FILE},target=/root/.todo --mount type=bind,source=${PYPODO_BACKUP},target=/root/.todo_backup thibaultgarcon/pypodo_test"
+    rm $PYPODO_FILE
+    rm -rf $PYPODO_BACKUP
     touch $PYPODO_FILE && mkdir $PYPODO_BACKUP 
     #build
     printinfo "docker build running..."
