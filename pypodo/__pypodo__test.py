@@ -1,13 +1,16 @@
+from pypodo.__pypodo__ import add, delete, list, pypodo, sort, tag, untag, backup, find, test_date
 import re
 import sys
 import unittest
+from datetime import datetime
+from datetime import date
 from io import StringIO
 from pathlib import Path
 from unittest.mock import mock_open, patch, MagicMock
+from freezegun import freeze_time
 
 sys.modules['shutil'] = MagicMock()
 
-from pypodo.__pypodo__ import add, delete, list, pypodo, sort, tag, untag, backup, find
 
 STR_PATH_HOME__TODO_ = str(Path.home()) + '/.todo'
 STR_PATH_HOME__TODO_BACKUP_FOLDER_ = str(Path.home()) + '/.todo_backup/'
@@ -66,7 +69,6 @@ class TestStringMethods(unittest.TestCase):
             self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
                 '\n')), "error   : 0 parameter is needed for pypodo backup")
 
-
     @patch('time.strftime')
     @patch('pypodo.__pypodo__.copyfile')
     @patch('os.path.isfile')
@@ -80,9 +82,12 @@ class TestStringMethods(unittest.TestCase):
             mock_path_exists.return_value = False
             mock_strftime.return_value = '1'
             backup(mock_open)
-            mock_path_exists.assert_called_with(STR_PATH_HOME__TODO_BACKUP_FOLDER_)
-            mock_makedirs.assert_called_with(STR_PATH_HOME__TODO_BACKUP_FOLDER_)
-            mock_copyfile.assert_called_with(STR_PATH_HOME__TODO_, STR_PATH_HOME__TODO_BACKUP_FOLDER_ + '.todo1')
+            mock_path_exists.assert_called_with(
+                STR_PATH_HOME__TODO_BACKUP_FOLDER_)
+            mock_makedirs.assert_called_with(
+                STR_PATH_HOME__TODO_BACKUP_FOLDER_)
+            mock_copyfile.assert_called_with(
+                STR_PATH_HOME__TODO_, STR_PATH_HOME__TODO_BACKUP_FOLDER_ + '.todo1')
             self.assertIn("info    : creating todolist backup folder", escape_ansi(mock_print.getvalue().rstrip(
                 '\n')))
             self.assertIn("creating todolist backup - .todo1", escape_ansi(mock_print.getvalue().rstrip(
@@ -136,6 +141,18 @@ class TestStringMethods(unittest.TestCase):
             mock_open.assert_called_with(STR_PATH_HOME__TODO_, 'r')
             self.assertEqual(escape_ansi(
                 mock_print.getvalue().rstrip('\n')), '1 ma tache')
+
+    @freeze_time("2020-10-14")
+    @patch('os.path.isfile')
+    @patch('builtins.open', new_callable=mock_open, read_data='1 ma tache #urgent #20201010 #20201015 #20201022')
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_list_if_todo_one_task_and_tags(self, mock_print, mock_open, mock_isfile):
+        with patch.object(sys, 'argv', [pypodo, list]):
+            mock_isfile.return_value = True
+            list(mock_open)
+            mock_open.assert_called_with(STR_PATH_HOME__TODO_, 'r')
+            self.assertEqual(escape_ansi(
+                mock_print.getvalue().rstrip('\n')), '1 ma tache #urgent #20201010 #20201015 #20201022')
 
     @patch('os.path.isfile')
     @patch('builtins.open', new_callable=mock_open, read_data='1 ma tache #test\n2 ma seconde tache')
@@ -250,6 +267,7 @@ class TestStringMethods(unittest.TestCase):
             self.assertEqual(escape_ansi(
                 mock_print.getvalue().rstrip('\n')), '2 ma seconde tache')
 
+
     @patch('os.path.isfile')
     @patch('builtins.open', new_callable=mock_open, read_data='1 ma tache #test\n2 ma seconde tache #test\n3 ma seconde tache #linux')
     @patch('sys.stdout', new_callable=StringIO)
@@ -300,6 +318,12 @@ class TestStringMethods(unittest.TestCase):
             find(mock_open)
             self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
                 '\n')), "info    : creating .todolist file\nwarning : the filtered todolist is empty")
+
+    @freeze_time("2020-10-14")
+    def test_date(self):
+        self.assertEqual("ok", test_date("20210101"))
+        self.assertEqual("alert", test_date("20201009"))
+        self.assertEqual("warning", test_date("20201020"))
 
 
 def escape_ansi(line):
