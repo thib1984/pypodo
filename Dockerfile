@@ -17,5 +17,4 @@ RUN pip3 install mutatest
 RUN pip3 install pylint
 RUN pip3 install --user .
 COPY pypodo/ .
-#ENTRYPOINT [ "python", "./__pypodo__.py" ]
 ENTRYPOINT ["pypodo"]
