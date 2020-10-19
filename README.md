@@ -76,9 +76,13 @@ print the todolist filtered to the tag '_name_of_tag_' :
 
 ## Screenshots
 
-The indexes are in blue, the tasks in green, and the tags in yellow or red.
+Example of commands
 
 ![image](https://user-images.githubusercontent.com/45128847/95683314-c75dd400-0bea-11eb-900c-bf1aafc09999.png)
+
+Color of tags at the 19/10/2020 : red alert for one task, yellow warning for the second, nothing for the third.
+
+![image](https://user-images.githubusercontent.com/45128847/96498585-88fc9080-124c-11eb-9050-4adacb7204a1.png)
 
 ## Docker usage [optionnal]
 
