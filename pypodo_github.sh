@@ -19,11 +19,13 @@ dockerci () {
     printinfo "configuration running..."
     export PYPODO_FILE=/tmp/.todo
     export PYPODO_BACKUP=/tmp/.todo_backup
-    dockerpypodorun="docker run --mount type=bind,source=${PYPODO_FILE},target=/root/.todo --mount type=bind,source=${PYPODO_BACKUP},target=/root/.todo_backup -i"
-    smoketest="docker run --rm --mount type=bind,source=${PYPODO_FILE},target=/root/.todo --mount type=bind,source=${PYPODO_BACKUP},target=/root/.todo_backup thibaultgarcon/pypodo_test"
+    export PYPODO_CONF=/tmp/.todo.rc
+    smoketest="docker run --rm --mount type=bind,source=${PYPODO_FILE},target=/root/.todo --mount type=bind,source=${PYPODO_CONF},target=/root/.todo.rc --mount type=bind,source=${PYPODO_BACKUP},target=/root/.todo_backup thibaultgarcon/pypodo_test"
+    dockerpypodorun="docker run --mount type=bind,source=${PYPODO_FILE},target=/root/.todo --mount type=bind,source=${PYPODO_CONF},target=/root/.todo.rc --mount type=bind,source=${PYPODO_BACKUP},target=/root/.todo_backup -ti"
     rm $PYPODO_FILE
     rm -rf $PYPODO_BACKUP
-    touch $PYPODO_FILE && mkdir $PYPODO_BACKUP
+    rm $PYPODO_CONF
+    touch $PYPODO_FILE && touch $PYPODO_CONF && mkdir $PYPODO_BACKUP
     #build
     printinfo "docker build running..."
     docker build -t thibaultgarcon/pypodo_test . --no-cache

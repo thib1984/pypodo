@@ -84,6 +84,21 @@ Color of tags at the 19/10/2020 : red alert for one task, yellow warning for the
 
 ![image](https://user-images.githubusercontent.com/45128847/96498585-88fc9080-124c-11eb-9050-4adacb7204a1.png)
 
+## Configuration [optionnal]
+
+You can customize the application with the ``~/.todo.rc`` file. Create it if it does not exist and copy paste these content. For now, you can modify the colors.
+
+```
+#grey,red,green,yellow,blue,magenta,cyan,white only ;)
+[COLOR]
+alert = red
+warning = yellow
+info = green
+index = yellow
+task = green
+tag = cyan
+```
+
 ## Docker usage [optionnal]
 
 If you want, you can use **pypodo** as a docker image.

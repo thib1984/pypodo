@@ -30,4 +30,10 @@ echo pypodo tag &&\
 $smoketest tag &&\
 echo pypodo untag &&\
 $smoketest untag &&\
-echo pypodo find "t.*che" && $smoketest find "t.*che"
+echo pypodo find "t.*che" && $smoketest find "t.*che" &&\
+echo pypodo list with config &&\
+echo "[COLOR]" >> /tmp/.todo.rc &&\
+echo "index = red" >> /tmp/.todo.rc &&\
+echo "task = yellow" >> /tmp/.todo.rc &&\
+echo "tag = grey" >> /tmp/.todo.rc &&\
+$smoketest list
