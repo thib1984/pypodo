@@ -10,10 +10,11 @@ from pathlib import Path
 from shutil import copyfile
 from datetime import datetime
 from datetime import date
-
+import configparser
 from termcolor import colored
 
 STR_PATH_HOME__TODO_ = str(Path.home()) + '/.todo'
+STR_PATH_HOME__TODORC_ = str(Path.home()) + '/.todo.rc'
 TAG_URGENT = "urgent"
 STR_PATH_HOME__TODO_BACKUP_FOLDER_ = str(Path.home()) + '/.todo_backup/'
 REGEX_INDEX = "^\\d+$"
@@ -123,9 +124,17 @@ def listtag(open=open):
                 for line in todofile.readlines():
                     for part in line.split():
                         if "#" in part:
+                            if part == "#urgent":
+                                part = colored(part, color_alert())
+                            elif test_date(part[1:]) == "alert":
+                                part = colored(part, color_alert())
+                            elif test_date(part[1:]) == "warning":
+                                part = colored(part, color_warning())
+                            else:
+                                part = colored(part, color_tag())
                             my_list.append(part)
                             empty = False
-                print(colored("\n".join(sorted(set(my_list))), "green"))
+                print("\n".join(sorted(set(my_list))))
             if empty:
                 printwarning("the filtered todolist with no tag is empty")
 
@@ -136,7 +145,7 @@ def add(open=open):
     """
     if check(open):
         if len(sys.argv) < 3:
-            print("error   : 1 or more parameter is needed for pypodo add - tasks")
+            printerror("1 or more parameter is needed for pypodo add - tasks")
         else:
             # loop on the indexes
             for increment in range(2, len(sys.argv)):
@@ -386,19 +395,19 @@ def printlinetodo(line):
     Display task with colors
     """
     task = colored(
-        re.sub(" #.*", "", re.sub("^[^ ]+ ", "", line.rstrip('\n'))), "green")
-    index = colored(line.split(' ', 1)[0], "yellow")
+        re.sub(" #.*", "", re.sub("^[^ ]+ ", "", line.rstrip('\n'))), color_task())
+    index = colored(line.split(' ', 1)[0], color_index())
     tags = ""
     for part in line.split():
         if "#" in part:
             if part == "#urgent":
-                tags = tags+" "+(colored(part, "red"))
+                tags = tags+" "+(colored(part, color_alert()))
             elif test_date(part[1:]) == "alert":
-                tags = tags+" "+(colored(part, "red"))
+                tags = tags+" "+(colored(part, color_alert()))
             elif test_date(part[1:]) == "warning":
-                tags = tags+" "+(colored(part, "yellow"))
+                tags = tags+" "+(colored(part, color_warning()))
             else:
-                tags = tags+" "+(colored(part, "cyan"))
+                tags = tags+" "+(colored(part, color_tag()))
     print(index + " " + task + tags)
 
 
@@ -406,21 +415,76 @@ def printinfo(text):
     """
     Color and key word info for print
     """
-    print(colored("info    : " + text, "green"))
+    print(colored("info    : " + text, color_info()))
 
 
 def printwarning(text):
     """
     Color and key word warning for print
     """
-    print(colored("warning : " + text, "yellow"))
+    print(colored("warning : " + text, color_warning()))
 
 
 def printerror(text):
     """
     Color and key word error for print
     """
-    print(colored("error   : " + text, "red"))
+    print(colored("error   : " + text, color_alert()))
+
+
+def color_info():
+    """
+    Color for info
+    """
+    return read_config("COLOR", "info", "green")
+
+
+def color_task():
+    """
+    Color for task
+    """
+    return read_config("COLOR", "task", "green")
+
+
+def color_index():
+    """
+    Color for index
+    """
+    return read_config("COLOR", "index", "yellow")
+
+
+def color_tag():
+    """
+    Color for tag
+    """
+    return read_config("COLOR", "tag", "cyan")
+
+
+def color_warning():
+    """
+    Color for warning
+    """
+    return read_config("COLOR", "warning", "yellow")
+
+
+def color_alert():
+    """
+    Color for alert
+    """
+    return read_config("COLOR", "alert", "red")
+
+
+def read_config(section, cle, defaut):
+    """
+    Read the config file
+    """
+    config = configparser.ConfigParser()
+    try:
+        config.read(STR_PATH_HOME__TODORC_)
+        return config[section][cle]
+    except (configparser.MissingSectionHeaderError, KeyError):
+        return defaut
+    
 
 
 def pypodo():

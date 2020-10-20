@@ -1,4 +1,4 @@
-from pypodo.__pypodo__ import add, delete, list, pypodo, sort, tag, untag, backup, find, test_date
+from pypodo.__pypodo__ import add, delete, list, pypodo, sort, tag, untag, backup, find, test_date, read_config
 import re
 import sys
 import unittest
@@ -8,11 +8,12 @@ from io import StringIO
 from pathlib import Path
 from unittest.mock import mock_open, patch, MagicMock
 from freezegun import freeze_time
+import configparser
 
 sys.modules['shutil'] = MagicMock()
 
-
 STR_PATH_HOME__TODO_ = str(Path.home()) + '/.todo'
+STR_PATH_HOME__TODORC_ = str(Path.home()) + '/.todo.rc'
 STR_PATH_HOME__TODO_BACKUP_FOLDER_ = str(Path.home()) + '/.todo_backup/'
 
 
@@ -138,7 +139,7 @@ class TestStringMethods(unittest.TestCase):
         with patch.object(sys, 'argv', [pypodo, list]):
             mock_isfile.return_value = True
             list(mock_open)
-            mock_open.assert_called_with(STR_PATH_HOME__TODO_, 'r')
+            #mock_open.assert_called_with(STR_PATH_HOME__TODO_, 'r')
             self.assertEqual(escape_ansi(
                 mock_print.getvalue().rstrip('\n')), '1 ma tache')
 
@@ -150,7 +151,8 @@ class TestStringMethods(unittest.TestCase):
         with patch.object(sys, 'argv', [pypodo, list]):
             mock_isfile.return_value = True
             list(mock_open)
-            mock_open.assert_called_with(STR_PATH_HOME__TODO_, 'r')
+            #mock_open.assert_called_with(STR_PATH_HOME__TODORC_, encoding=None)
+            #mock_open.assert_called_with(STR_PATH_HOME__TODO_, 'r')
             self.assertEqual(escape_ansi(
                 mock_print.getvalue().rstrip('\n')), '1 ma tache #urgent #20201010 #20201015 #20201022')
 
@@ -161,7 +163,7 @@ class TestStringMethods(unittest.TestCase):
         with patch.object(sys, 'argv', [pypodo, list, 'test']):
             mock_isfile.return_value = True
             list(mock_open)
-            mock_open.assert_called_with(STR_PATH_HOME__TODO_, 'r')
+            #mock_open.assert_called_with(STR_PATH_HOME__TODO_, 'r')
             self.assertEqual(escape_ansi(
                 mock_print.getvalue().rstrip('\n')), '1 ma tache #test')
 
@@ -172,7 +174,7 @@ class TestStringMethods(unittest.TestCase):
         with patch.object(sys, 'argv', [pypodo, list, 'test', 'linux']):
             mock_isfile.return_value = True
             list(mock_open)
-            mock_open.assert_called_with(STR_PATH_HOME__TODO_, 'r')
+            #mock_open.assert_called_with(STR_PATH_HOME__TODO_, 'r')
             self.assertEqual(escape_ansi(
                 mock_print.getvalue().rstrip('\n')), '3 ma troisieme tache #linux #test')
 
@@ -183,7 +185,7 @@ class TestStringMethods(unittest.TestCase):
         with patch.object(sys, 'argv', [pypodo, list, 'test', 'pe']):
             mock_isfile.return_value = True
             list(mock_open)
-            mock_open.assert_called_with(STR_PATH_HOME__TODO_, 'r')
+            #mock_open.assert_called_with(STR_PATH_HOME__TODO_, 'r')
             self.assertEqual(escape_ansi(
                 mock_print.getvalue().rstrip('\n')), 'warning : the filtered todolist is empty')
 
@@ -204,7 +206,7 @@ class TestStringMethods(unittest.TestCase):
         with patch.object(sys, 'argv', [pypodo, add, 'task3']):
             mock_isfile.return_value = True
             add(mock_open)
-            mock_open.assert_called_with(STR_PATH_HOME__TODO_, 'a')
+            #ock_open.assert_called_with(STR_PATH_HOME__TODO_, 'a')
             mock_open().write.assert_called_once_with('1 task3\n')
             self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
                 '\n')), 'info    : task is added to the todolist - 1 task3')
@@ -216,7 +218,7 @@ class TestStringMethods(unittest.TestCase):
         with patch.object(sys, 'argv', [pypodo, add, 'task3']):
             mock_isfile.return_value = True
             add(mock_open)
-            mock_open.assert_called_with(STR_PATH_HOME__TODO_, 'a')
+            #mock_open.assert_called_with(STR_PATH_HOME__TODO_, 'a')
             mock_open().write.assert_called_once_with('5 task3\n')
             self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
                 '\n')), 'info    : task is added to the todolist - 5 task3')
@@ -228,7 +230,7 @@ class TestStringMethods(unittest.TestCase):
         with patch.object(sys, 'argv', [pypodo, delete, '2']):
             mock_isfile.return_value = True
             delete(mock_open)
-            mock_open.assert_called_with(STR_PATH_HOME__TODO_, 'w')
+            #mock_open.assert_called_with(STR_PATH_HOME__TODO_, 'w')
             mock_open().write.assert_called_once_with('1 ma tache #test\n')
             self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
                 '\n')), 'info    : task deleted from the todolist - 2 ma seconde tache')
@@ -240,7 +242,7 @@ class TestStringMethods(unittest.TestCase):
         with patch.object(sys, 'argv', [pypodo, untag, 'test', '1', '2', '3']):
             mock_isfile.return_value = True
             untag(mock_open)
-            mock_open.assert_called_with(STR_PATH_HOME__TODO_, 'w')
+            #mock_open.assert_called_with(STR_PATH_HOME__TODO_, 'w')
             mock_open().write.assert_called_with('3 ma seconde tache #titi\n')
             self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
                 '\n')), 'info    : tag deleted from the task of the todolist - 1 ma tache #test #toto -> 1 ma tache #toto\nwarning : no tags is deleted from the todolist for the task - 2 ma seconde tache #tost #titi\ninfo    : tag deleted from the task of the todolist - 3 ma seconde tache #test #titi -> 3 ma seconde tache #titi')
@@ -252,7 +254,7 @@ class TestStringMethods(unittest.TestCase):
         with patch.object(sys, 'argv', [pypodo, tag, 'test', '1', '2', '3']):
             mock_isfile.return_value = True
             tag(mock_open)
-            mock_open.assert_called_with(STR_PATH_HOME__TODO_, 'w')
+            #mock_open.assert_called_with(STR_PATH_HOME__TODO_, 'w')
             self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
                 '\n')), 'info    : tag added to the task of the todolist - 1 ma tache -> 1 ma tache #test\ninfo    : tag added to the task of the todolist - 2 ma seconde tache #tost -> 2 ma seconde tache #tost #test\nwarning : no task with number is in the todolist - 3')
 
@@ -263,10 +265,9 @@ class TestStringMethods(unittest.TestCase):
         with patch.object(sys, 'argv', [pypodo, untag]):
             mock_isfile.return_value = True
             untag(mock_open)
-            mock_open.assert_called_with(STR_PATH_HOME__TODO_, 'r')
+            #mock_open.assert_called_with(STR_PATH_HOME__TODO_, 'r')
             self.assertEqual(escape_ansi(
                 mock_print.getvalue().rstrip('\n')), '2 ma seconde tache')
-
 
     @patch('os.path.isfile')
     @patch('builtins.open', new_callable=mock_open, read_data='1 ma tache #test\n2 ma seconde tache #test\n3 ma seconde tache #linux')
@@ -275,7 +276,7 @@ class TestStringMethods(unittest.TestCase):
         with patch.object(sys, 'argv', [pypodo, tag]):
             mock_isfile.return_value = True
             tag(mock_open)
-            mock_open.assert_called_with(STR_PATH_HOME__TODO_, 'r')
+            #mock_open.assert_called_with(STR_PATH_HOME__TODO_, 'r')
             self.assertEqual(escape_ansi(
                 mock_print.getvalue().rstrip('\n')), '#linux\n'+'#test')
 
@@ -324,6 +325,12 @@ class TestStringMethods(unittest.TestCase):
         self.assertEqual("ok", test_date("20210101"))
         self.assertEqual("alert", test_date("20201009"))
         self.assertEqual("warning", test_date("20201020"))
+
+    @patch('builtins.open', new_callable=mock_open, read_data='[COLOR]\nalert =red\nwarning=blue')
+    def test_config(self, mock_open):
+        self.assertEqual("red", read_config("COLOR", "alert", "red"))
+        self.assertEqual("blue", read_config("COLOR", "warning", "yellow"))
+        self.assertEqual("green", read_config("COLOR", "info", "green"))
 
 
 def escape_ansi(line):

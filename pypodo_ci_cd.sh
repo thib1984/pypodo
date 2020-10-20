@@ -19,8 +19,9 @@ dockerci () {
     printinfo "configuration running..."
     export PYPODO_FILE=/tmp/.todo
     export PYPODO_BACKUP=/tmp/.todo_backup
-    smoketest="docker run --rm --mount type=bind,source=${PYPODO_FILE},target=/root/.todo --mount type=bind,source=${PYPODO_BACKUP},target=/root/.todo_backup thibaultgarcon/pypodo_test"
-    dockerpypodorun="docker run --mount type=bind,source=${PYPODO_FILE},target=/root/.todo --mount type=bind,source=${PYPODO_BACKUP},target=/root/.todo_backup -ti"
+    export PYPODO_CONF=/tmp/.todo.rc
+    smoketest="docker run --rm --mount type=bind,source=${PYPODO_FILE},target=/root/.todo --mount type=bind,source=${PYPODO_CONF},target=/root/.todo.rc --mount type=bind,source=${PYPODO_BACKUP},target=/root/.todo_backup thibaultgarcon/pypodo_test"
+    dockerpypodorun="docker run --mount type=bind,source=${PYPODO_FILE},target=/root/.todo --mount type=bind,source=${PYPODO_CONF},target=/root/.todo.rc --mount type=bind,source=${PYPODO_BACKUP},target=/root/.todo_backup -ti"
     rm *.log 2> /dev/null
     touch $file_log_mutation
     (rm ci_cd/cache/*
@@ -30,7 +31,7 @@ dockerci () {
         docker rm pypodo_coverage_html
         docker rmi pypodo_coverage
         docker rmi thibaultgarcon/pypodo_test
-        touch $PYPODO_FILE && rm $PYPODO_FILE && touch $PYPODO_FILE && rm -rf $PYPODO_BACKUP && mkdir $PYPODO_BACKUP
+        touch $PYPODO_FILE && rm $PYPODO_FILE && touch $PYPODO_FILE && touch $PYPODO_CONF && rm $PYPODO_CONF && touch $PYPODO_CONF && rm -rf $PYPODO_BACKUP && mkdir $PYPODO_BACKUP
     docker rmi pypodo_coverage_html) &>> $file_log_configuration
     printinfo "configuration finished, see output in $file_log_configuration"
     #build
