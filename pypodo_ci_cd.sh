@@ -22,7 +22,7 @@ dockerci () {
     export PYPODO_CONF=/tmp/.todo.rc
     smoketest="docker run --rm --mount type=bind,source=${PYPODO_FILE},target=/root/.todo --mount type=bind,source=${PYPODO_CONF},target=/root/.todo.rc --mount type=bind,source=${PYPODO_BACKUP},target=/root/.todo_backup thibaultgarcon/pypodo_test"
     dockerpypodorun="docker run --mount type=bind,source=${PYPODO_FILE},target=/root/.todo --mount type=bind,source=${PYPODO_CONF},target=/root/.todo.rc --mount type=bind,source=${PYPODO_BACKUP},target=/root/.todo_backup -ti"
-    rm *.log 2> /dev/null
+    rm ./*.log 2> /dev/null
     touch $file_log_mutation
     (rm ci_cd/cache/*
         touch $file_log_coverage $file_log_build_docker_test $file_log_test $file_log_pylint $file_log_build_docker_prod
@@ -36,8 +36,7 @@ dockerci () {
     printinfo "configuration finished, see output in $file_log_configuration"
     #build
     printinfo "docker build running..."
-    docker build -t thibaultgarcon/pypodo_test . --no-cache 1>>$file_log_build_docker_test 2>>$file_log_build_docker_test
-    if [[ $? = 0 ]]
+    if docker build -t thibaultgarcon/pypodo_test . --no-cache 1>>$file_log_build_docker_test 2>>$file_log_build_docker_test;
     then
         printinfo "docker build ok, see output in $file_log_build_docker_test"
     else
@@ -46,18 +45,16 @@ dockerci () {
     fi
     #pylint
     printinfo "pylint running..."
-    $dockerpypodorun --rm --entrypoint="pylint" thibaultgarcon/pypodo_test pypodo/__pypodo__.py 2>>$file_log_pylint 1> $file_log_pylint
-    if [[ $? != 0 ]]
+    if $dockerpypodorun --rm --entrypoint="pylint" thibaultgarcon/pypodo_test pypodo/__pypodo__.py 2>>$file_log_pylint 1> $file_log_pylint;
     then
+        printinfo "pylint ok, see output in $file_log_pylint"
+    else
         printerror "pylint ko, see output in $file_log_pylint"
         return 1
-    else
-        printinfo "pylint ok, see output in $file_log_pylint"
     fi
     printinfo "unittest running..."
     #unittest
-    $dockerpypodorun --rm --entrypoint="python" thibaultgarcon/pypodo_test -m unittest -v pypodo/__pypodo__test.py > $file_log_test
-    if [[ $? = 0 ]]
+    if $dockerpypodorun --rm --entrypoint="python" thibaultgarcon/pypodo_test -m unittest -v pypodo/__pypodo__test.py > $file_log_test
     then
         printinfo "unittest ok, see output in $file_log_test"
     else
@@ -66,8 +63,7 @@ dockerci () {
     fi
     #coverage
     printinfo "coverage run running..."
-    $dockerpypodorun --name pypodo_coverage --entrypoint="coverage" thibaultgarcon/pypodo_test run 1>> $file_log_coverage 2>> $file_log_coverage
-    if [[ $? = 0 ]]
+    if $dockerpypodorun --name pypodo_coverage --entrypoint="coverage" thibaultgarcon/pypodo_test run 1>> $file_log_coverage 2>> $file_log_coverage;
     then
         printinfo "coverage run  ok, see output in $file_log_coverage"
     else
@@ -84,8 +80,7 @@ dockerci () {
         printwarning "mutatest disabled"
     else
         printinfo "mutatest running..."
-        $dockerpypodorun --name pypodo_mutation --entrypoint="mutatest" thibaultgarcon/pypodo_test > /dev/null 2>> $file_log_mutation
-        if [[ $? = 0 ]]
+        if $dockerpypodorun --name pypodo_mutation --entrypoint="mutatest" thibaultgarcon/pypodo_test > /dev/null 2>> $file_log_mutation;
         then
             printinfo "coverage run  ok, see output in $file_log_mutation"
         else
@@ -98,17 +93,15 @@ dockerci () {
     printinfo "end-to-end 1/4 running..."
     ./end_to_end.sh "$smoketest" > ci_cd/cache/log
     $smoketest backup > ci_cd/cache/log_backup
-    diff ci_cd/cache/log ci_cd/log.expected >> $file_log_end_to_end
-    if [[ $? = 0 ]]
+    if diff ci_cd/cache/log ci_cd/log.expected >> $file_log_end_to_end;
     then
         printinfo "test end-to-end 1/4 ok, see output in $file_log_end_to_end"
     else
         printerror "test end-to-end 1/4 ko, see output in $file_log_end_to_end"
         return 1
     fi
-    printinfo "test end-to-end 2/4 running..."
-    grep "\[32minfo    : creating todolist backup - .todo[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]" ci_cd/cache/log_backup >> $file_log_end_to_end
-    if [[ $? = 0 ]]
+    printinfo "test end-to-end 2/4 running..."    
+    if grep "\[32minfo    : creating todolist backup - .todo[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]" ci_cd/cache/log_backup >> $file_log_end_to_end;
     then
         printinfo "test end-to-end 2/4 ok, see output in $file_log_end_to_end"
     else
@@ -116,8 +109,7 @@ dockerci () {
         return 1
     fi
     printinfo "test end-to-end 3/3 running..."
-    diff ${PYPODO_FILE} ci_cd/.todo.expected >> $file_log_end_to_end
-    if [[ $? = 0 ]]
+    if diff ${PYPODO_FILE} ci_cd/.todo.expected >> $file_log_end_to_end;
     then
         printinfo "test end-to-end 3/4 ok, see output in $file_log_end_to_end"
     else
@@ -125,8 +117,7 @@ dockerci () {
         return 1
     fi
     printinfo "test end-to-end 4/4 running..."
-    diff ${PYPODO_BACKUP}/.todo* ci_cd/.todo.expected >> $file_log_end_to_end
-    if [[ $? = 0 ]]
+    if  diff ${PYPODO_BACKUP}/.todo* ci_cd/.todo.expected >> $file_log_end_to_end;
     then
         printinfo "test end-to-end 4/4 ok, see output in $file_log_end_to_end"
     else
@@ -140,26 +131,24 @@ pipci () {
     #configuration
     printinfo "configuration running..."
     (rm -rf htmlcov/*
-        rm *.log
-        touch $file_log_coverage $file_log_mutation $file_log_configuration $install.log $file_log_test $file_log_pylint
+        rm ./*.log
+        touch $file_log_coverage $file_log_mutation $file_log_configuration $file_log_install $file_log_test $file_log_pylint
         pip3 install mutatest
         pip3 install coverage
     pip3 install pylint) 1>> $file_log_configuration 2>> $file_log_configuration
     printinfo "configuration ok, see output in configuration.log"
     #pylint
     printinfo "pylint running..."
-    pylint pypodo/__pypodo__.py  2> $file_log_pylint 1> $file_log_pylint
-    if [[ $? != 0 ]]
+    if pylint pypodo/__pypodo__.py  2> $file_log_pylint 1> $file_log_pylint;
     then
+        printinfo "pylint ok, see output in pylint.log"    
+    else
         printerror "pylint ko, see output in pylint.log"
         return 1
-    else
-        printinfo "pylint ok, see output in pylint.log"
     fi
     #unittest
     printinfo "unittest running..."
-    python3 -m unittest -v pypodo/__pypodo__test.py 2> $file_log_test
-    if [[ $? = 0 ]]
+    if python3 -m unittest -v pypodo/__pypodo__test.py 2> $file_log_test;
     then
         printinfo "unittest ok, see output in $file_log_test"
     else
@@ -168,17 +157,15 @@ pipci () {
     fi
     #coverage
     printinfo "coverage run running..."
-    coverage run 1>> $file_log_coverage 2>> $file_log_coverage
-    if [[ $? = 0 ]]
+    if coverage run 1>> $file_log_coverage 2>> $file_log_coverage;
     then
         printinfo "coverage run ok, see output in $file_log_coverage"
     else
         printerror "coverage run ko, see output in $file_log_coverage"
         return 1
     fi
-    coverage html 2>&1 > /dev/null
     printinfo "coverage html running..."
-    if [[ $? = 0 ]]
+    if coverage html > /dev/null 2>&1;
     then
         printinfo "coverage html, see output in $folder_log_coverage"
     else
@@ -191,8 +178,7 @@ pipci () {
         printwarning "mutatest disabled"
     else
         printinfo "mutatest running..."
-        mutatest > /dev/null 2>> $file_log_mutation
-        if [[ $? = 0 ]]
+        if mutatest > /dev/null 2>> $file_log_mutation;
         then
             printinfo "mutatest ok, see output in $file_log_mutation"
         else
@@ -203,8 +189,7 @@ pipci () {
 }
 
 dockercd () {
-    docker build -t thibaultgarcon/pypodo:latest . --no-cache 1>> $file_log_build_docker_prod 2>> $file_log_build_docker_prod
-    if [[ $? = 0 ]]
+    if docker build -t thibaultgarcon/pypodo:latest . --no-cache 1>> $file_log_build_docker_prod 2>> $file_log_build_docker_prod;
     then
         printinfo "docker build ok, see output in $file_log_build_docker_prod "
     else
@@ -216,8 +201,7 @@ dockercd () {
 pipcd () {
     #install
     printinfo "pip3 install running..."
-    pip3 install --user . 2>> $file_log_install 1>> $file_log_install
-    if [[ $? = 0 ]]
+    if pip3 install --user . 2>> $file_log_install 1>> $file_log_install;
     then
         printinfo "pip3 install ok, see output in $file_log_install"
     else
@@ -227,15 +211,15 @@ pipcd () {
 }
 
 printinfo () {
-    echo -e $green"info    : "$1$default
+    echo -e "$green""info    : ""$1$default"
 }
 
 printerror () {
-    echo -e $red"error   : "$1$default
+    echo -e "$red""error   : ""$1$default"
 }
 
 printwarning () {
-    echo -e $yellow"warning : "$1$default
+    echo -e "$yellow""warning : ""$1$default"
 }
 
 
@@ -243,8 +227,7 @@ if [[ $1 = "docker" ]]
 then
     if [[ $2 = "ci" ]]
     then
-        dockerci "$3"
-        if [[ $? = 0 ]]
+        if dockerci "$3";
         then
             printinfo "docker ci ok"
         else
@@ -253,8 +236,7 @@ then
         fi
     elif [[ $2 = "cd" ]]
     then
-        dockerci "$3" && dockercd
-        if [[ $? = 0 ]]
+        if dockerci "$3" && dockercd;
         then
             printinfo "docker ci_cd ok"
         else
@@ -269,8 +251,7 @@ elif [[ $1 = "pip" ]]
 then
     if [[ $2 = "ci" ]]
     then
-        pipci "$3"
-        if [[ $? = 0 ]]
+        if pipci "$3";
         then
             printinfo "pip ci ok"
         else
@@ -279,8 +260,7 @@ then
         fi
     elif [[ $2 = "cd" ]]
     then
-        pipci "$3" && pipcd
-        if [[ $? = 0 ]]
+        if pipci "$3" && pipcd;
         then
             printinfo "pip ci_cd ok"
         else
@@ -293,8 +273,7 @@ then
     
 elif [[ $1 = "full" ]]
 then
-    dockerci $2 && dockercd && pipcd
-    if [[ $? = 0 ]]
+    if dockerci "$2" && dockercd && pipcd;
     then
         printinfo "full ci_cd ok"
     else
