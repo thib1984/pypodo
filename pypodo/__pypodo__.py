@@ -13,15 +13,24 @@ from datetime import date
 import configparser
 from termcolor import colored
 
-STR_PATH_HOME__TODO_ = str(Path.home()) + '/.todo'
 STR_PATH_HOME__TODORC_ = str(Path.home()) + '/.todo.rc'
-TAG_URGENT = "urgent"
-STR_PATH_HOME__TODO_BACKUP_FOLDER_ = str(Path.home()) + '/.todo_backup/'
 REGEX_INDEX = "^\\d+$"
 REGEX_SPACE_OR_ENDLINE = "( |$)"
 RED = "33m#"
 YELLOW = "31m#"
 
+
+def todofilefromconfig():
+    """
+    Obtain path to todofile
+    """
+    return read_config("SYSTEM","todofile",str(Path.home()) + '/.todo')
+
+def todobackupfoderfromconfig():
+    """
+    Obtain path to todobackupfolder
+    """
+    return read_config("SYSTEM","todobackupfolder",str(Path.home()) + '/.todo_backup/')
 
 def help():
     """
@@ -68,7 +77,7 @@ def list(open=open):
     if check(open):
 
         empty = True
-        with open(STR_PATH_HOME__TODO_, 'r') as todofile:
+        with open(todofilefromconfig(), 'r') as todofile:
             for line in todofile.readlines():
                 # without filter -> we print all
                 if len(sys.argv) == 2:
@@ -101,7 +110,7 @@ def listnotag(open=open):
             printerror("0 parameter is needed for pypodo listnotag")
         else:
             empty = True
-            with open(STR_PATH_HOME__TODO_, 'r') as todofile:
+            with open(todofilefromconfig(), 'r') as todofile:
                 for line in todofile.readlines():
                     if not '#' in line:
                         printlinetodo(line)
@@ -119,12 +128,12 @@ def listtag(open=open):
             printerror("0 parameter is needed for pypodo listtag")
         else:
             empty = True
-            with open(STR_PATH_HOME__TODO_, 'r') as todofile:
+            with open(todofilefromconfig(), 'r') as todofile:
                 my_list = []
                 for line in todofile.readlines():
                     for part in line.split():
                         if "#" in part:
-                            if part == "#urgent":
+                            if part in listalerttags():
                                 part = colored(part, color_alert())
                             elif test_date(part[1:]) == "alert":
                                 part = colored(part, color_alert())
@@ -154,7 +163,7 @@ def add(open=open):
                 if not re.findall("^([^# ])([^#])*( #[^ #]+)*$", task):
                     printwarning("the task has not a valid format - "+task)
                 else:
-                    with open(STR_PATH_HOME__TODO_, 'r') as todofile:
+                    with open(todofilefromconfig(), 'r') as todofile:
                         lines = todofile.readlines()
                     # index calculation
                     if len(lines) > 0:
@@ -163,7 +172,7 @@ def add(open=open):
                     else:
                         index = 1
                     # adding task to the todolist
-                    with open(STR_PATH_HOME__TODO_, 'a') as todofile:
+                    with open(todofilefromconfig(), 'a') as todofile:
                         todofile.write(str(index)+" "+task+'\n')
                         printinfo("task is added to the todolist - " +
                                   str(index)+" "+task)
@@ -185,9 +194,9 @@ def delete(open=open):
                         "the index to delete is not in numeric format - " + index)
                 else:
                     index_existant = False
-                    with open(STR_PATH_HOME__TODO_, 'r') as todofile:
+                    with open(todofilefromconfig(), 'r') as todofile:
                         lines = todofile.readlines()
-                    with open(STR_PATH_HOME__TODO_, 'w') as todofile:
+                    with open(todofilefromconfig(), 'w') as todofile:
                         for line in lines:
                             # if the current row doesn't contain the index it is kept
                             if not re.findall("^"+index+' ', line):
@@ -200,6 +209,10 @@ def delete(open=open):
                     if not index_existant:
                         printwarning(
                             "no task is deleted from the todolist, not existing index - " + index)
+                    else:
+                        if read_config_boolean("FONCTIONAL","autosort","False") == "True":
+                            sys.argv = [sys.argv[0]]
+                            sort(open)
         else:
             printerror(
                 "1 or more parameter is needed for pypodo del - indexes to delete in numeric format")
@@ -210,14 +223,14 @@ def sort(open=open):
     Reorder the todofile with consecutives indexes
     """
     if check(open):
-        if len(sys.argv) != 2:
+        if len(sys.argv) > 2:
             printerror("0 parameter is needed for pypodo sort")
         else:
             empty = True
             index = 1
-            with open(STR_PATH_HOME__TODO_, 'r') as todofile:
+            with open(todofilefromconfig(), 'r') as todofile:
                 lines = todofile.readlines()
-            with open(STR_PATH_HOME__TODO_, 'w') as todofile:
+            with open(todofilefromconfig(), 'w') as todofile:
                 for line in lines:
                     # we replace the existing index by the current index that we increment
                     replaced = re.sub("^\\d+ ", str(index)+" ", line)
@@ -235,9 +248,9 @@ def check(open=open):
     """
     Check the toodofile
     """
-    file_exists = os.path.isfile(STR_PATH_HOME__TODO_)
+    file_exists = os.path.isfile(todofilefromconfig())
     if file_exists:
-        with open(STR_PATH_HOME__TODO_, 'r') as todofile:
+        with open(todofilefromconfig(), 'r') as todofile:
             error = False
             for line in todofile.readlines():
                 # verification regex, index + task + possible tags
@@ -251,7 +264,7 @@ def check(open=open):
         return True
 
     printinfo("creating .todolist file")
-    open(STR_PATH_HOME__TODO_, "a")
+    open(todofilefromconfig(), "a")
     return True
 
 
@@ -274,9 +287,9 @@ def untag(open=open):
                         "the index to untag is not in numeric format - " + index)
                 else:
                     index_trouve = False
-                    with open(STR_PATH_HOME__TODO_, 'r') as todofile:
+                    with open(todofilefromconfig(), 'r') as todofile:
                         lines = todofile.readlines()
-                    with open(STR_PATH_HOME__TODO_, 'w') as todofile:
+                    with open(todofilefromconfig(), 'w') as todofile:
                         for line in lines:
                             if not re.findall("^"+index+' ', line):
                                 todofile.write(line)
@@ -317,9 +330,9 @@ def tag(open=open):
                         "the index to tag is not in numeric format - " + index)
                 else:
                     index_trouve = False
-                    with open(STR_PATH_HOME__TODO_, 'r') as todofile:
+                    with open(todofilefromconfig(), 'r') as todofile:
                         lines = todofile.readlines()
-                    with open(STR_PATH_HOME__TODO_, 'w') as todofile:
+                    with open(todofilefromconfig(), 'w') as todofile:
                         for line in lines:
                             if not re.findall("^"+index+' ', line):
                                 todofile.write(line)
@@ -345,14 +358,14 @@ def backup(open=open):
         if len(sys.argv) > 2:
             printerror("0 parameter is needed for pypodo backup")
         else:
-            dir_exists = os.path.exists(STR_PATH_HOME__TODO_BACKUP_FOLDER_)
+            dir_exists = os.path.exists(todobackupfoderfromconfig())
             if not dir_exists:
-                os.makedirs(STR_PATH_HOME__TODO_BACKUP_FOLDER_)
+                os.makedirs(todobackupfoderfromconfig())
                 printinfo("creating todolist backup folder")
             time_suffix = time.strftime("%Y%m%d%H%M%S")
             todo_backup_name = ".todo" + time_suffix
-            backup_name = STR_PATH_HOME__TODO_BACKUP_FOLDER_ + todo_backup_name
-            copyfile(STR_PATH_HOME__TODO_, backup_name)
+            backup_name = todobackupfoderfromconfig() + todo_backup_name
+            copyfile(todofilefromconfig(), backup_name)
             printinfo("creating todolist backup - " + todo_backup_name)
 
 
@@ -365,7 +378,7 @@ def find(open=open):
             printerror("1 parameter is needed for pypodo find")
         else:
             empty = True
-            with open(STR_PATH_HOME__TODO_, 'r') as todofile:
+            with open(todofilefromconfig(), 'r') as todofile:
                 for line in todofile.readlines():
                     search = sys.argv[2]
                     if re.findall(search, line.rstrip('\n')):
@@ -383,11 +396,27 @@ def test_date(datetime_str):
         datetime_object = datetime.strptime(datetime_str, '%Y%m%d').date()
     except ValueError:
         return "ok"
-    if (date.today() - datetime_object).days >= 0:
+    if (date.today() - datetime_object).days >= -1 * periodalert():
         return "alert"
-    if (date.today() - datetime_object).days >= -7:
+    if (date.today() - datetime_object).days >= -1 * periodwarning():
         return "warning"
     return "ok"
+
+
+def periodalert():
+    """
+    Obtain period alert
+    """
+    return int(read_config_int("FONCTIONAL", "periodalert", "0"))
+
+
+def periodwarning():
+    """
+    Obtain period warnning
+    """
+    return int(read_config_int("FONCTIONAL", "periodwarning", "7"))
+
+
 
 
 def printlinetodo(line):
@@ -400,7 +429,7 @@ def printlinetodo(line):
     tags = ""
     for part in line.split():
         if "#" in part:
-            if part == "#urgent":
+            if part in listalerttags():
                 tags = tags+" "+(colored(part, color_alert()))
             elif test_date(part[1:]) == "alert":
                 tags = tags+" "+(colored(part, color_alert()))
@@ -415,14 +444,16 @@ def printinfo(text):
     """
     Color and key word info for print
     """
-    print(colored("info    : " + text, color_info()))
+    if read_config_level("SYSTEM", "messagelevel", "info") == "info":
+        print(colored("info    : " + text, color_info()))
 
 
 def printwarning(text):
     """
     Color and key word warning for print
     """
-    print(colored("warning : " + text, color_warning()))
+    if read_config_level("SYSTEM", "messagelevel", "info") == "info" or read_config_level("SYSTEM", "messagelevel", "info") == "warning":
+        print(colored("warning : " + text, color_warning()))
 
 
 def printerror(text):
@@ -436,42 +467,41 @@ def color_info():
     """
     Color for info
     """
-    return read_config("COLOR", "info", "green")
+    return read_config_color("COLOR", "info", "green")
 
 
 def color_task():
     """
     Color for task
     """
-    return read_config("COLOR", "task", "green")
+    return read_config_color("COLOR", "task", "green")
 
 
 def color_index():
     """
     Color for index
     """
-    return read_config("COLOR", "index", "yellow")
+    return read_config_color("COLOR", "index", "yellow")
 
 
 def color_tag():
     """
     Color for tag
     """
-    return read_config("COLOR", "tag", "cyan")
-
+    return read_config_color("COLOR", "tag", "cyan")
 
 def color_warning():
     """
     Color for warning
     """
-    return read_config("COLOR", "warning", "yellow")
+    return read_config_color("COLOR", "warning", "yellow")
 
 
 def color_alert():
     """
     Color for alert
     """
-    return read_config("COLOR", "alert", "red")
+    return read_config_color("COLOR", "alert", "red")
 
 
 def read_config(section, cle, defaut):
@@ -484,8 +514,49 @@ def read_config(section, cle, defaut):
         return config[section][cle]
     except (configparser.MissingSectionHeaderError, KeyError):
         return defaut
-    
 
+def read_config_color(section, cle, defaut):
+    """
+    Read the config file for color
+    """
+    color = read_config(section, cle, defaut)
+    if color not in ['grey','red','green','yellow','blue','magenta','cyan','white']:
+        return defaut
+    return color
+
+
+def read_config_int(section, cle, defaut):
+    """
+    Read the config file for natural number
+    """
+    number = read_config(section, cle, defaut)
+    if not number.isdigit():
+        return defaut
+    return number
+
+def read_config_boolean(section, cle, defaut):
+    """
+    Read the config file for color
+    """
+    myboool = read_config(section, cle, defaut)
+    if myboool not in ['True', 'False']:
+        return defaut
+    return myboool
+
+def read_config_level(section, cle, defaut):
+    """
+    Read the config file for level
+    """
+    level = read_config(section, cle, defaut)
+    if level not in ['warning', 'info','error']:
+        return defaut
+    return level
+
+def listalerttags():
+    """
+    Obtain list of alert tags
+    """
+    return read_config("FONCTIONAL","alerttags","#urgent").split(",")
 
 def pypodo():
     """
