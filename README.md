@@ -86,7 +86,7 @@ Color of tags at the 19/10/2020 : red alert for one task, yellow warning for the
 
 ## Configuration [optionnal]
 
-You can customize the application with the ``~/.todo.rc`` file. Create it if it does not exist and copy paste these content. For now, you can modify the colors.
+You can customize the application with the ``~/.todo.rc`` file. Create it if it does not exist and copy paste these content. The autosort option run a pypodo sort after pypodo del.
 
 ```
 #grey,red,green,yellow,blue,magenta,cyan,white only ;)
@@ -94,9 +94,25 @@ You can customize the application with the ``~/.todo.rc`` file. Create it if it 
 alert = red
 warning = yellow
 info = green
-index = yellow
+index = blue
 task = green
 tag = cyan
+
+[SYSTEM]
+#info,warning,error
+messagelevel = info
+#not modify if you use docker!
+#todofile = /tmp/.todo
+#todobackupfolder = /tmp/.todo_backup/
+
+[FONCTIONAL]
+#int values
+periodalert = 0
+periodwarning = 7
+#tags with '#' and with a coma separation
+alerttags = #urgent
+#or True
+autosort = False
 ```
 
 ## Docker usage [optionnal]

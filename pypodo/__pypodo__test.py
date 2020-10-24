@@ -1,4 +1,4 @@
-from pypodo.__pypodo__ import add, delete, list, pypodo, sort, tag, untag, backup, find, test_date, read_config
+from pypodo.__pypodo__ import add, delete, list, help, pypodo, sort, tag, untag, backup, find, test_date, read_config_boolean, read_config, read_config_level, read_config_int,  read_config_color
 import re
 import sys
 import unittest
@@ -326,11 +326,24 @@ class TestStringMethods(unittest.TestCase):
         self.assertEqual("alert", test_date("20201009"))
         self.assertEqual("warning", test_date("20201020"))
 
-    @patch('builtins.open', new_callable=mock_open, read_data='[COLOR]\nalert =red\nwarning=blue')
+    @patch('builtins.open', new_callable=mock_open, read_data='[COLOR]\nalert =red\nwarning=blue\ninfo=tyty\n[FONCTIONAL]\nmybool = False\nmybool2 = Tru\nperiodwarning = red\n[SYSTEM]\nlevel = error\nlevel2 = warning\nlevel3 = debugg')
     def test_config(self, mock_open):
         self.assertEqual("red", read_config("COLOR", "alert", "red"))
+        self.assertEqual("red", read_config("COLOR", "alert", "red"))
         self.assertEqual("blue", read_config("COLOR", "warning", "yellow"))
-        self.assertEqual("green", read_config("COLOR", "info", "green"))
+        self.assertEqual("tyty", read_config("COLOR", "info", "green"))
+        self.assertEqual("green", read_config_color("COLOR", "info", "green"))
+        self.assertEqual("red", read_config_color("COLOR", "error", "red"))
+        self.assertEqual("1", read_config_int("FONCTIONAL", "periodalert", "1"))
+        self.assertEqual("7", read_config_int("FONCTIONAL", "periodwarning", "7"))
+        self.assertEqual("error", read_config_level("SYSTEM", "level", "error"))
+        self.assertEqual("warning", read_config_level("SYSTEM", "level2", "error"))
+        self.assertEqual("error", read_config_level("SYSTEM", "level3", "error"))
+        self.assertEqual("False", read_config_boolean("FONCTIONAL", "mybool", "True"))
+        self.assertEqual("True", read_config_boolean("FONCTIONAL", "mybool2", "True"))
+
+    def test_help(self):
+        help()
 
 
 def escape_ansi(line):
