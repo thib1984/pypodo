@@ -5,6 +5,7 @@ COPY setup.py .
 #FIXME how copy all files excpect them in the .gitignore file?
 #without this file, thie pip coverage don't work as in pip ci
 COPY .coveragerc .
+COPY .pylintrc .
 COPY mutatest.ini .
 COPY LICENSE.txt .
 COPY README.md .

@@ -47,7 +47,7 @@ dockerci () {
     #pylint
     printinfo "pylint running..."
     $dockerpypodorun --rm --entrypoint="pylint" thibaultgarcon/pypodo_test pypodo/__pypodo__.py 2>>$file_log_pylint 1> $file_log_pylint
-    if [[ $? = 1 ]]
+    if [[ $? != 0 ]]
     then
         printerror "pylint ko, see output in $file_log_pylint"
         return 1
@@ -149,7 +149,7 @@ pipci () {
     #pylint
     printinfo "pylint running..."
     pylint pypodo/__pypodo__.py  2> $file_log_pylint 1> $file_log_pylint
-    if [[ $? = 1 ]]
+    if [[ $? != 0 ]]
     then
         printerror "pylint ko, see output in pylint.log"
         return 1

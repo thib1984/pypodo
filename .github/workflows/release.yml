@@ -21,8 +21,7 @@ jobs:
           pip install mutatest coverage pylint termcolor pep517 freezegun
       - name: pylint
         run: |
-          pylint pypodo/__pypodo__.py
-        continue-on-error: true       
+          pylint pypodo/__pypodo__.py    
       - name: pytest
         run: |
           python3 -m unittest -v pypodo/__pypodo__test.py        
