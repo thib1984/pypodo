@@ -10,6 +10,11 @@ from unittest.mock import mock_open, patch, MagicMock
 from freezegun import freeze_time
 import configparser
 
+
+class AnyStringWith(str):
+    def __eq__(self, other):
+        return self in other
+
 sys.modules['shutil'] = MagicMock()
 
 STR_PATH_HOME__TODO_ = str(Path.home()) + '/.todo'
@@ -106,7 +111,8 @@ class TestStringMethods(unittest.TestCase):
 
     @patch('os.path.isfile')
     @patch('builtins.open', new_callable=mock_open, read_data='2 ma tache #test\n4 ma seconde tache')
-    def test_sort_if_todo_with_tasks(self, mock_open, mock_isfile):
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_sort_if_todo_with_tasks(self, mock_sysout, mock_open, mock_isfile):
         with patch.object(sys, 'argv', [pypodo, sort]):
             mock_isfile.return_value = True
             sort(mock_open)
@@ -342,8 +348,12 @@ class TestStringMethods(unittest.TestCase):
         self.assertEqual("False", read_config_boolean("FONCTIONAL", "mybool", "True"))
         self.assertEqual("True", read_config_boolean("FONCTIONAL", "mybool2", "True"))
 
-    def test_help(self):
+    #FIXME first patch is used to mute sysout in the logs...
+    @patch('sys.stdout', new_callable=StringIO)
+    @patch("builtins.print",autospec=True,side_effect=print)
+    def test_help_contains_synopsis(self, mock_print, mock_stdout):
         help()
+        mock_print.assert_called_with(AnyStringWith("SYNOPSIS"))
 
 
 def escape_ansi(line):
