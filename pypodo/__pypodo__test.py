@@ -290,7 +290,7 @@ class TestMethodsTools(unittest.TestCase):
         self.assertEqual("warning", test_date("20201020"))
 
     @patch('builtins.open', new_callable=mock_open, read_data='[COLOR]\nalert =red\nwarning=blue\ninfo=bad')
-    def test_read_config(self, mock_open):
+    def test_read_config(self, mock_open_file):
         #read_config
         self.assertEqual("red", read_config("COLOR", "error", "red"))
         self.assertEqual("red", read_config("COLOR", "alert", "red"))
@@ -298,7 +298,7 @@ class TestMethodsTools(unittest.TestCase):
         self.assertEqual("bad", read_config("COLOR", "info", "green"))
 
     @patch('builtins.open', new_callable=mock_open, read_data='[COLOR]\nalert =red\nwarning=blue\ninfo=bad')
-    def test_read_config_color(self, mock_open):
+    def test_read_config_color(self, mock_open_file):
         #read_config_color
         self.assertEqual("red", read_config_color("COLOR", "error", "red"))
         self.assertEqual("red", read_config_color("COLOR", "alert", "red"))
@@ -306,21 +306,21 @@ class TestMethodsTools(unittest.TestCase):
         self.assertEqual("green", read_config_color("COLOR", "info", "green"))
 
     @patch('builtins.open', new_callable=mock_open, read_data='[FONCTIONAL]\nperiodwarning = bad\nperiodalert = 1\nperiodinfo = -1')
-    def test_read_config_int(self, mock_open):
+    def test_read_config_int(self, mock_open_file):
         #read_config_int
         self.assertEqual("1", read_config_int("FONCTIONAL", "periodalert", "0"))
         self.assertEqual("7", read_config_int("FONCTIONAL", "periodwarning", "7"))
         self.assertEqual("10", read_config_int("FONCTIONAL", "periodinfo", "10"))
 
     @patch('builtins.open', new_callable=mock_open, read_data='[SYSTEM]\nlevel = error\nlevel2 = warning\nlevel3 = bad')
-    def test_read_config_level(self, mock_open):
+    def test_read_config_level(self, mock_open_file):
         #read_config_level
         self.assertEqual("error", read_config_level("SYSTEM", "level", "error"))
         self.assertEqual("warning", read_config_level("SYSTEM", "level2", "error"))
         self.assertEqual("error", read_config_level("SYSTEM", "level3", "error"))
 
     @patch('builtins.open', new_callable=mock_open, read_data='[FONCTIONAL]\nmybool = False\nmybool2 = bad')
-    def test_read_config_boolean(self, mock_open):
+    def test_read_config_boolean(self, mock_open_file):
         #read_config_boolean
         self.assertEqual("False", read_config_boolean("FONCTIONAL", "mybool", "True"))
         self.assertEqual("True", read_config_boolean("FONCTIONAL", "mybool2", "True"))
@@ -335,98 +335,98 @@ class TestMethodsOthers(unittest.TestCase):
     @patch('os.path.exists', autospec=True)
     @patch('builtins.open', new_callable=mock_open)
     @patch('sys.stdout', new_callable=StringIO)
-    def test_backup(self, mock_print, mock_open, mock_path_exists, mock_makedirs, mock_isfile, mock_copyfile, mock_strftime):
+    def test_backup_create_file_with_good_sufix_and_good_content(self, mock_print, mock_open, mock_path_exists, mock_makedirs, mock_isfile, mock_copyfile, mock_strftime):
         with patch.object(sys, 'argv', [pypodo, backup]):
             mock_isfile.return_value = True
             mock_path_exists.return_value = False
-            mock_strftime.return_value = '1'
+            mock_strftime.return_value = '_sufix_date'
             backup(mock_open)
             mock_path_exists.assert_called_with(
                 STR_PATH_HOME__TODO_BACKUP_FOLDER_)
             mock_makedirs.assert_called_with(
                 STR_PATH_HOME__TODO_BACKUP_FOLDER_)
             mock_copyfile.assert_called_with(
-                STR_PATH_HOME__TODO_, STR_PATH_HOME__TODO_BACKUP_FOLDER_ + '.todo1')
+                STR_PATH_HOME__TODO_, STR_PATH_HOME__TODO_BACKUP_FOLDER_ + '.todo_sufix_date')
             self.assertIn("info    : creating todolist backup folder", escape_ansi(mock_print.getvalue().rstrip(
                 '\n')))
-            self.assertIn("creating todolist backup - .todo1", escape_ansi(mock_print.getvalue().rstrip(
+            self.assertIn("creating todolist backup - .todo_sufix_date", escape_ansi(mock_print.getvalue().rstrip(
                 '\n')))
 
-
-
     @patch('os.path.isfile')
-    @patch('builtins.open', new_callable=mock_open, read_data='2 ma tache #test\n4 ma seconde tache')
+    @patch('builtins.open', new_callable=mock_open, read_data='2 task one #test\n4 task two')
     @patch('sys.stdout', new_callable=StringIO)
-    def test_sort_if_todo_with_tasks(self, mock_sysout, mock_open, mock_isfile):
+    def test_sort_reorganize_index(self, mock_sysout, mock_open, mock_isfile):
         with patch.object(sys, 'argv', [pypodo, sort]):
             mock_isfile.return_value = True
             sort(mock_open)
-            mock_open().write.assert_called_with('2 ma seconde tache')
+            mock_open().write.assert_called_with('2 task two')
 
     @patch('os.path.isfile')
-    @patch('builtins.open', new_callable=mock_open, read_data='1 ma tache')
+    @patch('builtins.open', new_callable=mock_open, read_data='1 task')
     @patch('sys.stdout', new_callable=StringIO)
-    def test_list_if_todo_one_task(self, mock_print, mock_open, mock_isfile):
+    def test_list_print_one_task(self, mock_print, mock_open, mock_isfile):
         with patch.object(sys, 'argv', [pypodo, list]):
             mock_isfile.return_value = True
             list(mock_open)
-            #mock_open.assert_called_with(STR_PATH_HOME__TODO_, 'r')
             self.assertEqual(escape_ansi(
-                mock_print.getvalue().rstrip('\n')), '1 ma tache')
+                mock_print.getvalue().rstrip('\n')), '1 task')
+
+    @patch('os.path.isfile')
+    @patch('builtins.open', new_callable=mock_open, read_data='1 task #tag1 #tag2')
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_list_print_one_task_and_tags(self, mock_print, mock_open, mock_isfile):
+        with patch.object(sys, 'argv', [pypodo, list]):
+            mock_isfile.return_value = True
+            list(mock_open)
+            self.assertEqual(escape_ansi(
+                mock_print.getvalue().rstrip('\n')), '1 task #tag1 #tag2')
 
     @freeze_time("2020-10-14")
     @patch('os.path.isfile')
-    @patch('builtins.open', new_callable=mock_open, read_data='1 ma tache #urgent #20201010 #20201015 #20201022')
+    @patch('builtins.open', new_callable=mock_open, read_data='1 task #urgent #20201010 #20201015 #20201022 #tag')
     @patch('sys.stdout', new_callable=StringIO)
-    def test_list_if_todo_one_task_and_tags(self, mock_print, mock_open, mock_isfile):
+    def test_list_print_one_task_and_specific_tags(self, mock_print, mock_open, mock_isfile):
         with patch.object(sys, 'argv', [pypodo, list]):
             mock_isfile.return_value = True
             list(mock_open)
-            #mock_open.assert_called_with(STR_PATH_HOME__TODORC_, encoding=None)
-            #mock_open.assert_called_with(STR_PATH_HOME__TODO_, 'r')
             self.assertEqual(escape_ansi(
-                mock_print.getvalue().rstrip('\n')), '1 ma tache #urgent #20201010 #20201015 #20201022')
+                mock_print.getvalue().rstrip('\n')), '1 task #urgent #20201010 #20201015 #20201022 #tag')
 
     @patch('os.path.isfile')
-    @patch('builtins.open', new_callable=mock_open, read_data='1 ma tache #test\n2 ma seconde tache')
+    @patch('builtins.open', new_callable=mock_open, read_data='1 task1 #tag\n2 task2 #tag2')
     @patch('sys.stdout', new_callable=StringIO)
-    def test_list_with_filter_one_task(self, mock_print, mock_open, mock_isfile):
-        with patch.object(sys, 'argv', [pypodo, list, 'test']):
+    def test_list_with_filter_return_result(self, mock_print, mock_open, mock_isfile):
+        with patch.object(sys, 'argv', [pypodo, list, 'tag']):
             mock_isfile.return_value = True
             list(mock_open)
-            #mock_open.assert_called_with(STR_PATH_HOME__TODO_, 'r')
             self.assertEqual(escape_ansi(
-                mock_print.getvalue().rstrip('\n')), '1 ma tache #test')
+                mock_print.getvalue().rstrip('\n')), '1 task1 #tag')
 
     @patch('os.path.isfile')
-    @patch('builtins.open', new_callable=mock_open, read_data='1 ma tache #test\n2 ma seconde tache #linux\n3 ma troisieme tache #linux #test\n4 ma 4 tache #toto')
+    @patch('builtins.open', new_callable=mock_open, read_data='1 task #tag1\n2 task2 tache #tag2\n3 task3 #tag1 #tag2\n4 ma 4 task4 #tag3')
     @patch('sys.stdout', new_callable=StringIO)
-    def test_list_with_double_filter_one_task(self, mock_print, mock_open, mock_isfile):
-        with patch.object(sys, 'argv', [pypodo, list, 'test', 'linux']):
+    def test_list_with_double_filter_return_result(self, mock_print, mock_open, mock_isfile):
+        with patch.object(sys, 'argv', [pypodo, list, 'tag1', 'tag2']):
             mock_isfile.return_value = True
             list(mock_open)
-            #mock_open.assert_called_with(STR_PATH_HOME__TODO_, 'r')
             self.assertEqual(escape_ansi(
-                mock_print.getvalue().rstrip('\n')), '3 ma troisieme tache #linux #test')
-
-
+                mock_print.getvalue().rstrip('\n')), '3 task3 #tag1 #tag2')
 
     @patch('os.path.isfile')
     @patch('builtins.open', new_callable=mock_open)
     @patch('sys.stdout', new_callable=StringIO)
-    def test_add_task_todolist_empty(self, mock_print, mock_open, mock_isfile):
-        with patch.object(sys, 'argv', [pypodo, add, 'task3']):
+    def test_add_multi_task(self, mock_print, mock_open, mock_isfile):
+        with patch.object(sys, 'argv', [pypodo, add, 'task1', 'task2']):
             mock_isfile.return_value = True
             add(mock_open)
-            #ock_open.assert_called_with(STR_PATH_HOME__TODO_, 'a')
-            mock_open().write.assert_called_once_with('1 task3\n')
+            mock_open().write.assert_called_with('2 task2\n')
             self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
-                '\n')), 'info    : task is added to the todolist - 1 task3')
+                '\n')), 'info    : task is added to the todolist - 1 task1\ninfo    : task is added to the todolist - 2 task2')
 
     @patch('os.path.isfile')
-    @patch('builtins.open', new_callable=mock_open, read_data='1 ma tache #test\n4 ma seconde tache')
+    @patch('builtins.open', new_callable=mock_open, read_data='1 task1\n4 task2')
     @patch('sys.stdout', new_callable=StringIO)
-    def test_add_task_todolist_not_empty(self, mock_print, mock_open, mock_isfile):
+    def test_add_task_with_no_empty_todolist(self, mock_print, mock_open, mock_isfile):
         with patch.object(sys, 'argv', [pypodo, add, 'task3']):
             mock_isfile.return_value = True
             add(mock_open)
@@ -436,21 +436,42 @@ class TestMethodsOthers(unittest.TestCase):
                 '\n')), 'info    : task is added to the todolist - 5 task3')
 
     @patch('os.path.isfile')
-    @patch('builtins.open', new_callable=mock_open, read_data='1 ma tache #test\n2 ma seconde tache')
+    @patch('builtins.open', new_callable=mock_open, read_data='1 task1 #tag\n2 task2\n4 task3')
     @patch('sys.stdout', new_callable=StringIO)
-    def test_del_task(self, mock_print, mock_open, mock_isfile):
+    def test_delete_one_task(self, mock_print, mock_open, mock_isfile):
         with patch.object(sys, 'argv', [pypodo, delete, '2']):
             mock_isfile.return_value = True
             delete(mock_open)
-            #mock_open.assert_called_with(STR_PATH_HOME__TODO_, 'w')
-            mock_open().write.assert_called_once_with('1 ma tache #test\n')
+            mock_open().write.assert_called_with('4 task3')
             self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
-                '\n')), 'info    : task deleted from the todolist - 2 ma seconde tache')
+                '\n')), 'info    : task deleted from the todolist - 2 task2')
+
+    @patch('os.path.isfile')
+    @patch('builtins.open', new_callable=mock_open, read_data='1 task1 #tag\n2 task2\n4 task3')
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_delete_multi_task(self, mock_print, mock_open, mock_isfile):
+        with patch.object(sys, 'argv', [pypodo, delete, '2', '1']):
+            mock_isfile.return_value = True
+            delete(mock_open)
+            mock_open().write.assert_called_with('4 task3')
+            self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
+                '\n')), 'info    : task deleted from the todolist - 2 task2\ninfo    : task deleted from the todolist - 1 task1 #tag')                
+
+    @patch('os.path.isfile')
+    @patch('builtins.open', new_callable=mock_open, read_data='1 task #tag2\n2 task2 #tag #tag3')
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_untag_one_task(self, mock_print, mock_open, mock_isfile):
+        with patch.object(sys, 'argv', [pypodo, untag, 'tag', '2']):
+            mock_isfile.return_value = True
+            untag(mock_open)
+            mock_open().write.assert_called_with('2 task2 #tag3\n')
+            self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
+                '\n')), 'info    : tag deleted from the task of the todolist - 2 task2 #tag #tag3 -> 2 task2 #tag3')
 
     @patch('os.path.isfile')
     @patch('builtins.open', new_callable=mock_open, read_data='1 ma tache #test #toto\n2 ma seconde tache #tost #titi\n3 ma seconde tache #test #titi')
     @patch('sys.stdout', new_callable=StringIO)
-    def test_untag_task(self, mock_print, mock_open, mock_isfile):
+    def test_untag_multi_task(self, mock_print, mock_open, mock_isfile):
         with patch.object(sys, 'argv', [pypodo, untag, 'test', '1', '2', '3']):
             mock_isfile.return_value = True
             untag(mock_open)
@@ -460,73 +481,89 @@ class TestMethodsOthers(unittest.TestCase):
                 '\n')), 'info    : tag deleted from the task of the todolist - 1 ma tache #test #toto -> 1 ma tache #toto\nwarning : no tags is deleted from the todolist for the task - 2 ma seconde tache #tost #titi\ninfo    : tag deleted from the task of the todolist - 3 ma seconde tache #test #titi -> 3 ma seconde tache #titi')
 
     @patch('os.path.isfile')
-    @patch('builtins.open', new_callable=mock_open, read_data='1 ma tache\n2 ma seconde tache #tost')
+    @patch('builtins.open', new_callable=mock_open, read_data='1 task1\n2 task2 #tag1')
     @patch('sys.stdout', new_callable=StringIO)
-    def test_tag_task(self, mock_print, mock_open, mock_isfile):
-        with patch.object(sys, 'argv', [pypodo, tag, 'test', '1', '2', '3']):
+    def test_tag_one_task(self, mock_print, mock_open, mock_isfile):
+        with patch.object(sys, 'argv', [pypodo, tag, 'tag2', '2']):
             mock_isfile.return_value = True
             tag(mock_open)
-            #mock_open.assert_called_with(STR_PATH_HOME__TODO_, 'w')
+            mock_open().write.assert_called_with('2 task2 #tag1 #tag2\n')
             self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
-                '\n')), 'info    : tag added to the task of the todolist - 1 ma tache -> 1 ma tache #test\ninfo    : tag added to the task of the todolist - 2 ma seconde tache #tost -> 2 ma seconde tache #tost #test\nwarning : no task with index - 3')
+                '\n')), 'info    : tag added to the task of the todolist - 2 task2 #tag1 -> 2 task2 #tag1 #tag2')
 
     @patch('os.path.isfile')
-    @patch('builtins.open', new_callable=mock_open, read_data='1 ma tache #test\n2 ma seconde tache\n')
+    @patch('builtins.open', new_callable=mock_open, read_data='1 task1\n2 task2 #tag1\n3 task3 #tag2')
     @patch('sys.stdout', new_callable=StringIO)
-    def test_list_notag(self, mock_print, mock_open, mock_isfile):
+    def test_tag_multi_task(self, mock_print, mock_open, mock_isfile):
+        with patch.object(sys, 'argv', [pypodo, tag, 'tag3', '2', '3']):
+            mock_isfile.return_value = True
+            tag(mock_open)
+            mock_open().write.assert_called_with('3 task3 #tag2 #tag3\n')
+            self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
+                '\n')), 'info    : tag added to the task of the todolist - 2 task2 #tag1 -> 2 task2 #tag1 #tag3\ninfo    : tag added to the task of the todolist - 3 task3 #tag2 -> 3 task3 #tag2 #tag3')
+    
+    @patch('os.path.isfile')
+    @patch('builtins.open', new_callable=mock_open, read_data='1 task1 #tag\n2 task2\n3 task3\n')
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_list_notag_return_result(self, mock_print, mock_open, mock_isfile):
         with patch.object(sys, 'argv', [pypodo, untag]):
             mock_isfile.return_value = True
             untag(mock_open)
-            #mock_open.assert_called_with(STR_PATH_HOME__TODO_, 'r')
             self.assertEqual(escape_ansi(
-                mock_print.getvalue().rstrip('\n')), '2 ma seconde tache')
+                mock_print.getvalue().rstrip('\n')), '2 task2\n3 task3')
 
     @patch('os.path.isfile')
-    @patch('builtins.open', new_callable=mock_open, read_data='1 ma tache #test\n2 ma seconde tache #test\n3 ma seconde tache #linux')
+    @patch('builtins.open', new_callable=mock_open, read_data='1 task #tag\n2 task2 #tag\n3 task3 #tag2\n4 task4')
     @patch('sys.stdout', new_callable=StringIO)
-    def test_list_tag(self, mock_print, mock_open, mock_isfile):
+    def test_listtag_return_result(self, mock_print, mock_open, mock_isfile):
         with patch.object(sys, 'argv', [pypodo, tag]):
             mock_isfile.return_value = True
             tag(mock_open)
-            #mock_open.assert_called_with(STR_PATH_HOME__TODO_, 'r')
             self.assertEqual(escape_ansi(
-                mock_print.getvalue().rstrip('\n')), '#linux\n'+'#test')
+                mock_print.getvalue().rstrip('\n')), '#tag\n'+'#tag2')
 
+    @freeze_time("2020-10-14")
+    @patch('os.path.isfile')
+    @patch('builtins.open', new_callable=mock_open, read_data='1 task #urgent\n2 task2 #20190101\n3 task3 #20201020\n4 task4 #tag')
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_listtag_with_specific_return_result(self, mock_print, mock_open, mock_isfile):
+        with patch.object(sys, 'argv', [pypodo, tag]):
+            mock_isfile.return_value = True
+            tag(mock_open)
+            self.assertEqual(escape_ansi(
+                mock_print.getvalue().rstrip('\n')), '#20190101\n#urgent\n#20201020\n#tag')
 
 
     @patch('os.path.isfile')
-    @patch('builtins.open', new_callable=mock_open, read_data='1 ma tache #test\n2 ma seconde tache #test\n3 ma seconde tache #linux')
+    @patch('builtins.open', new_callable=mock_open, read_data='1 task #tag\n2 specif_task #tag2\n3 specif')
     @patch('sys.stdout', new_callable=StringIO)
-    def test_find_if_one_task(self, mock_print, mock_open, mock_isfile):
-        with patch.object(sys, 'argv', [pypodo, find, "ma tache "]):
+    def test_find_one_task_without_regex(self, mock_print, mock_open, mock_isfile):
+        with patch.object(sys, 'argv', [pypodo, find, "specif_task"]):
             mock_isfile.return_value = True
             find(mock_open)
             self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
-                '\n')), "1 ma tache #test")
+                '\n')), "2 specif_task #tag2")
 
     @patch('os.path.isfile')
-    @patch('builtins.open', new_callable=mock_open, read_data='1 ma tache #test\n2 ma seconde tache #test\n3 ma seconde tache #linux')
+    @patch('builtins.open', new_callable=mock_open, read_data='1 task #lix\n2 task2 #tag\n3 task3 #linux')
     @patch('sys.stdout', new_callable=StringIO)
-    def test_find_regex_if_one_task(self, mock_print, mock_open, mock_isfile):
+    def test_find_with_regex(self, mock_print, mock_open, mock_isfile):
         with patch.object(sys, 'argv', [pypodo, find, "li.+x"]):
             mock_isfile.return_value = True
             find(mock_open)
             self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
-                '\n')), "3 ma seconde tache #linux")
+                '\n')), "3 task3 #linux")
 
     @patch('os.path.isfile')
     @patch('builtins.open', new_callable=mock_open)
     @patch('sys.stdout', new_callable=StringIO)
-    def test_list_if_no_file(self, mock_print, mock_open, mock_isfile):
+    def test_find_with_regex_no_result(self, mock_print, mock_open, mock_isfile):
         mock_isfile.return_value = False
         with patch.object(sys, 'argv', [pypodo, find, "li.+x"]):
             find(mock_open)
             self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
                 '\n')), "info    : creating .todolist file\nwarning : the filtered todolist is empty")
 
-
-
-    #FIXME first patch is used to mute sysout in the logs...
     @patch('sys.stdout', new_callable=StringIO)
     @patch("builtins.print",autospec=True,side_effect=print)
     def test_help_contains_synopsis(self, mock_print, mock_stdout):
