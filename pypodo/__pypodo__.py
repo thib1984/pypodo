@@ -143,9 +143,10 @@ def listtag(open=open):
                                 part = colored(part, color_tag())
                             my_list.append(part)
                             empty = False
-                print("\n".join(sorted(set(my_list))))
             if empty:
-                printwarning("the filtered todolist with no tag is empty")
+                printwarning("the list of todolist's tags is empty")
+            else:
+                print("\n".join(sorted(set(my_list))))
 
 
 def add(open=open):
@@ -346,7 +347,7 @@ def tag(open=open):
                                     index_trouve = True
                         if not index_trouve:
                             printwarning(
-                                "no task with number is in the todolist - "+index)
+                                "no task with index - "+index)
         else:
             printerror(
                 "0,2 or more parameters is needed for pypodo tag : the tag to add and the indexes of the task whose tags to add - nothing to list tags of the todolist")
