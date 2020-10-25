@@ -1,4 +1,4 @@
-from pypodo.__pypodo__ import add, delete, list, help, pypodo, sort, tag, untag, backup, find, test_date, read_config_boolean, read_config, read_config_level, read_config_int,  read_config_color
+from pypodo.__pypodo__ import add, delete, list, help, pypodo, listtag, listnotag, sort, tag, untag, backup, find, test_date, read_config_boolean, read_config, read_config_level, read_config_int,  read_config_color
 import re
 import sys
 import unittest
@@ -22,58 +22,128 @@ STR_PATH_HOME__TODORC_ = str(Path.home()) + '/.todo.rc'
 STR_PATH_HOME__TODO_BACKUP_FOLDER_ = str(Path.home()) + '/.todo_backup/'
 
 
-class TestStringMethods(unittest.TestCase):
+class TestMethods(unittest.TestCase):
 
     # errors
     @patch('os.path.isfile')
-    @patch('builtins.open', new_callable=mock_open, read_data='1 ma tache #test\n2 ma seconde tache #test\n3 ma seconde tache #linux')
+    @patch('builtins.open', new_callable=mock_open)
     @patch('sys.stdout', new_callable=StringIO)
-    def test_find_no_parameter_return_error(self, mock_print, mock_open, mock_isfile):
+    def test_find_with_no_parameter_return_error(self, mock_print, mock_open_file, mock_isfile):
         with patch.object(sys, 'argv', [pypodo, find]):
             mock_isfile.return_value = True
-            find(mock_open)
+            find(mock_open_file)
             self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
                 '\n')), "error   : 1 parameter is needed for pypodo find")
 
     @patch('os.path.isfile')
     @patch('builtins.open', new_callable=mock_open)
     @patch('sys.stdout', new_callable=StringIO)
-    def test_add_no_parameter_return_error(self, mock_print, mock_open, mock_isfile):
+    def test_add_with_no_parameter_return_error(self, mock_print, mock_open_file, mock_isfile):
         with patch.object(sys, 'argv', [pypodo, add]):
             mock_isfile.return_value = True
-            add(mock_open)
+            add(mock_open_file)
             self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
                 '\n')), 'error   : 1 or more parameter is needed for pypodo add - tasks')
 
     @patch('os.path.isfile')
     @patch('builtins.open', new_callable=mock_open)
     @patch('sys.stdout', new_callable=StringIO)
-    def test_del_no_parameter_return_error(self, mock_print, mock_open, mock_isfile):
+    def test_del_with_no_parameter_return_error(self, mock_print, mock_open_file, mock_isfile):
         with patch.object(sys, 'argv', [pypodo, delete]):
             mock_isfile.return_value = True
-            delete(mock_open)
+            delete(mock_open_file)
             self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
                 '\n')), 'error   : 1 or more parameter is needed for pypodo del - indexes to delete in numeric format')
 
     @patch('os.path.isfile')
     @patch('builtins.open', new_callable=mock_open)
     @patch('sys.stdout', new_callable=StringIO)
-    def test_sort_with_parameters_return_error(self, mock_print, mock_open, mock_isfile):
+    def test_sort_with_parameters_return_error(self, mock_print, mock_open_file, mock_isfile):
         with patch.object(sys, 'argv', [pypodo, sort, "toto"]):
             mock_isfile.return_value = True
-            sort(mock_open)
+            sort(mock_open_file)
             self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
                 '\n')), "error   : 0 parameter is needed for pypodo sort")
 
     @patch('os.path.isfile')
     @patch('builtins.open', new_callable=mock_open)
     @patch('sys.stdout', new_callable=StringIO)
-    def test_backup_with_parameters_return_error(self, mock_print, mock_open, mock_isfile):
+    def test_backup_with_parameters_return_error(self, mock_print, mock_open_file, mock_isfile):
         with patch.object(sys, 'argv', [pypodo, backup, "toto"]):
             mock_isfile.return_value = True
-            backup(mock_open)
+            backup(mock_open_file)
             self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
                 '\n')), "error   : 0 parameter is needed for pypodo backup")
+
+    @patch('os.path.isfile')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_tag_with_one_parameter_return_error(self, mock_print, mock_open_file, mock_isfile):
+        with patch.object(sys, 'argv', [pypodo, tag, "param"]):
+            mock_isfile.return_value = True
+            tag(mock_open_file)
+            self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
+                '\n')), 'error   : 0,2 or more parameters is needed for pypodo tag : the tag to add and the indexes of the task whose tags to add - nothing to list tags of the todolist')
+
+    @patch('os.path.isfile')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_untag_with_one_parameter_return_error(self, mock_print, mock_open_file, mock_isfile):
+        with patch.object(sys, 'argv', [pypodo, untag, "param"]):
+            mock_isfile.return_value = True
+            untag(mock_open_file)
+            self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
+                '\n')), 'error   : 0,2 or more parameters is needed for pypodo untag : the tag to delete and the indexes of the task whose tags to delete - nothing to list task without tags')
+
+    @patch('os.path.isfile')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_notag_with_no_parameter_return_error(self, mock_print, mock_open_file, mock_isfile):
+        with patch.object(sys, 'argv', [pypodo, untag, "param"]):
+            mock_isfile.return_value = True
+            listnotag(mock_open_file)
+            self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
+                '\n')), 'error   : 0 parameter is needed for pypodo listnotag')
+
+    @patch('os.path.isfile')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_listtag_with_no_parameter_return_error(self, mock_print, mock_open_file, mock_isfile):
+        with patch.object(sys, 'argv', [pypodo, untag, "param"]):
+            mock_isfile.return_value = True
+            listtag(mock_open_file)
+            self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
+                '\n')), 'error   : 0 parameter is needed for pypodo listtag')
+
+    @patch('os.path.isfile')
+    @patch('builtins.open', new_callable=mock_open,  read_data='1 task')
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_tag_with_incorrect_tag_return_error(self, mock_print, mock_open_file, mock_isfile):
+        with patch.object(sys, 'argv', [pypodo, tag, "#badtag", "1"]):
+            mock_isfile.return_value = True
+            tag(mock_open_file)
+            self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
+                '\n')), 'error   : the tag has not a valid format - #badtag')
+
+    @patch('os.path.isfile')
+    @patch('builtins.open', new_callable=mock_open,  read_data='1 task')
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_untag_with_incorrect_tag_return_error(self, mock_print, mock_open_file, mock_isfile):
+        with patch.object(sys, 'argv', [pypodo, untag, "#badtag", "1"]):
+            mock_isfile.return_value = True
+            untag(mock_open_file)
+            self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
+                '\n')), 'error   : the tag has not a valid format - #badtag')
+
+
+
+
+
+
+
+
+
+
 
     @patch('time.strftime')
     @patch('pypodo.__pypodo__.copyfile')
