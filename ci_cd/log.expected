@@ -46,7 +46,3 @@ pypodo find t.*che
 [33m1[0m [32mtache1[0m
 [33m2[0m [32mtache3[0m [31m#urgent[0m [36m#30000101[0m [36m#montag2[0m [36m#urgente[0m [36m#newtag[0m
 [33m3[0m [32mmon autre tache[0m [36m#tag[0m [36m#newtag[0m [36m#newtag[0m
-pypodo list with config
-[31m1[0m [33mtache1[0m
-[31m2[0m [33mtache3[0m [31m#urgent[0m [30m#30000101[0m [30m#montag2[0m [30m#urgente[0m [30m#newtag[0m
-[31m3[0m [33mmon autre tache[0m [30m#tag[0m [30m#newtag[0m [30m#newtag[0m
