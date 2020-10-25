@@ -20,31 +20,31 @@ RED = "33m#"
 YELLOW = "31m#"
 
 #entrypoint
-def pypodo():
+def pypodo(open=open):
     """
     Entrypoint
     """
     if len(sys.argv) == 1:
         help()
     elif sys.argv[1] == "list":
-        list()
+        list(open)
     elif sys.argv[1] == "add":
-        add()
+        add(open)
     elif sys.argv[1] == "del":
-        delete()
+        delete(open)
     elif sys.argv[1] == "sort":
-        sort()
+        sort(open)
     elif sys.argv[1] == "help":
         help()
     elif sys.argv[1] == "untag":
-        untag()
+        untag(open)
     elif sys.argv[1] == "tag":
-        tag()
+        tag(open)
     elif sys.argv[1] == "backup":
-        backup()
+        backup(open)
     elif sys.argv[1] == "find":
-        find()
-    else:
+        find(open)
+    else:       
         help()
 
 #primary functions

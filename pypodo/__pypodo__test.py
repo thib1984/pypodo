@@ -21,6 +21,117 @@ STR_PATH_HOME__TODO_ = str(Path.home()) + '/.todo'
 STR_PATH_HOME__TODORC_ = str(Path.home()) + '/.todo.rc'
 STR_PATH_HOME__TODO_BACKUP_FOLDER_ = str(Path.home()) + '/.todo_backup/'
 
+class TestMethodsEntryPoint(unittest.TestCase):
+
+    @patch('os.path.isfile')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_pypodo_entry_point_list(self, mock_print, mock_open_file, mock_isfile):
+        with patch.object(sys, 'argv', [pypodo, "list"]):
+            mock_isfile.return_value = True
+            pypodo(mock_open_file)
+            self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
+                '\n')), "warning : the todolist is empty")
+
+    @patch('os.path.isfile')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_pypodo_entry_point_add(self, mock_print, mock_open_file, mock_isfile):
+        with patch.object(sys, 'argv', [pypodo, "add"]):
+            mock_isfile.return_value = True
+            pypodo(mock_open_file)
+            self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
+                '\n')), "error   : 1 or more parameter is needed for pypodo add - tasks")
+
+    @patch('os.path.isfile')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_pypodo_entry_point_del(self, mock_print, mock_open_file, mock_isfile):
+        with patch.object(sys, 'argv', [pypodo, "del"]):
+            mock_isfile.return_value = True
+            pypodo(mock_open_file)
+            self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
+                '\n')), "error   : 1 or more parameter is needed for pypodo del - indexes to delete in numeric format")
+
+    @patch('os.path.isfile')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_pypodo_entry_point_sort(self, mock_print, mock_open_file, mock_isfile):
+        with patch.object(sys, 'argv', [pypodo, "sort"]):
+            mock_isfile.return_value = True
+            pypodo(mock_open_file)
+            self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
+                '\n')), "warning : the todolist is empty - nothing to do")
+
+    @patch('os.path.isfile')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_pypodo_entry_point_untag(self, mock_print, mock_open_file, mock_isfile):
+        with patch.object(sys, 'argv', [pypodo, "untag", "tag"]):
+            mock_isfile.return_value = True
+            pypodo(mock_open_file)
+            self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
+                '\n')), "error   : 0,2 or more parameters is needed for pypodo untag : the tag to delete and the indexes of the task whose tags to delete - nothing to list task without tags")
+
+    @patch('os.path.isfile')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_pypodo_entry_point_tag(self, mock_print, mock_open_file, mock_isfile):
+        with patch.object(sys, 'argv', [pypodo, "tag", "tag"]):
+            mock_isfile.return_value = True
+            pypodo(mock_open_file)
+            self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
+                '\n')), "error   : 0,2 or more parameters is needed for pypodo tag : the tag to add and the indexes of the task whose tags to add - nothing to list tags of the todolist")
+
+    @patch('os.path.isfile')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_pypodo_entry_point_find(self, mock_print, mock_open_file, mock_isfile):
+        with patch.object(sys, 'argv', [pypodo, "find"]):
+            mock_isfile.return_value = True
+            pypodo(mock_open_file)
+            self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
+                '\n')), "error   : 1 parameter is needed for pypodo find")
+
+    @patch('os.path.isfile')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_pypodo_entry_point_backup(self, mock_print, mock_open_file, mock_isfile):
+        with patch.object(sys, 'argv', [pypodo, "backup", "bak"]):
+            mock_isfile.return_value = True
+            pypodo(mock_open_file)
+            self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
+                '\n')), "error   : 0 parameter is needed for pypodo backup")
+
+    @patch('os.path.isfile')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('sys.stdout', new_callable=StringIO)
+    @patch("builtins.print",autospec=True,side_effect=print)
+    def test_pypodo_entry_point_help(self, mock_print, mock_open_file, mock_isfile, mock_stdout):
+        with patch.object(sys, 'argv', [pypodo, "help"]):
+            mock_isfile.return_value = True
+            pypodo(mock_open_file)
+            mock_print.assert_called_with(AnyStringWith("SYNOPSIS"))
+
+    @patch('os.path.isfile')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('sys.stdout', new_callable=StringIO)
+    @patch("builtins.print",autospec=True,side_effect=print)
+    def test_pypodo_entry_point_bad_param(self, mock_print, mock_open_file, mock_isfile, mock_stdout):
+        with patch.object(sys, 'argv', [pypodo, "param"]):
+            mock_isfile.return_value = True
+            pypodo(mock_open_file)
+            mock_print.assert_called_with(AnyStringWith("SYNOPSIS"))
+
+    @patch('os.path.isfile')
+    @patch('builtins.open', new_callable=mock_open)
+    @patch('sys.stdout', new_callable=StringIO)
+    @patch("builtins.print",autospec=True,side_effect=print)
+    def test_pypodo_entry_point_no_param(self, mock_print, mock_open_file, mock_isfile, mock_stdout):
+        with patch.object(sys, 'argv', [pypodo]):
+            mock_isfile.return_value = True
+            pypodo(mock_open_file)
+            mock_print.assert_called_with(AnyStringWith("SYNOPSIS"))
 
 class TestMethodsErrors(unittest.TestCase):
 
