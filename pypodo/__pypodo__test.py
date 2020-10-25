@@ -289,19 +289,39 @@ class TestMethodsTools(unittest.TestCase):
         self.assertEqual("alert", test_date("20201009"))
         self.assertEqual("warning", test_date("20201020"))
 
-    @patch('builtins.open', new_callable=mock_open, read_data='[COLOR]\nalert =red\nwarning=blue\ninfo=tyty\n[FONCTIONAL]\nmybool = False\nmybool2 = Tru\nperiodwarning = red\n[SYSTEM]\nlevel = error\nlevel2 = warning\nlevel3 = debugg')
-    def test_config(self, mock_open):
-        self.assertEqual("red", read_config("COLOR", "alert", "red"))
+    @patch('builtins.open', new_callable=mock_open, read_data='[COLOR]\nalert =red\nwarning=blue\ninfo=bad')
+    def test_read_config(self, mock_open):
+        #read_config
+        self.assertEqual("red", read_config("COLOR", "error", "red"))
         self.assertEqual("red", read_config("COLOR", "alert", "red"))
         self.assertEqual("blue", read_config("COLOR", "warning", "yellow"))
-        self.assertEqual("tyty", read_config("COLOR", "info", "green"))
-        self.assertEqual("green", read_config_color("COLOR", "info", "green"))
+        self.assertEqual("bad", read_config("COLOR", "info", "green"))
+
+    @patch('builtins.open', new_callable=mock_open, read_data='[COLOR]\nalert =red\nwarning=blue\ninfo=bad')
+    def test_read_config_color(self, mock_open):
+        #read_config_color
         self.assertEqual("red", read_config_color("COLOR", "error", "red"))
-        self.assertEqual("1", read_config_int("FONCTIONAL", "periodalert", "1"))
+        self.assertEqual("red", read_config_color("COLOR", "alert", "red"))
+        self.assertEqual("blue", read_config_color("COLOR", "warning", "yellow"))
+        self.assertEqual("green", read_config_color("COLOR", "info", "green"))
+
+    @patch('builtins.open', new_callable=mock_open, read_data='[FONCTIONAL]\nperiodwarning = bad\nperiodalert = 1\nperiodinfo = -1')
+    def test_read_config_int(self, mock_open):
+        #read_config_int
+        self.assertEqual("1", read_config_int("FONCTIONAL", "periodalert", "0"))
         self.assertEqual("7", read_config_int("FONCTIONAL", "periodwarning", "7"))
+        self.assertEqual("10", read_config_int("FONCTIONAL", "periodinfo", "10"))
+
+    @patch('builtins.open', new_callable=mock_open, read_data='[SYSTEM]\nlevel = error\nlevel2 = warning\nlevel3 = bad')
+    def test_read_config_level(self, mock_open):
+        #read_config_level
         self.assertEqual("error", read_config_level("SYSTEM", "level", "error"))
         self.assertEqual("warning", read_config_level("SYSTEM", "level2", "error"))
         self.assertEqual("error", read_config_level("SYSTEM", "level3", "error"))
+
+    @patch('builtins.open', new_callable=mock_open, read_data='[FONCTIONAL]\nmybool = False\nmybool2 = bad')
+    def test_read_config_boolean(self, mock_open):
+        #read_config_boolean
         self.assertEqual("False", read_config_boolean("FONCTIONAL", "mybool", "True"))
         self.assertEqual("True", read_config_boolean("FONCTIONAL", "mybool2", "True"))
 
