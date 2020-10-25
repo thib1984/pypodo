@@ -90,36 +90,38 @@ dockerci () {
         fi
     fi
     #end-to-end
-    printinfo "test end-to-end 1/4 running... compare log"
-    if diff <(./end_to_end.sh "$smoketest") <(cat ci_cd/log.expected);
+    printinfo "test end-to-end 1/5 running... compare log"
+    ./end_to_end.sh "$smoketest" > ci_cd/cache/log
+    $smoketest backup > ci_cd/cache/log_backup
+    if diff ci_cd/cache/log ci_cd/log.expected >> $file_log_end_to_end;
     then
-        printinfo "test end-to-end 1/4 ok"
+        printinfo "test end-to-end 1/5 ok, see output in $file_log_end_to_end"
     else
-        printerror "test end-to-end 1/4 ko"
+        printerror "test end-to-end 1/5 ko, see output in $file_log_end_to_end"
         return 1
     fi
-    printinfo "test end-to-end 2/4 running... compare backup log"
-    if  $smoketest backup | grep "\[32minfo    : creating todolist backup - .todo[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]" > /dev/null;
+    printinfo "test end-to-end 2/5 running... compare backup log"    
+    if grep "\[32minfo    : creating todolist backup - .todo[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]" ci_cd/cache/log_backup >> $file_log_end_to_end;
     then
-        printinfo "test end-to-end 2/4 ok"
+        printinfo "test end-to-end 2/5 ok, see output in $file_log_end_to_end"
     else
-        printerror "test end-to-end 2/4 ko"
+        printerror "test end-to-end 2/5 ko, see output in $file_log_end_to_end"
         return 1
     fi
-    printinfo "test end-to-end 3/4 running... compare todofile"
+    printinfo "test end-to-end 3/5 running... compare todofile"
     if diff ${PYPODO_FILE} ci_cd/.todo.expected >> $file_log_end_to_end;
     then
-        printinfo "test end-to-end 3/4 ok"
+        printinfo "test end-to-end 3/5 ok, see output in $file_log_end_to_end"
     else
-        printerror "test end-to-end 3/4 ko"
+        printerror "test end-to-end 3/5 ko, see output in $file_log_end_to_end"
         return 1
     fi
-    printinfo "test end-to-end 4/4 running... compare todobackupfile"
-    if diff ${PYPODO_BACKUP}/.todo* ci_cd/.todo.expected >> $file_log_end_to_end;
+    printinfo "test end-to-end 4/5 running... compare todobackupfile"
+    if  diff ${PYPODO_BACKUP}/.todo* ci_cd/.todo.expected >> $file_log_end_to_end;
     then
-        printinfo "test end-to-end 4/4 ok"
+        printinfo "test end-to-end 4/5 ok, see output in $file_log_end_to_end"
     else
-        printerror "test end-to-end 4/4 ko"
+        printerror "test end-to-end 4/5 ko, see output in $file_log_end_to_end"
         return 1
     fi
     printinfo "test end-to-end 5/5 running... compare log with special conf"

@@ -42,7 +42,7 @@ dockerci () {
         return 1
     fi
     printinfo "test end-to-end 3/4 running... compare todofile"
-    if diff ${PYPODO_FILE} ci_cd/.todo.expected >> $file_log_end_to_end;
+    if diff ${PYPODO_FILE} ci_cd/.todo.expected;
     then
         printinfo "test end-to-end 3/4 ok"
     else
@@ -50,7 +50,7 @@ dockerci () {
         return 1
     fi
     printinfo "test end-to-end 4/4 running... compare todobackupfile"
-    if diff ${PYPODO_BACKUP}/.todo* ci_cd/.todo.expected >> $file_log_end_to_end;
+    if diff ${PYPODO_BACKUP}/.todo* ci_cd/.todo.expected;
     then
         printinfo "test end-to-end 4/4 ok"
     else
@@ -61,12 +61,11 @@ dockerci () {
     rm "$PYPODO_FILE"
     touch "$PYPODO_FILE"
     cp ./ci_cd/.todo.rc $PYPODO_CONF
-    ./end_to_end.sh "$smoketest" > ci_cd/cache/log.with.conf
-    if diff ci_cd/cache/log.with.conf ci_cd/log.with.conf.expected >> $file_log_end_to_end;
+    if diff <(./end_to_end.sh "$smoketest") <(cat ci_cd/log.with.conf.expected);
     then
-        printinfo "test end-to-end 5/5 ok, see output in $file_log_end_to_end"
+        printinfo "test end-to-end 5/5 ok"
     else
-        printerror "test end-to-end 5/5 ko, see output in $file_log_end_to_end"
+        printerror "test end-to-end 5/5 ko"
         return 1
     fi  
 
