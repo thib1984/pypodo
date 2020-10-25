@@ -135,130 +135,127 @@ class TestMethodsErrors(unittest.TestCase):
             self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
                 '\n')), 'error   : the tag has not a valid format - #badtag')
 
+    @patch('os.path.isfile')
+    @patch('builtins.open', new_callable=mock_open, read_data='1 my task #te#st\na other task')
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_sort_with_invalid_todo_return_warning_and_error(self, mock_print, mock_open_file, mock_isfile):
+        with patch.object(sys, 'argv', [pypodo, list]):
+            mock_isfile.return_value = True
+            list(mock_open_file)
+            self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
+                '\n')), "warning : this line has not a valid format in .todo - 1 my task #te#st\nwarning : this line has not a valid format in .todo - a other task\nerror   : verify the .todo file")
+
+
 class TestMethodsWarnings(unittest.TestCase):
 
     @patch('os.path.isfile')
     @patch('builtins.open', new_callable=mock_open)
     @patch('sys.stdout', new_callable=StringIO)
-    def test_sort_if_todo_empty(self, mock_print, mock_open, mock_isfile):
+    def test_sort_if_todo_empty(self, mock_print, mock_open_file, mock_isfile):
         with patch.object(sys, 'argv', [pypodo, sort]):
             mock_isfile.return_value = True
-            sort(mock_open)
+            sort(mock_open_file)
             self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
                 '\n')), "warning : the todolist is empty - nothing to do")
 
     @patch('os.path.isfile')
     @patch('builtins.open', new_callable=mock_open)
     @patch('sys.stdout', new_callable=StringIO)
-    def test_tag_with_no_numeric_return_warning(self, mock_print, mock_open, mock_isfile):
+    def test_tag_with_no_numeric_return_warning(self, mock_print, mock_open_file, mock_isfile):
         with patch.object(sys, 'argv', [pypodo, tag, "param", "a"]):
             mock_isfile.return_value = True
-            tag(mock_open)
+            tag(mock_open_file)
             self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
                 '\n')), "warning : the index to tag is not in numeric format - a")
 
     @patch('os.path.isfile')
     @patch('builtins.open', new_callable=mock_open)
     @patch('sys.stdout', new_callable=StringIO)
-    def test_untag_with_no_numeric_return_warning(self, mock_print, mock_open, mock_isfile):
+    def test_untag_with_no_numeric_return_warning(self, mock_print, mock_open_file, mock_isfile):
         with patch.object(sys, 'argv', [pypodo, untag, "param", "a"]):
             mock_isfile.return_value = True
-            untag(mock_open)
+            untag(mock_open_file)
             self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
                 '\n')), "warning : the index to untag is not in numeric format - a")                
 
     @patch('os.path.isfile')
     @patch('builtins.open', new_callable=mock_open)
     @patch('sys.stdout', new_callable=StringIO)
-    def test_delete_with_no_numeric_return_warning(self, mock_print, mock_open, mock_isfile):
+    def test_delete_with_no_numeric_return_warning(self, mock_print, mock_open_file, mock_isfile):
         with patch.object(sys, 'argv', [pypodo, delete, "a"]):
             mock_isfile.return_value = True
-            delete(mock_open)
+            delete(mock_open_file)
             self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
                 '\n')), "warning : the index to delete is not in numeric format - a") 
 
     @patch('os.path.isfile')
     @patch('builtins.open', new_callable=mock_open,  read_data='1 task')
     @patch('sys.stdout', new_callable=StringIO)
-    def test_delete_with_inexistant_numeric_return_warning(self, mock_print, mock_open, mock_isfile):
+    def test_delete_with_inexistant_numeric_return_warning(self, mock_print, mock_open_file, mock_isfile):
         with patch.object(sys, 'argv', [pypodo, delete, "2"]):
             mock_isfile.return_value = True
-            delete(mock_open)
+            delete(mock_open_file)
             self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
                 '\n')), "warning : no task is deleted from the todolist, not existing index - 2") 
 
     @patch('os.path.isfile')
     @patch('builtins.open', new_callable=mock_open,  read_data='1 task')
     @patch('sys.stdout', new_callable=StringIO)
-    def test_tag_with_inexistant_numeric_return_warning(self, mock_print, mock_open, mock_isfile):
+    def test_tag_with_inexistant_numeric_return_warning(self, mock_print, mock_open_file, mock_isfile):
         with patch.object(sys, 'argv', [pypodo, tag, "tag", "2"]):
             mock_isfile.return_value = True
-            tag(mock_open)
+            tag(mock_open_file)
             self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
                 '\n')), "warning : no task with index - 2") 
 
     @patch('os.path.isfile')
     @patch('builtins.open', new_callable=mock_open,  read_data='1 task')
     @patch('sys.stdout', new_callable=StringIO)
-    def test_untag_with_inexistant_numeric_return_warning(self, mock_print, mock_open, mock_isfile):
+    def test_untag_with_inexistant_numeric_return_warning(self, mock_print, mock_open_file, mock_isfile):
         with patch.object(sys, 'argv', [pypodo, untag, "tag", "2"]):
             mock_isfile.return_value = True
-            untag(mock_open)
+            untag(mock_open_file)
             self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
                 '\n')), "warning : no task with index - 2") 
 
     @patch('os.path.isfile')
     @patch('builtins.open', new_callable=mock_open,  read_data='1 task')
     @patch('sys.stdout', new_callable=StringIO)
-    def test_listtag_with_empty_result_return_warning(self, mock_print, mock_open, mock_isfile):
+    def test_listtag_with_empty_result_return_warning(self, mock_print, mock_open_file, mock_isfile):
         with patch.object(sys, 'argv', [pypodo, tag]):
             mock_isfile.return_value = True
-            tag(mock_open)
+            tag(mock_open_file)
             self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
                 '\n')), "warning : the list of todolist's tags is empty") 
 
     @patch('os.path.isfile')
     @patch('builtins.open', new_callable=mock_open,  read_data='1 task #tag')
     @patch('sys.stdout', new_callable=StringIO)
-    def test_listnottag_with_empty_result_return_warning(self, mock_print, mock_open, mock_isfile):
+    def test_listnottag_with_empty_result_return_warning(self, mock_print, mock_open_file, mock_isfile):
         with patch.object(sys, 'argv', [pypodo, untag]):
             mock_isfile.return_value = True
-            untag(mock_open)
+            untag(mock_open_file)
             self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
                 '\n')), "warning : the filtered todolist with no tag is empty") 
-
-
-
-
-    #a verifier
-    @patch('os.path.isfile')
-    @patch('builtins.open', new_callable=mock_open, read_data='1 ma tache #te#st\na ma seconde tache\n3 ma seconde tache')
-    @patch('sys.stdout', new_callable=StringIO)
-    def test_sort_if_todo_with_invalids_tasks(self, mock_print, mock_open, mock_isfile):
-        with patch.object(sys, 'argv', [pypodo, list]):
-            mock_isfile.return_value = True
-            list(mock_open)
-            self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
-                '\n')), "warning : this line has not a valid format in .todo - 1 ma tache #te#st\nwarning : this line has not a valid format in .todo - a ma seconde tache\nerror   : verify the .todo file")
 
     @patch('os.path.isfile')
     @patch('builtins.open', new_callable=mock_open)
     @patch('sys.stdout', new_callable=StringIO)
-    def test_list_if_todo_empty(self, mock_print, mock_open, mock_isfile):
+    def test_list_with_empty_todo_return_warning(self, mock_print, mock_open_file, mock_isfile):
         with patch.object(sys, 'argv', [pypodo, list]):
             mock_isfile.return_value = True
-            list(mock_open)
+            list(mock_open_file)
             self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
                 '\n')), "warning : the todolist is empty")
 
-
     @patch('os.path.isfile')
-    @patch('builtins.open', new_callable=mock_open, read_data='1 ma tache #test\n2 ma seconde tache #linux\n3 ma troisieme tache #linux #test\n4 ma 4 tache #toto')
+    @patch('builtins.open', new_callable=mock_open, read_data='1 task #tag1\n2 task #tag2\n3 task #tag\n4 task')
     @patch('sys.stdout', new_callable=StringIO)
-    def test_list_with_double_filter_one_task_return_empty(self, mock_print, mock_open, mock_isfile):
-        with patch.object(sys, 'argv', [pypodo, list, 'test', 'pe']):
+    def test_list_with_filter_and_empty_result_return_warning(self, mock_print, mock_open_file, mock_isfile):
+        with patch.object(sys, 'argv', [pypodo, list, 'tag1', 'tag2']):
             mock_isfile.return_value = True
-            list(mock_open)
+            list(mock_open_file)
+            #FIXME how test?
             #mock_open.assert_called_with(STR_PATH_HOME__TODO_, 'r')
             self.assertEqual(escape_ansi(
                 mock_print.getvalue().rstrip('\n')), 'warning : the filtered todolist is empty')
@@ -266,30 +263,49 @@ class TestMethodsWarnings(unittest.TestCase):
     @patch('os.path.isfile')
     @patch('builtins.open', new_callable=mock_open)
     @patch('sys.stdout', new_callable=StringIO)
-    def test_add_task_not_valid_format(self, mock_print, mock_open, mock_isfile):
-        with patch.object(sys, 'argv', [pypodo, add, '#pe']):
+    def test_add_task_not_valid_format_return_warning(self, mock_print, mock_open_file, mock_isfile):
+        with patch.object(sys, 'argv', [pypodo, add, '#task']):
             mock_isfile.return_value = True
-            add(mock_open)
+            add(mock_open_file)
             self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
-                '\n')), 'warning : the task has not a valid format - #pe')  
+                '\n')), 'warning : the task has not a valid format - #task')  
 
     @patch('os.path.isfile')
     @patch('builtins.open', new_callable=mock_open)
     @patch('sys.stdout', new_callable=StringIO)
-    def test_find_if_todo_empty(self, mock_print, mock_open, mock_isfile):
-        with patch.object(sys, 'argv', [pypodo, find, "toto"]):
+    def test_find_if_empty_result_return_warning(self, mock_print, mock_open_file, mock_isfile):
+        with patch.object(sys, 'argv', [pypodo, find, "string"]):
             mock_isfile.return_value = True
-            find(mock_open)
+            find(mock_open_file)
             self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
                 '\n')), "warning : the filtered todolist is empty")                              
 
 
+class TestMethodsTools(unittest.TestCase):
+
+    @freeze_time("2020-10-14")
+    def test_date(self):
+        self.assertEqual("ok", test_date("20210101"))
+        self.assertEqual("alert", test_date("20201009"))
+        self.assertEqual("warning", test_date("20201020"))
+
+    @patch('builtins.open', new_callable=mock_open, read_data='[COLOR]\nalert =red\nwarning=blue\ninfo=tyty\n[FONCTIONAL]\nmybool = False\nmybool2 = Tru\nperiodwarning = red\n[SYSTEM]\nlevel = error\nlevel2 = warning\nlevel3 = debugg')
+    def test_config(self, mock_open):
+        self.assertEqual("red", read_config("COLOR", "alert", "red"))
+        self.assertEqual("red", read_config("COLOR", "alert", "red"))
+        self.assertEqual("blue", read_config("COLOR", "warning", "yellow"))
+        self.assertEqual("tyty", read_config("COLOR", "info", "green"))
+        self.assertEqual("green", read_config_color("COLOR", "info", "green"))
+        self.assertEqual("red", read_config_color("COLOR", "error", "red"))
+        self.assertEqual("1", read_config_int("FONCTIONAL", "periodalert", "1"))
+        self.assertEqual("7", read_config_int("FONCTIONAL", "periodwarning", "7"))
+        self.assertEqual("error", read_config_level("SYSTEM", "level", "error"))
+        self.assertEqual("warning", read_config_level("SYSTEM", "level2", "error"))
+        self.assertEqual("error", read_config_level("SYSTEM", "level3", "error"))
+        self.assertEqual("False", read_config_boolean("FONCTIONAL", "mybool", "True"))
+        self.assertEqual("True", read_config_boolean("FONCTIONAL", "mybool2", "True"))
 
 class TestMethodsOthers(unittest.TestCase):
-
-
-
-
 
 
     @patch('time.strftime')
@@ -488,27 +504,7 @@ class TestMethodsOthers(unittest.TestCase):
             self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
                 '\n')), "info    : creating .todolist file\nwarning : the filtered todolist is empty")
 
-    @freeze_time("2020-10-14")
-    def test_date(self):
-        self.assertEqual("ok", test_date("20210101"))
-        self.assertEqual("alert", test_date("20201009"))
-        self.assertEqual("warning", test_date("20201020"))
 
-    @patch('builtins.open', new_callable=mock_open, read_data='[COLOR]\nalert =red\nwarning=blue\ninfo=tyty\n[FONCTIONAL]\nmybool = False\nmybool2 = Tru\nperiodwarning = red\n[SYSTEM]\nlevel = error\nlevel2 = warning\nlevel3 = debugg')
-    def test_config(self, mock_open):
-        self.assertEqual("red", read_config("COLOR", "alert", "red"))
-        self.assertEqual("red", read_config("COLOR", "alert", "red"))
-        self.assertEqual("blue", read_config("COLOR", "warning", "yellow"))
-        self.assertEqual("tyty", read_config("COLOR", "info", "green"))
-        self.assertEqual("green", read_config_color("COLOR", "info", "green"))
-        self.assertEqual("red", read_config_color("COLOR", "error", "red"))
-        self.assertEqual("1", read_config_int("FONCTIONAL", "periodalert", "1"))
-        self.assertEqual("7", read_config_int("FONCTIONAL", "periodwarning", "7"))
-        self.assertEqual("error", read_config_level("SYSTEM", "level", "error"))
-        self.assertEqual("warning", read_config_level("SYSTEM", "level2", "error"))
-        self.assertEqual("error", read_config_level("SYSTEM", "level3", "error"))
-        self.assertEqual("False", read_config_boolean("FONCTIONAL", "mybool", "True"))
-        self.assertEqual("True", read_config_boolean("FONCTIONAL", "mybool2", "True"))
 
     #FIXME first patch is used to mute sysout in the logs...
     @patch('sys.stdout', new_callable=StringIO)
