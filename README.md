@@ -1,10 +1,10 @@
 # pypodo
 
-**pypodo** (\pipudu\\) is a pip package (or docker image if you want, see below!) : a todolist tool which works with a .todo file positionned the root of the home directory with a mecanism of indexes and tags.
+**pypodo** (\pipudu\\) is a pip package (or docker image if you want, see below!). It is a todolist tool which works with a .todo file at the root of the home directory. It has a mecanism of indexes and tags.
 
 ## Install/Upgrade/Uninstall
 
-:warning: Not compatible with python2 who is deprecated! Use python3.
+:warning: Not compatible with python2 (deprecated), Use python3.
 
 ```
 pip3 install pypodo #Installation, use pip if pip3 does not exist
@@ -14,17 +14,17 @@ pip3 uninstall pypodo #Uninstall, use pip if pip3 does not exist
 
 [https://pypi.org/project/pypodo/](https://pypi.org/project/pypodo/)
 
-## Utilisation
+## Use
 
-Common commands are **list**/**add**/**del**/**tag**/**untag**
+Usual commands are **list**/**add**/**del**/**tag**/**untag**
 
 Other commands are **help**/**backup**/**sort**/**find**
 
-- ``pypodo add "to do work #name_of_tag"`` : add the task '_to do work_' with the tag '_name_of_tag_'
+- ``pypodo add "to do work #name_of_tag"`` : add one task '_to do work_' with the tag '_name_of_tag_'
 
-- ``pypodo add "to do other_work #name_of_other_tag" "to do other_big_work #name_of_other_tag"`` : add the other task '_to do other_work_' with the tag '_name_of_other_tag_' and the another task '_to do other_big_work_' with the tag 'name_of_other_tag'
+- ``pypodo add "to do other_work #name_of_other_tag" "to do other_big_work #name_of_other_tag"`` : add one task '_to do other_work_' with the tag '_name_of_other_tag_' and another task '_to do other_big_work_' with the tag 'name_of_other_tag'
 
-- ``pypodo list`` : print the todolist with an index for each task
+- ``pypodo list`` : display the todolist with the index of each task
 
 ```
 1 to do work #name_of_tag
@@ -32,15 +32,15 @@ Other commands are **help**/**backup**/**sort**/**find**
 3 to do other_big_work #name_of_other_tag
 ```
 
-The tags are colored by default in green. If they are "#urgent" they are colored in red. If they have a date format YYYYmmdd and a gap to actual date less than seven days they are colored in yellow or red if greater than the actual date. See the Configuration to change the colors.
+The default color of the tags is green. When a task is tagged "#urgent" it will be colored in red. When the task has a date pattern like YYYYmmdd with a gap to current date less than seven days, it will be colored in yellow. If the date is greater than the current date, in red . See the Configuration to change the colors.
 
-- `` pypodo list "name_of_tag"`` : print the todolist filtered on the task with the tag '_name_of_tag_' :
+- `` pypodo list "name_of_tag"`` : display the todolist filtered on the task tagged with '_name_of_tag_'
 
 ```
 1 to do work #name_of_tag
 ```
 
-- `` pypodo list "name_of_tag" "other_tag"`` : print the todolist filtered on the tasks with the 2 tags together
+- `` pypodo list "name_of_tag" "other_tag"`` : display the todolist filtered on the tasks tagged with both tags
 
 - ``pypodo del 2``  : delete the task with index=2 of the todolist
 
@@ -48,13 +48,13 @@ The tags are colored by default in green. If they are "#urgent" they are colored
 
 - ``pypodo tag new_tag 1`` : add the tag '_new_tag_' to the task with index=1
 
-- ``pypodo tag new_tag 1 2`` : add the tag '_new_tag_' to the 2 taks (index=1 and index=2)
+- ``pypodo tag new_tag 1 2`` : add the tag '_new_tag_' to both tasks index=1 and index=2
 
 - ``pypodo tag`` : display all tags of the todolist
 
 - ``pypodo untag new_tag 1`` : remove tag '_new_tag_' from the task with index=1
 
-- ``pypodo untag new_tag 1 2`` : remove the tag '_new_tag_' from the 2 tasks (index=1 and index=2)
+- ``pypodo untag new_tag 1 2`` : remove the tag '_new_tag_' from both tasks index=1 and index=2
 
 - ``pypodo untag`` : display all tasks without tags
 
@@ -75,13 +75,13 @@ Example of commands
 
 ![image](https://user-images.githubusercontent.com/45128847/95683314-c75dd400-0bea-11eb-900c-bf1aafc09999.png)
 
-Color of tags at the 19/10/2020 : red alert for one task, yellow warning for the second, nothing for the third.
+Color of tags at the 19/10/2020 : red alert for one task, yellow warning for the second, default for the third.
 
 ![image](https://user-images.githubusercontent.com/45128847/96498585-88fc9080-124c-11eb-9050-4adacb7204a1.png)
 
-## Configuration [optionnal]
+## Configuration [optional]
 
-You can customize the application with the ``~/.todo.rc`` file. Create it if it does not exist and copy paste these content. The autosort option run a pypodo sort after pypodo del.
+You can customize the application with the ``~/.todo.rc`` file. Create it if it does not exist and copy paste this content. The autosort option runs a pypodo sort after pypodo del.
 
 ```
 #grey,red,green,yellow,blue,magenta,cyan,white only ;)
@@ -110,13 +110,13 @@ alerttags = #urgent
 autosort = False
 ```
 
-## Docker usage [optionnal]
+## Docker usage [optional]
 
 If you want, you can use **pypodo** as a docker image.
 
 Copy file [docker-pypodo.sh](https://github.com/thib1984/pypodo/blob/master/docker-pypodo.sh) on your PC.
 Give execution permission with ``chmod u+x ./docker-pypodo.sh``
-Correct the two variables if you want :
+Correct the two variables (optional) :
 
 ```
 PYPODO_FILE=~/.todo
@@ -134,7 +134,7 @@ Replace ``pypodo`` with ``./docker-pypodo.sh`` or use an alias (see below)
 
 You can see [the repo docker](https://hub.docker.com/r/thibaultgarcon/pypodo)
 
-## Alias [optionnal]
+## Alias [optional]
 
 You can use alias as
 
@@ -152,13 +152,13 @@ alias tb='pypodo backup'
 alias tf='pypodo find'
 ```
 
-to improve your velocity!
+to improve your efficiency!
 
 ## For contributors :construction_worker:
 
 [Go to CONTRIBUTING.md](https://github.com/thib1984/pypodo/blob/master/CONTRIBUTING.md)
 
-## Tanks to contributors
+## Thanks to contributors
 - https://github.com/bbougon
 - https://github.com/isaacvv
 - https://github.com/jeanphibaconnais
