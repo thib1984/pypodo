@@ -27,7 +27,7 @@ You can launch tests, measure coverage, test mutations or evaluate the quality o
 python3 -m unittest -v pypodo/__pypodo__test.py #to execute unit tests
 coverage run && coverage html #to generate html : report in htmlcov folder
 mutatest #to test mutations #to generate mutations
-pylint pypodo/__pypodo__.py #to evaluate quality of code unit tests
+pylint pypodo/*.py #to evaluate quality of code
 ```
 
 :warning: if you observe unexpecting ko tests, launch ``mutatest`` once. A mutation could stay if a previous run is stopped.

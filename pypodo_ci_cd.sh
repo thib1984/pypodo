@@ -45,7 +45,7 @@ dockerci () {
     fi
     #pylint
     printinfo "pylint running..."
-    if $dockerpypodorun --rm --entrypoint="pylint" thibaultgarcon/pypodo_test pypodo/__pypodo__.py 2>>$file_log_pylint 1> $file_log_pylint;
+    if $dockerpypodorun --rm --entrypoint="pylint" thibaultgarcon/pypodo_test pypodo/*.py 2>>$file_log_pylint 1> $file_log_pylint;
     then
         printinfo "pylint ok, see output in $file_log_pylint"
     else
@@ -151,7 +151,7 @@ pipci () {
     printinfo "configuration ok, see output in configuration.log"
     #pylint
     printinfo "pylint running..."
-    if pylint pypodo/__pypodo__.py  2> $file_log_pylint 1> $file_log_pylint;
+    if pylint pypodo/*.py  2> $file_log_pylint 1> $file_log_pylint;
     then
         printinfo "pylint ok, see output in pylint.log"
     else
@@ -258,7 +258,7 @@ then
     else
         printerror "ko - bad params : docker (ci/cd) [fast]"
     fi
-
+    
 elif [[ $1 = "pip" ]]
 then
     if [[ $2 = "ci" ]]
@@ -282,7 +282,7 @@ then
     else
         printerror "ko - bad params : pip (ci/cd) [fast]"
     fi
-
+    
 elif [[ $1 = "full" ]]
 then
     if dockerci "$2" && dockercd && pipcd;
