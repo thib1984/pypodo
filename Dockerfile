@@ -16,6 +16,7 @@ RUN python setup.py install
 RUN pip3 install coverage
 RUN pip3 install mutatest
 RUN pip3 install pylint
+RUN pip3 install freezegun
 RUN pip3 install --user .
 COPY pypodo/ .
 ENTRYPOINT ["pypodo"]

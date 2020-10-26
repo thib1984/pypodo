@@ -70,9 +70,11 @@ docker build -t thibaultgarcon/pypodo:latest .
 ``` 
 for docker
 
+
 ## Github Actions
 
 For each commit in head master : https://github.com/thib1984/pypodo/actions?query=workflow%3A%22pipeline+ci%22 (run tests and metrics -mutatest, pylint...-)
 For each release : https://github.com/thib1984/pypodo/actions?query=workflow%3A%22pipeline+release%22 (run tests and metrics -mutatest, pylint...- and push pip and docker image)
 
+To test a part of the Github Action, you can run the ./pypodo_github.sh (without parameter)
 

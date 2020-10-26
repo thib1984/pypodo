@@ -3,7 +3,6 @@ green="\e[32m"
 red="\e[31m"
 yellow="\e[33m"
 default="\e[39m"
-file_log_end_to_end=./end_to_end.log
 
 dockerci () {
     #configuration
@@ -25,36 +24,36 @@ dockerci () {
         printerror "docker build ko"
         return 1
     fi
-    printinfo "test end-to-end 1/4 running... compare log"
+    printinfo "test end-to-end 1/5 running... compare log"
     if diff <(./end_to_end.sh "$smoketest") <(cat ci_cd/log.expected);
     then
-        printinfo "test end-to-end 1/4 ok"
+        printinfo "test end-to-end 1/5 ok"
     else
-        printerror "test end-to-end 1/4 ko"
+        printerror "test end-to-end 1/5 ko"
         return 1
     fi
-    printinfo "test end-to-end 2/4 running... compare backup log"
+    printinfo "test end-to-end 2/5 running... compare backup log"
     if  $smoketest backup | grep "\[32minfo    : creating todolist backup - .todo[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]" > /dev/null;
     then
-        printinfo "test end-to-end 2/4 ok"
+        printinfo "test end-to-end 2/5 ok"
     else
-        printerror "test end-to-end 2/4 ko"
+        printerror "test end-to-end 2/5 ko"
         return 1
     fi
     printinfo "test end-to-end 3/4 running... compare todofile"
     if diff ${PYPODO_FILE} ci_cd/.todo.expected;
     then
-        printinfo "test end-to-end 3/4 ok"
+        printinfo "test end-to-end 3/5 ok"
     else
-        printerror "test end-to-end 3/4 ko"
+        printerror "test end-to-end 3/5 ko"
         return 1
     fi
-    printinfo "test end-to-end 4/4 running... compare todobackupfile"
+    printinfo "test end-to-end 4/5 running... compare todobackupfile"
     if diff ${PYPODO_BACKUP}/.todo* ci_cd/.todo.expected;
     then
-        printinfo "test end-to-end 4/4 ok"
+        printinfo "test end-to-end 4/5 ok"
     else
-        printerror "test end-to-end 4/4 ko"
+        printerror "test end-to-end 4/5 ko"
         return 1
     fi
     printinfo "test end-to-end 5/5 running... compare log with special conf"

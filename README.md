@@ -1,15 +1,15 @@
 # pypodo
 
-**pypodo** (\pipudu\\) is a pip package (or docker image if you want, see below!) : a todolist tool which works with a .todo file positionned the root of the home directory with a mecanism of index and tags.
+**pypodo** (\pipudu\\) is a pip package (or docker image if you want, see below!) : a todolist tool which works with a .todo file positionned the root of the home directory with a mecanism of indexes and tags.
 
 ## Install/Upgrade/Uninstall
 
-:warning: Not compatible with python2 who is deprecated! Use python3
+:warning: Not compatible with python2 who is deprecated! Use python3.
 
 ```
-pip3 install --user pypodo #Installation
-pip3 install --user pypodo --upgrade #Upgrade
-pip3 uninstall pypodo #Uninstall
+pip3 install pypodo #Installation, use pip if pip3 does not exist
+pip3 install pypodo --upgrade #Upgrade, use pip if pip3 does not exist
+pip3 uninstall pypodo #Uninstall, use pip if pip3 does not exist
 ```
 
 [https://pypi.org/project/pypodo/](https://pypi.org/project/pypodo/)
@@ -22,52 +22,47 @@ Other commands are **help**/**backup**/**sort**/**find**
 
 - ``pypodo add "to do work #name_of_tag"`` : add the task '_to do work_' with the tag '_name_of_tag_'
 
-- ``pypodo add "to do other_work #name_of_other_tag" "to do other_big_work #name_of_other_tag"``
+- ``pypodo add "to do other_work #name_of_other_tag" "to do other_big_work #name_of_other_tag"`` : add the other task '_to do other_work_' with the tag '_name_of_other_tag_' and the another task '_to do other_big_work_' with the tag 'name_of_other_tag'
 
-add the other task '_to do other_work_' with the tag '_name_of_other_tag_' the another task '_to do other_big_work_' with the tag '_name_of_tag_'
-
-- ``pypodo list`` 
-
-print the todolist with an index for each task :
+- ``pypodo list`` : print the todolist with an index for each task
 
 ```
 1 to do work #name_of_tag
 2 to do other_work #name_of_other_tag
 3 to do other_big_work #name_of_other_tag
 ```
-The tags are colored by default in green. If they are "#urgent" they are colored in red. If they have a date format YYYYmmdd and a gap to actual date less than seven days they are colored in yellow or red if greater than the actual date.
 
-- `` pypodo list "name_of_tag"``
+The tags are colored by default in green. If they are "#urgent" they are colored in red. If they have a date format YYYYmmdd and a gap to actual date less than seven days they are colored in yellow or red if greater than the actual date. See the Configuration to change the colors.
 
-print the todolist filtered to the tag '_name_of_tag_' :
+- `` pypodo list "name_of_tag"`` : print the todolist filtered on the task with the tag '_name_of_tag_' :
 
 ```
 1 to do work #name_of_tag
 ```
 
-- `` pypodo list "name_of_tag" "other_tag"`` : print the todolist filtered to tasks with the 2 tags together
+- `` pypodo list "name_of_tag" "other_tag"`` : print the todolist filtered on the tasks with the 2 tags together
 
-- ``pypodo del 2``  : delete the second task of the todolist
+- ``pypodo del 2``  : delete the task with index=2 of the todolist
 
-- ``pypodo del 1 2`` : remove the 2 tasks 
+- ``pypodo del 1 2`` : remove the 2 tasks (index=1 and index=2)
 
-- ``pypodo tag new_tag 1`` : add the tag '_new_tag_' to the first task
+- ``pypodo tag new_tag 1`` : add the tag '_new_tag_' to the task with index=1
 
-- ``pypodo tag new_tag 1 2`` : add the tag '_new_tag_' to the first and second task
+- ``pypodo tag new_tag 1 2`` : add the tag '_new_tag_' to the 2 taks (index=1 and index=2)
 
 - ``pypodo tag`` : display all tags of the todolist
 
-- ``pypodo untag new_tag 1`` : remove tag '_new_tag_' from the first task
+- ``pypodo untag new_tag 1`` : remove tag '_new_tag_' from the task with index=1
 
-- ``pypodo untag new_tag 1 2`` : remove the tag '_new_tag_' to the first and second task
+- ``pypodo untag new_tag 1 2`` : remove the tag '_new_tag_' from the 2 tasks (index=1 and index=2)
 
 - ``pypodo untag`` : display all tasks without tags
 
 - ``pypodo sort`` :  reorder all tasks by index
 
-- ``pypodo backup`` : backup the actual .todo in a backup folder with a name suffixed by a timestamp
+- ``pypodo backup`` : backup the actual .todo in a backup folder with a filename suffixed by a timestamp
 
-- ``pypodo find "t.*he"`` : filter the todolist on the parameter (regex format)
+- ``pypodo find "t.*he"`` : filter the todolist on the parameter (regex format accepted)
 
 - ``pypodo help`` : display help message
 
@@ -126,6 +121,7 @@ Correct the two variables if you want :
 ```
 PYPODO_FILE=~/.todo
 PYPODO_BACKUP=~/.todo_backup
+PYPODO_CONFIG=~/.todo.rc
 ```
 
 and test you app! :

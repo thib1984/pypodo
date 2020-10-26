@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(name='pypodo',
       version='2.3.2',
-      description='pypodo is a todolist tool which works with a .todo file positionned the root of the home directory : use pypodo to run it. Pypodo has mecanisms of index and tags',
+      description='pypodo is a todolist tool which works with a .todo file positionned the root of the home directory : use pypodo to run it. Pypodo has mecanisms of indexes and tags',
       long_description=long_description,
       long_description_content_type="text/markdown",
       url='https://github.com/thib1984/pypodo',
@@ -13,7 +13,7 @@ setup(name='pypodo',
       author_email='thibault.garcon@gmail.com',
       license='mit',
       packages=['pypodo'],
-      install_requires=["termcolor","freezegun"],
+      install_requires=["termcolor"],
       zip_safe=False,
       entry_points={
           'console_scripts': ['pypodo=pypodo.__pypodo__:pypodo'],
