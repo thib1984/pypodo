@@ -91,7 +91,7 @@ dockerci () {
     fi
     #end-to-end
     printinfo "test end-to-end 1/5 running... compare log"
-    ./end_to_end.sh "$smoketest" > ci_cd/cache/log
+    ./ci_cd/end_to_end.sh "$smoketest" > ci_cd/cache/log
     $smoketest backup > ci_cd/cache/log_backup
     if diff ci_cd/cache/log ci_cd/log.expected >> $file_log_end_to_end;
     then
@@ -128,7 +128,7 @@ dockerci () {
     rm "$PYPODO_FILE"
     touch "$PYPODO_FILE"
     cp ./ci_cd/.todo.rc $PYPODO_CONF
-    ./end_to_end.sh "$smoketest" > ci_cd/cache/log.with.conf
+    ./ci_cd/end_to_end.sh "$smoketest" > ci_cd/cache/log.with.conf
     if diff ci_cd/cache/log.with.conf ci_cd/log.with.conf.expected >> $file_log_end_to_end;
     then
         printinfo "test end-to-end 5/5 ok, see output in $file_log_end_to_end"
