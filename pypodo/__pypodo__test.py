@@ -5,31 +5,31 @@ Pypodo Tests
 import re
 import sys
 import unittest
-
 from io import StringIO
 from pathlib import Path
-from unittest.mock import mock_open, patch, MagicMock
+from unittest.mock import MagicMock, mock_open, patch
+
 from freezegun import freeze_time
 
 from pypodo.__pypodo__ import (
     add,
+    backup,
     delete,
-    listtask,
+    find,
     helppypodo,
-    pypodo,
-    listtag,
     listnotag,
+    listtag,
+    listtask,
+    pypodo,
+    read_config,
+    read_config_boolean,
+    read_config_color,
+    read_config_int,
+    read_config_level,
     sort,
     tag,
-    untag,
-    backup,
-    find,
     test_date,
-    read_config_boolean,
-    read_config,
-    read_config_level,
-    read_config_int,
-    read_config_color,
+    untag,
 )
 
 
