@@ -1,3 +1,7 @@
+"""
+Pypodo Tests
+"""
+
 from pypodo.__pypodo__ import add, delete, list, help, pypodo, listtag, listnotag, sort, tag, untag, backup, find, test_date, read_config_boolean, read_config, read_config_level, read_config_int,  read_config_color
 import re
 import sys
@@ -12,7 +16,13 @@ import configparser
 
 
 class AnyStringWith(str):
+    """
+    Utilitary Class for contains string
+    """
     def __eq__(self, other):
+        """
+        Test if string is in other
+        """
         return self in other
 
 sys.modules['shutil'] = MagicMock()
@@ -22,11 +32,17 @@ STR_PATH_HOME__TODORC_ = str(Path.home()) + '/.todo.rc'
 STR_PATH_HOME__TODO_BACKUP_FOLDER_ = str(Path.home()) + '/.todo_backup/'
 
 class TestMethodsEntryPoint(unittest.TestCase):
+    """
+    Class Test for entrypoints
+    """
 
     @patch('os.path.isfile')
     @patch('builtins.open', new_callable=mock_open)
     @patch('sys.stdout', new_callable=StringIO)
     def test_pypodo_entry_point_list(self, mock_print, mock_open_file, mock_isfile):
+        """
+        Test pypodo entry point for list
+        """
         with patch.object(sys, 'argv', [pypodo, "list"]):
             mock_isfile.return_value = True
             pypodo(mock_open_file)
@@ -37,6 +53,9 @@ class TestMethodsEntryPoint(unittest.TestCase):
     @patch('builtins.open', new_callable=mock_open)
     @patch('sys.stdout', new_callable=StringIO)
     def test_pypodo_entry_point_add(self, mock_print, mock_open_file, mock_isfile):
+        """
+        Test pypodo entry point for add
+        """
         with patch.object(sys, 'argv', [pypodo, "add"]):
             mock_isfile.return_value = True
             pypodo(mock_open_file)
@@ -47,6 +66,9 @@ class TestMethodsEntryPoint(unittest.TestCase):
     @patch('builtins.open', new_callable=mock_open)
     @patch('sys.stdout', new_callable=StringIO)
     def test_pypodo_entry_point_del(self, mock_print, mock_open_file, mock_isfile):
+        """
+        Test pypodo entry point for del
+        """
         with patch.object(sys, 'argv', [pypodo, "del"]):
             mock_isfile.return_value = True
             pypodo(mock_open_file)
@@ -57,6 +79,9 @@ class TestMethodsEntryPoint(unittest.TestCase):
     @patch('builtins.open', new_callable=mock_open)
     @patch('sys.stdout', new_callable=StringIO)
     def test_pypodo_entry_point_sort(self, mock_print, mock_open_file, mock_isfile):
+        """
+        Test pypodo entry point for sort
+        """
         with patch.object(sys, 'argv', [pypodo, "sort"]):
             mock_isfile.return_value = True
             pypodo(mock_open_file)
@@ -67,6 +92,9 @@ class TestMethodsEntryPoint(unittest.TestCase):
     @patch('builtins.open', new_callable=mock_open)
     @patch('sys.stdout', new_callable=StringIO)
     def test_pypodo_entry_point_untag(self, mock_print, mock_open_file, mock_isfile):
+        """
+        Test pypodo entry point for untag
+        """
         with patch.object(sys, 'argv', [pypodo, "untag", "tag"]):
             mock_isfile.return_value = True
             pypodo(mock_open_file)
@@ -77,6 +105,9 @@ class TestMethodsEntryPoint(unittest.TestCase):
     @patch('builtins.open', new_callable=mock_open)
     @patch('sys.stdout', new_callable=StringIO)
     def test_pypodo_entry_point_tag(self, mock_print, mock_open_file, mock_isfile):
+        """
+        Test pypodo entry point for tag
+        """
         with patch.object(sys, 'argv', [pypodo, "tag", "tag"]):
             mock_isfile.return_value = True
             pypodo(mock_open_file)
@@ -87,6 +118,9 @@ class TestMethodsEntryPoint(unittest.TestCase):
     @patch('builtins.open', new_callable=mock_open)
     @patch('sys.stdout', new_callable=StringIO)
     def test_pypodo_entry_point_find(self, mock_print, mock_open_file, mock_isfile):
+        """
+        Test pypodo entry point for find
+        """
         with patch.object(sys, 'argv', [pypodo, "find"]):
             mock_isfile.return_value = True
             pypodo(mock_open_file)
@@ -97,6 +131,9 @@ class TestMethodsEntryPoint(unittest.TestCase):
     @patch('builtins.open', new_callable=mock_open)
     @patch('sys.stdout', new_callable=StringIO)
     def test_pypodo_entry_point_backup(self, mock_print, mock_open_file, mock_isfile):
+        """
+        Test pypodo entry point for backup
+        """
         with patch.object(sys, 'argv', [pypodo, "backup", "bak"]):
             mock_isfile.return_value = True
             pypodo(mock_open_file)
@@ -108,6 +145,9 @@ class TestMethodsEntryPoint(unittest.TestCase):
     @patch('sys.stdout', new_callable=StringIO)
     @patch("builtins.print",autospec=True,side_effect=print)
     def test_pypodo_entry_point_help(self, mock_print, mock_open_file, mock_isfile, mock_stdout):
+        """
+        Test pypodo entry point for help
+        """
         with patch.object(sys, 'argv', [pypodo, "help"]):
             mock_isfile.return_value = True
             pypodo(mock_open_file)
@@ -118,6 +158,9 @@ class TestMethodsEntryPoint(unittest.TestCase):
     @patch('sys.stdout', new_callable=StringIO)
     @patch("builtins.print",autospec=True,side_effect=print)
     def test_pypodo_entry_point_bad_param(self, mock_print, mock_open_file, mock_isfile, mock_stdout):
+        """
+        Test pypodo entry point for bad param
+        """
         with patch.object(sys, 'argv', [pypodo, "param"]):
             mock_isfile.return_value = True
             pypodo(mock_open_file)
@@ -128,18 +171,27 @@ class TestMethodsEntryPoint(unittest.TestCase):
     @patch('sys.stdout', new_callable=StringIO)
     @patch("builtins.print",autospec=True,side_effect=print)
     def test_pypodo_entry_point_no_param(self, mock_print, mock_open_file, mock_isfile, mock_stdout):
+        """
+        Test pypodo entry point for no param
+        """
         with patch.object(sys, 'argv', [pypodo]):
             mock_isfile.return_value = True
             pypodo(mock_open_file)
             mock_print.assert_called_with(AnyStringWith("SYNOPSIS"))
 
 class TestMethodsErrors(unittest.TestCase):
+    """
+    Class Test for Errors
+    """
 
     # errors
     @patch('os.path.isfile')
     @patch('builtins.open', new_callable=mock_open)
     @patch('sys.stdout', new_callable=StringIO)
     def test_find_with_no_parameter_return_error(self, mock_print, mock_open_file, mock_isfile):
+        """
+        test_find_with_no_parameter_return_error
+        """
         with patch.object(sys, 'argv', [pypodo, find]):
             mock_isfile.return_value = True
             find(mock_open_file)
@@ -150,6 +202,9 @@ class TestMethodsErrors(unittest.TestCase):
     @patch('builtins.open', new_callable=mock_open)
     @patch('sys.stdout', new_callable=StringIO)
     def test_add_with_no_parameter_return_error(self, mock_print, mock_open_file, mock_isfile):
+        """
+        test_add_with_no_parameter_return_error
+        """
         with patch.object(sys, 'argv', [pypodo, add]):
             mock_isfile.return_value = True
             add(mock_open_file)
@@ -160,6 +215,9 @@ class TestMethodsErrors(unittest.TestCase):
     @patch('builtins.open', new_callable=mock_open)
     @patch('sys.stdout', new_callable=StringIO)
     def test_del_with_no_parameter_return_error(self, mock_print, mock_open_file, mock_isfile):
+        """
+        test_del_with_no_parameter_return_error
+        """
         with patch.object(sys, 'argv', [pypodo, delete]):
             mock_isfile.return_value = True
             delete(mock_open_file)
@@ -170,6 +228,9 @@ class TestMethodsErrors(unittest.TestCase):
     @patch('builtins.open', new_callable=mock_open)
     @patch('sys.stdout', new_callable=StringIO)
     def test_sort_with_parameters_return_error(self, mock_print, mock_open_file, mock_isfile):
+        """
+        test_sort_with_parameters_return_error
+        """
         with patch.object(sys, 'argv', [pypodo, sort, "toto"]):
             mock_isfile.return_value = True
             sort(mock_open_file)
@@ -180,6 +241,9 @@ class TestMethodsErrors(unittest.TestCase):
     @patch('builtins.open', new_callable=mock_open)
     @patch('sys.stdout', new_callable=StringIO)
     def test_backup_with_parameters_return_error(self, mock_print, mock_open_file, mock_isfile):
+        """
+        test_backup_with_parameters_return_error
+        """
         with patch.object(sys, 'argv', [pypodo, backup, "toto"]):
             mock_isfile.return_value = True
             backup(mock_open_file)
@@ -190,6 +254,9 @@ class TestMethodsErrors(unittest.TestCase):
     @patch('builtins.open', new_callable=mock_open)
     @patch('sys.stdout', new_callable=StringIO)
     def test_tag_with_one_parameter_return_error(self, mock_print, mock_open_file, mock_isfile):
+        """
+        test_tag_with_one_parameter_return_error
+        """
         with patch.object(sys, 'argv', [pypodo, tag, "param"]):
             mock_isfile.return_value = True
             tag(mock_open_file)
@@ -200,6 +267,9 @@ class TestMethodsErrors(unittest.TestCase):
     @patch('builtins.open', new_callable=mock_open)
     @patch('sys.stdout', new_callable=StringIO)
     def test_untag_with_one_parameter_return_error(self, mock_print, mock_open_file, mock_isfile):
+        """
+        test_untag_with_one_parameter_return_error
+        """
         with patch.object(sys, 'argv', [pypodo, untag, "param"]):
             mock_isfile.return_value = True
             untag(mock_open_file)
@@ -210,6 +280,9 @@ class TestMethodsErrors(unittest.TestCase):
     @patch('builtins.open', new_callable=mock_open)
     @patch('sys.stdout', new_callable=StringIO)
     def test_notag_with_no_parameter_return_error(self, mock_print, mock_open_file, mock_isfile):
+        """
+        test_notag_with_no_parameter_return_error
+        """
         with patch.object(sys, 'argv', [pypodo, untag, "param"]):
             mock_isfile.return_value = True
             listnotag(mock_open_file)
@@ -220,6 +293,9 @@ class TestMethodsErrors(unittest.TestCase):
     @patch('builtins.open', new_callable=mock_open)
     @patch('sys.stdout', new_callable=StringIO)
     def test_listtag_with_no_parameter_return_error(self, mock_print, mock_open_file, mock_isfile):
+        """
+        test_listtag_with_no_parameter_return_error
+        """
         with patch.object(sys, 'argv', [pypodo, untag, "param"]):
             mock_isfile.return_value = True
             listtag(mock_open_file)
@@ -230,6 +306,9 @@ class TestMethodsErrors(unittest.TestCase):
     @patch('builtins.open', new_callable=mock_open,  read_data='1 task')
     @patch('sys.stdout', new_callable=StringIO)
     def test_tag_with_incorrect_tag_return_error(self, mock_print, mock_open_file, mock_isfile):
+        """
+        test_tag_with_incorrect_tag_return_error
+        """
         with patch.object(sys, 'argv', [pypodo, tag, "#badtag", "1"]):
             mock_isfile.return_value = True
             tag(mock_open_file)
@@ -240,6 +319,9 @@ class TestMethodsErrors(unittest.TestCase):
     @patch('builtins.open', new_callable=mock_open,  read_data='1 task')
     @patch('sys.stdout', new_callable=StringIO)
     def test_untag_with_incorrect_tag_return_error(self, mock_print, mock_open_file, mock_isfile):
+        """
+        test_untag_with_incorrect_tag_return_error
+        """
         with patch.object(sys, 'argv', [pypodo, untag, "#badtag", "1"]):
             mock_isfile.return_value = True
             untag(mock_open_file)
@@ -250,6 +332,9 @@ class TestMethodsErrors(unittest.TestCase):
     @patch('builtins.open', new_callable=mock_open, read_data='1 my task #te#st\na other task')
     @patch('sys.stdout', new_callable=StringIO)
     def test_sort_with_invalid_todo_return_warning_and_error(self, mock_print, mock_open_file, mock_isfile):
+        """
+        test_sort_with_invalid_todo_return_warning_and_error
+        """
         with patch.object(sys, 'argv', [pypodo, list]):
             mock_isfile.return_value = True
             list(mock_open_file)
@@ -258,11 +343,17 @@ class TestMethodsErrors(unittest.TestCase):
 
 
 class TestMethodsWarnings(unittest.TestCase):
+    """
+    Class Test for Warnings
+    """
 
     @patch('os.path.isfile')
     @patch('builtins.open', new_callable=mock_open)
     @patch('sys.stdout', new_callable=StringIO)
     def test_sort_if_todo_empty(self, mock_print, mock_open_file, mock_isfile):
+        """
+        test_sort_if_todo_empty
+        """
         with patch.object(sys, 'argv', [pypodo, sort]):
             mock_isfile.return_value = True
             sort(mock_open_file)
@@ -273,6 +364,9 @@ class TestMethodsWarnings(unittest.TestCase):
     @patch('builtins.open', new_callable=mock_open)
     @patch('sys.stdout', new_callable=StringIO)
     def test_tag_with_no_numeric_return_warning(self, mock_print, mock_open_file, mock_isfile):
+        """
+        test_tag_with_no_numeric_return_warning
+        """
         with patch.object(sys, 'argv', [pypodo, tag, "param", "a"]):
             mock_isfile.return_value = True
             tag(mock_open_file)
@@ -283,6 +377,9 @@ class TestMethodsWarnings(unittest.TestCase):
     @patch('builtins.open', new_callable=mock_open)
     @patch('sys.stdout', new_callable=StringIO)
     def test_untag_with_no_numeric_return_warning(self, mock_print, mock_open_file, mock_isfile):
+        """
+        test_untag_with_no_numeric_return_warning
+        """
         with patch.object(sys, 'argv', [pypodo, untag, "param", "a"]):
             mock_isfile.return_value = True
             untag(mock_open_file)
@@ -293,6 +390,9 @@ class TestMethodsWarnings(unittest.TestCase):
     @patch('builtins.open', new_callable=mock_open)
     @patch('sys.stdout', new_callable=StringIO)
     def test_delete_with_no_numeric_return_warning(self, mock_print, mock_open_file, mock_isfile):
+        """
+        test_delete_with_no_numeric_return_warning
+        """
         with patch.object(sys, 'argv', [pypodo, delete, "a"]):
             mock_isfile.return_value = True
             delete(mock_open_file)
@@ -303,6 +403,9 @@ class TestMethodsWarnings(unittest.TestCase):
     @patch('builtins.open', new_callable=mock_open,  read_data='1 task')
     @patch('sys.stdout', new_callable=StringIO)
     def test_delete_with_inexistant_numeric_return_warning(self, mock_print, mock_open_file, mock_isfile):
+        """
+        test_delete_with_inexistant_numeric_return_warning
+        """
         with patch.object(sys, 'argv', [pypodo, delete, "2"]):
             mock_isfile.return_value = True
             delete(mock_open_file)
@@ -313,6 +416,9 @@ class TestMethodsWarnings(unittest.TestCase):
     @patch('builtins.open', new_callable=mock_open,  read_data='1 task')
     @patch('sys.stdout', new_callable=StringIO)
     def test_tag_with_inexistant_numeric_return_warning(self, mock_print, mock_open_file, mock_isfile):
+        """
+        test_tag_with_inexistant_numeric_return_warning
+        """
         with patch.object(sys, 'argv', [pypodo, tag, "tag", "2"]):
             mock_isfile.return_value = True
             tag(mock_open_file)
@@ -323,6 +429,9 @@ class TestMethodsWarnings(unittest.TestCase):
     @patch('builtins.open', new_callable=mock_open,  read_data='1 task')
     @patch('sys.stdout', new_callable=StringIO)
     def test_untag_with_inexistant_numeric_return_warning(self, mock_print, mock_open_file, mock_isfile):
+        """
+        test_untag_with_inexistant_numeric_return_warning
+        """
         with patch.object(sys, 'argv', [pypodo, untag, "tag", "2"]):
             mock_isfile.return_value = True
             untag(mock_open_file)
@@ -333,6 +442,9 @@ class TestMethodsWarnings(unittest.TestCase):
     @patch('builtins.open', new_callable=mock_open,  read_data='1 task')
     @patch('sys.stdout', new_callable=StringIO)
     def test_listtag_with_empty_result_return_warning(self, mock_print, mock_open_file, mock_isfile):
+        """
+        test_listtag_with_empty_result_return_warning
+        """
         with patch.object(sys, 'argv', [pypodo, tag]):
             mock_isfile.return_value = True
             tag(mock_open_file)
@@ -343,6 +455,9 @@ class TestMethodsWarnings(unittest.TestCase):
     @patch('builtins.open', new_callable=mock_open,  read_data='1 task #tag')
     @patch('sys.stdout', new_callable=StringIO)
     def test_listnottag_with_empty_result_return_warning(self, mock_print, mock_open_file, mock_isfile):
+        """
+        test_listnottag_with_empty_result_return_warning
+        """
         with patch.object(sys, 'argv', [pypodo, untag]):
             mock_isfile.return_value = True
             untag(mock_open_file)
@@ -353,6 +468,9 @@ class TestMethodsWarnings(unittest.TestCase):
     @patch('builtins.open', new_callable=mock_open)
     @patch('sys.stdout', new_callable=StringIO)
     def test_list_with_empty_todo_return_warning(self, mock_print, mock_open_file, mock_isfile):
+        """
+        test_list_with_empty_todo_return_warning
+        """
         with patch.object(sys, 'argv', [pypodo, list]):
             mock_isfile.return_value = True
             list(mock_open_file)
@@ -363,6 +481,9 @@ class TestMethodsWarnings(unittest.TestCase):
     @patch('builtins.open', new_callable=mock_open, read_data='1 task #tag1\n2 task #tag2\n3 task #tag\n4 task')
     @patch('sys.stdout', new_callable=StringIO)
     def test_list_with_filter_and_empty_result_return_warning(self, mock_print, mock_open_file, mock_isfile):
+        """
+        test_list_with_filter_and_empty_result_return_warning
+        """
         with patch.object(sys, 'argv', [pypodo, list, 'tag1', 'tag2']):
             mock_isfile.return_value = True
             list(mock_open_file)
@@ -375,6 +496,9 @@ class TestMethodsWarnings(unittest.TestCase):
     @patch('builtins.open', new_callable=mock_open)
     @patch('sys.stdout', new_callable=StringIO)
     def test_add_task_not_valid_format_return_warning(self, mock_print, mock_open_file, mock_isfile):
+        """
+        test_add_task_not_valid_format_return_warning
+        """
         with patch.object(sys, 'argv', [pypodo, add, '#task']):
             mock_isfile.return_value = True
             add(mock_open_file)
@@ -385,6 +509,9 @@ class TestMethodsWarnings(unittest.TestCase):
     @patch('builtins.open', new_callable=mock_open)
     @patch('sys.stdout', new_callable=StringIO)
     def test_find_if_empty_result_return_warning(self, mock_print, mock_open_file, mock_isfile):
+        """
+        test_find_if_empty_result_return_warning
+        """
         with patch.object(sys, 'argv', [pypodo, find, "string"]):
             mock_isfile.return_value = True
             find(mock_open_file)
@@ -393,15 +520,24 @@ class TestMethodsWarnings(unittest.TestCase):
 
 
 class TestMethodsTools(unittest.TestCase):
+    """
+    Class Test for Tools
+    """
 
     @freeze_time("2020-10-14")
     def test_date(self):
+        """
+        test_date
+        """
         self.assertEqual("ok", test_date("20210101"))
         self.assertEqual("alert", test_date("20201009"))
         self.assertEqual("warning", test_date("20201020"))
 
     @patch('builtins.open', new_callable=mock_open, read_data='[COLOR]\nalert =red\nwarning=blue\ninfo=bad')
     def test_read_config(self, mock_open_file):
+        """
+        test_read_config
+        """
         #read_config
         self.assertEqual("red", read_config("COLOR", "error", "red"))
         self.assertEqual("red", read_config("COLOR", "alert", "red"))
@@ -410,6 +546,9 @@ class TestMethodsTools(unittest.TestCase):
 
     @patch('builtins.open', new_callable=mock_open, read_data='[COLOR]\nalert =red\nwarning=blue\ninfo=bad')
     def test_read_config_color(self, mock_open_file):
+        """
+        test_read_config_color
+        """
         #read_config_color
         self.assertEqual("red", read_config_color("COLOR", "error", "red"))
         self.assertEqual("red", read_config_color("COLOR", "alert", "red"))
@@ -418,6 +557,9 @@ class TestMethodsTools(unittest.TestCase):
 
     @patch('builtins.open', new_callable=mock_open, read_data='[FONCTIONAL]\nperiodwarning = bad\nperiodalert = 1\nperiodinfo = -1')
     def test_read_config_int(self, mock_open_file):
+        """
+        test_read_config_int
+        """
         #read_config_int
         self.assertEqual("1", read_config_int("FONCTIONAL", "periodalert", "0"))
         self.assertEqual("7", read_config_int("FONCTIONAL", "periodwarning", "7"))
@@ -425,6 +567,9 @@ class TestMethodsTools(unittest.TestCase):
 
     @patch('builtins.open', new_callable=mock_open, read_data='[SYSTEM]\nlevel = error\nlevel2 = warning\nlevel3 = bad')
     def test_read_config_level(self, mock_open_file):
+        """
+        test_read_config_level
+        """
         #read_config_level
         self.assertEqual("error", read_config_level("SYSTEM", "level", "error"))
         self.assertEqual("warning", read_config_level("SYSTEM", "level2", "error"))
@@ -432,12 +577,17 @@ class TestMethodsTools(unittest.TestCase):
 
     @patch('builtins.open', new_callable=mock_open, read_data='[FONCTIONAL]\nmybool = False\nmybool2 = bad')
     def test_read_config_boolean(self, mock_open_file):
+        """
+        test_read_config_boolean
+        """
         #read_config_boolean
         self.assertEqual("False", read_config_boolean("FONCTIONAL", "mybool", "True"))
         self.assertEqual("True", read_config_boolean("FONCTIONAL", "mybool2", "True"))
 
 class TestMethodsOthers(unittest.TestCase):
-
+    """
+    Class Test for other
+    """
 
     @patch('time.strftime')
     @patch('pypodo.__pypodo__.copyfile')
@@ -447,6 +597,9 @@ class TestMethodsOthers(unittest.TestCase):
     @patch('builtins.open', new_callable=mock_open)
     @patch('sys.stdout', new_callable=StringIO)
     def test_backup_create_file_with_good_sufix_and_good_content(self, mock_print, mock_open, mock_path_exists, mock_makedirs, mock_isfile, mock_copyfile, mock_strftime):
+        """
+        test_backup_create_file_with_good_sufix_and_good_content
+        """
         with patch.object(sys, 'argv', [pypodo, backup]):
             mock_isfile.return_value = True
             mock_path_exists.return_value = False
@@ -467,6 +620,9 @@ class TestMethodsOthers(unittest.TestCase):
     @patch('builtins.open', new_callable=mock_open, read_data='2 task one #test\n4 task two')
     @patch('sys.stdout', new_callable=StringIO)
     def test_sort_reorganize_index(self, mock_sysout, mock_open, mock_isfile):
+        """
+        test_sort_reorganize_index
+        """
         with patch.object(sys, 'argv', [pypodo, sort]):
             mock_isfile.return_value = True
             sort(mock_open)
@@ -476,6 +632,9 @@ class TestMethodsOthers(unittest.TestCase):
     @patch('builtins.open', new_callable=mock_open, read_data='1 task')
     @patch('sys.stdout', new_callable=StringIO)
     def test_list_print_one_task(self, mock_print, mock_open, mock_isfile):
+        """
+        test_list_print_one_task
+        """
         with patch.object(sys, 'argv', [pypodo, list]):
             mock_isfile.return_value = True
             list(mock_open)
@@ -486,6 +645,9 @@ class TestMethodsOthers(unittest.TestCase):
     @patch('builtins.open', new_callable=mock_open, read_data='1 task #tag1 #tag2')
     @patch('sys.stdout', new_callable=StringIO)
     def test_list_print_one_task_and_tags(self, mock_print, mock_open, mock_isfile):
+        """
+        test_list_print_one_task_and_tags
+        """
         with patch.object(sys, 'argv', [pypodo, list]):
             mock_isfile.return_value = True
             list(mock_open)
@@ -497,6 +659,9 @@ class TestMethodsOthers(unittest.TestCase):
     @patch('builtins.open', new_callable=mock_open, read_data='1 task #urgent #20201010 #20201015 #20201022 #tag')
     @patch('sys.stdout', new_callable=StringIO)
     def test_list_print_one_task_and_specific_tags(self, mock_print, mock_open, mock_isfile):
+        """
+        test_list_print_one_task_and_specific_tags
+        """
         with patch.object(sys, 'argv', [pypodo, list]):
             mock_isfile.return_value = True
             list(mock_open)
@@ -507,6 +672,9 @@ class TestMethodsOthers(unittest.TestCase):
     @patch('builtins.open', new_callable=mock_open, read_data='1 task1 #tag\n2 task2 #tag2')
     @patch('sys.stdout', new_callable=StringIO)
     def test_list_with_filter_return_result(self, mock_print, mock_open, mock_isfile):
+        """
+        test_list_with_filter_return_result
+        """
         with patch.object(sys, 'argv', [pypodo, list, 'tag']):
             mock_isfile.return_value = True
             list(mock_open)
@@ -517,6 +685,9 @@ class TestMethodsOthers(unittest.TestCase):
     @patch('builtins.open', new_callable=mock_open, read_data='1 task #tag1\n2 task2 tache #tag2\n3 task3 #tag1 #tag2\n4 ma 4 task4 #tag3')
     @patch('sys.stdout', new_callable=StringIO)
     def test_list_with_double_filter_return_result(self, mock_print, mock_open, mock_isfile):
+        """
+        test_list_with_double_filter_return_result
+        """
         with patch.object(sys, 'argv', [pypodo, list, 'tag1', 'tag2']):
             mock_isfile.return_value = True
             list(mock_open)
@@ -527,6 +698,9 @@ class TestMethodsOthers(unittest.TestCase):
     @patch('builtins.open', new_callable=mock_open)
     @patch('sys.stdout', new_callable=StringIO)
     def test_add_multi_task(self, mock_print, mock_open, mock_isfile):
+        """
+        test_add_multi_task
+        """
         with patch.object(sys, 'argv', [pypodo, add, 'task1', 'task2']):
             mock_isfile.return_value = True
             add(mock_open)
@@ -538,6 +712,9 @@ class TestMethodsOthers(unittest.TestCase):
     @patch('builtins.open', new_callable=mock_open, read_data='1 task1\n4 task2')
     @patch('sys.stdout', new_callable=StringIO)
     def test_add_task_with_no_empty_todolist(self, mock_print, mock_open, mock_isfile):
+        """
+        test_add_task_with_no_empty_todolist
+        """
         with patch.object(sys, 'argv', [pypodo, add, 'task3']):
             mock_isfile.return_value = True
             add(mock_open)
@@ -550,6 +727,9 @@ class TestMethodsOthers(unittest.TestCase):
     @patch('builtins.open', new_callable=mock_open, read_data='1 task1 #tag\n2 task2\n4 task3')
     @patch('sys.stdout', new_callable=StringIO)
     def test_delete_one_task(self, mock_print, mock_open, mock_isfile):
+        """
+        test_delete_one_task
+        """
         with patch.object(sys, 'argv', [pypodo, delete, '2']):
             mock_isfile.return_value = True
             delete(mock_open)
@@ -561,6 +741,9 @@ class TestMethodsOthers(unittest.TestCase):
     @patch('builtins.open', new_callable=mock_open, read_data='1 task1 #tag\n2 task2\n4 task3')
     @patch('sys.stdout', new_callable=StringIO)
     def test_delete_multi_task(self, mock_print, mock_open, mock_isfile):
+        """
+        test_delete_multi_task
+        """
         with patch.object(sys, 'argv', [pypodo, delete, '2', '1']):
             mock_isfile.return_value = True
             delete(mock_open)
@@ -572,6 +755,9 @@ class TestMethodsOthers(unittest.TestCase):
     @patch('builtins.open', new_callable=mock_open, read_data='1 task #tag2\n2 task2 #tag #tag3')
     @patch('sys.stdout', new_callable=StringIO)
     def test_untag_one_task(self, mock_print, mock_open, mock_isfile):
+        """
+        test_untag_one_task
+        """
         with patch.object(sys, 'argv', [pypodo, untag, 'tag', '2']):
             mock_isfile.return_value = True
             untag(mock_open)
@@ -583,6 +769,9 @@ class TestMethodsOthers(unittest.TestCase):
     @patch('builtins.open', new_callable=mock_open, read_data='1 ma tache #test #toto\n2 ma seconde tache #tost #titi\n3 ma seconde tache #test #titi')
     @patch('sys.stdout', new_callable=StringIO)
     def test_untag_multi_task(self, mock_print, mock_open, mock_isfile):
+        """
+        test_untag_multi_task
+        """
         with patch.object(sys, 'argv', [pypodo, untag, 'test', '1', '2', '3']):
             mock_isfile.return_value = True
             untag(mock_open)
@@ -595,6 +784,9 @@ class TestMethodsOthers(unittest.TestCase):
     @patch('builtins.open', new_callable=mock_open, read_data='1 task1\n2 task2 #tag1')
     @patch('sys.stdout', new_callable=StringIO)
     def test_tag_one_task(self, mock_print, mock_open, mock_isfile):
+        """
+        test_tag_one_task
+        """
         with patch.object(sys, 'argv', [pypodo, tag, 'tag2', '2']):
             mock_isfile.return_value = True
             tag(mock_open)
@@ -606,6 +798,9 @@ class TestMethodsOthers(unittest.TestCase):
     @patch('builtins.open', new_callable=mock_open, read_data='1 task1\n2 task2 #tag1\n3 task3 #tag2')
     @patch('sys.stdout', new_callable=StringIO)
     def test_tag_multi_task(self, mock_print, mock_open, mock_isfile):
+        """
+        test_tag_multi_task
+        """
         with patch.object(sys, 'argv', [pypodo, tag, 'tag3', '2', '3']):
             mock_isfile.return_value = True
             tag(mock_open)
@@ -617,6 +812,9 @@ class TestMethodsOthers(unittest.TestCase):
     @patch('builtins.open', new_callable=mock_open, read_data='1 task1 #tag\n2 task2\n3 task3\n')
     @patch('sys.stdout', new_callable=StringIO)
     def test_list_notag_return_result(self, mock_print, mock_open, mock_isfile):
+        """
+        test_list_notag_return_result
+        """
         with patch.object(sys, 'argv', [pypodo, untag]):
             mock_isfile.return_value = True
             untag(mock_open)
@@ -627,6 +825,9 @@ class TestMethodsOthers(unittest.TestCase):
     @patch('builtins.open', new_callable=mock_open, read_data='1 task #tag\n2 task2 #tag\n3 task3 #tag2\n4 task4')
     @patch('sys.stdout', new_callable=StringIO)
     def test_listtag_return_result(self, mock_print, mock_open, mock_isfile):
+        """
+        test_listtag_return_result
+        """
         with patch.object(sys, 'argv', [pypodo, tag]):
             mock_isfile.return_value = True
             tag(mock_open)
@@ -638,6 +839,9 @@ class TestMethodsOthers(unittest.TestCase):
     @patch('builtins.open', new_callable=mock_open, read_data='1 task #urgent\n2 task2 #20190101\n3 task3 #20201020\n4 task4 #tag')
     @patch('sys.stdout', new_callable=StringIO)
     def test_listtag_with_specific_return_result(self, mock_print, mock_open, mock_isfile):
+        """
+        test_listtag_with_specific_return_result
+        """
         with patch.object(sys, 'argv', [pypodo, tag]):
             mock_isfile.return_value = True
             tag(mock_open)
@@ -649,6 +853,9 @@ class TestMethodsOthers(unittest.TestCase):
     @patch('builtins.open', new_callable=mock_open, read_data='1 task #tag\n2 specif_task #tag2\n3 specif')
     @patch('sys.stdout', new_callable=StringIO)
     def test_find_one_task_without_regex(self, mock_print, mock_open, mock_isfile):
+        """
+        test_find_one_task_without_regex
+        """
         with patch.object(sys, 'argv', [pypodo, find, "specif_task"]):
             mock_isfile.return_value = True
             find(mock_open)
@@ -659,6 +866,9 @@ class TestMethodsOthers(unittest.TestCase):
     @patch('builtins.open', new_callable=mock_open, read_data='1 task #lix\n2 task2 #tag\n3 task3 #linux')
     @patch('sys.stdout', new_callable=StringIO)
     def test_find_with_regex(self, mock_print, mock_open, mock_isfile):
+        """
+        test_find_with_regex
+        """
         with patch.object(sys, 'argv', [pypodo, find, "li.+x"]):
             mock_isfile.return_value = True
             find(mock_open)
@@ -669,6 +879,9 @@ class TestMethodsOthers(unittest.TestCase):
     @patch('builtins.open', new_callable=mock_open)
     @patch('sys.stdout', new_callable=StringIO)
     def test_find_with_regex_no_result(self, mock_print, mock_open, mock_isfile):
+        """
+        test_find_with_regex_no_result
+        """
         mock_isfile.return_value = False
         with patch.object(sys, 'argv', [pypodo, find, "li.+x"]):
             find(mock_open)
@@ -678,11 +891,17 @@ class TestMethodsOthers(unittest.TestCase):
     @patch('sys.stdout', new_callable=StringIO)
     @patch("builtins.print",autospec=True,side_effect=print)
     def test_help_contains_synopsis(self, mock_print, mock_stdout):
+        """
+        test_help_contains_synopsis
+        """
         help()
         mock_print.assert_called_with(AnyStringWith("SYNOPSIS"))
 
 
 def escape_ansi(line):
+    """
+    escape_colors_from_string
+    """
     ansi_escape = re.compile(r'(?:\x1B[@-_]|[\x80-\x9F])[0-?]*[ -/]*[@-~]')
     return ansi_escape.sub('', line)
 
