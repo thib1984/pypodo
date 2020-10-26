@@ -2,17 +2,19 @@
 Pypodo Tests
 """
 
-from pypodo.__pypodo__ import add, delete, list, help, pypodo, listtag, listnotag, sort, tag, untag, backup, find, test_date, read_config_boolean, read_config, read_config_level, read_config_int,  read_config_color
 import re
 import sys
 import unittest
-from datetime import datetime
-from datetime import date
+
 from io import StringIO
 from pathlib import Path
 from unittest.mock import mock_open, patch, MagicMock
 from freezegun import freeze_time
-import configparser
+
+from pypodo.__pypodo__ import add, delete, list, help, pypodo, listtag, listnotag, sort, tag, untag, backup, find, test_date, read_config_boolean, read_config, read_config_level, read_config_int,  read_config_color
+
+
+
 
 
 class AnyStringWith(str):
