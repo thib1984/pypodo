@@ -14,8 +14,8 @@ from freezegun import freeze_time
 from pypodo.__pypodo__ import (
     add,
     delete,
-    list,
-    help,
+    listtask,
+    helppypodo,
     pypodo,
     listtag,
     listnotag,
@@ -466,9 +466,9 @@ class TestMethodsErrors(unittest.TestCase):
         """
         test_sort_with_invalid_todo_return_warning_and_error
         """
-        with patch.object(sys, "argv", [pypodo, list]):
+        with patch.object(sys, "argv", [pypodo, listtask]):
             mock_isfile.return_value = True
-            list(mock_open_file)
+            listtask(mock_open_file)
             self.assertEqual(
                 escape_ansi(mock_print.getvalue().rstrip("\n")),
                 "warning : this line has not a valid format in .todo"
@@ -658,9 +658,9 @@ class TestMethodsWarnings(unittest.TestCase):
         """
         test_list_with_empty_todo_return_warning
         """
-        with patch.object(sys, "argv", [pypodo, list]):
+        with patch.object(sys, "argv", [pypodo, listtask]):
             mock_isfile.return_value = True
-            list(mock_open_file)
+            listtask(mock_open_file)
             self.assertEqual(
                 escape_ansi(mock_print.getvalue().rstrip("\n")),
                 "warning : the todolist is empty",
@@ -680,10 +680,10 @@ class TestMethodsWarnings(unittest.TestCase):
         test_list_with_filter_and_empty_result_return_warning
         """
         with patch.object(
-            sys, "argv", [pypodo, list, "tag1", "tag2"]
+            sys, "argv", [pypodo, listtask, "tag1", "tag2"]
         ):
             mock_isfile.return_value = True
-            list(mock_open_file)
+            listtask(mock_open_file)
             # FIXME how test?
             # mock_open.assert_called_with(STR_PATH_HOME__TODO_, 'r')
             self.assertEqual(
@@ -919,9 +919,9 @@ class TestMethodsOthers(unittest.TestCase):
         """
         test_list_print_one_task
         """
-        with patch.object(sys, "argv", [pypodo, list]):
+        with patch.object(sys, "argv", [pypodo, listtask]):
             mock_isfile.return_value = True
-            list(mock_open_file)
+            listtask(mock_open_file)
             self.assertEqual(
                 escape_ansi(mock_print.getvalue().rstrip("\n")),
                 "1 task",
@@ -940,9 +940,9 @@ class TestMethodsOthers(unittest.TestCase):
         """
         test_list_print_one_task_and_tags
         """
-        with patch.object(sys, "argv", [pypodo, list]):
+        with patch.object(sys, "argv", [pypodo, listtask]):
             mock_isfile.return_value = True
-            list(mock_open_file)
+            listtask(mock_open_file)
             self.assertEqual(
                 escape_ansi(mock_print.getvalue().rstrip("\n")),
                 "1 task #tag1 #tag2",
@@ -962,9 +962,9 @@ class TestMethodsOthers(unittest.TestCase):
         """
         test_list_print_one_task_and_specific_tags
         """
-        with patch.object(sys, "argv", [pypodo, list]):
+        with patch.object(sys, "argv", [pypodo, listtask]):
             mock_isfile.return_value = True
-            list(mock_open_file)
+            listtask(mock_open_file)
             self.assertEqual(
                 escape_ansi(mock_print.getvalue().rstrip("\n")),
                 "1 task #urgent #20201010 #20201015 #20201022 #tag",
@@ -983,9 +983,9 @@ class TestMethodsOthers(unittest.TestCase):
         """
         test_list_with_filter_return_result
         """
-        with patch.object(sys, "argv", [pypodo, list, "tag"]):
+        with patch.object(sys, "argv", [pypodo, listtask, "tag"]):
             mock_isfile.return_value = True
-            list(mock_open_file)
+            listtask(mock_open_file)
             self.assertEqual(
                 escape_ansi(mock_print.getvalue().rstrip("\n")),
                 "1 task1 #tag",
@@ -1005,10 +1005,10 @@ class TestMethodsOthers(unittest.TestCase):
         test_list_with_double_filter_return_result
         """
         with patch.object(
-            sys, "argv", [pypodo, list, "tag1", "tag2"]
+            sys, "argv", [pypodo, listtask, "tag1", "tag2"]
         ):
             mock_isfile.return_value = True
-            list(mock_open_file)
+            listtask(mock_open_file)
             self.assertEqual(
                 escape_ansi(mock_print.getvalue().rstrip("\n")),
                 "3 task3 #tag1 #tag2",
@@ -1348,7 +1348,7 @@ class TestMethodsOthers(unittest.TestCase):
         """
         test_help_contains_synopsis
         """
-        help()
+        helppypodo()
         mock_print.assert_called_with(AnyStringWith("SYNOPSIS"))
 
 
