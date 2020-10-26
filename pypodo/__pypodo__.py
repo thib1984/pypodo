@@ -44,7 +44,7 @@ def pypodo(open=open):
         backup(open)
     elif sys.argv[1] == "find":
         find(open)
-    else:       
+    else:
         help()
 
 #primary functions
@@ -53,7 +53,7 @@ def help():
     Display help message
     """
     help_txt = """\
-        
+
     NAME
         pypodo
 
@@ -79,7 +79,7 @@ def help():
         sort  : reorder the todolist in consecutives index
                 pypodo sort	#reorder the todolist in consecutives index	
         backup  : create a timestamped copy of the actual .todo file in a backupfolder
-                pypodo backup	#create a timestamped copy of the actual .todo file in a backupfolder	 
+                pypodo backup	#create a timestamped copy of the actual .todo file in a backupfolder	
         find  : filter the todo list on the paramter (regex accepted)
                 pypodo filter "ta.*che"	#filter on the regex ta.*che	                             			
         """

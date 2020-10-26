@@ -158,8 +158,7 @@ to improve your velocity!
 
 [Go to CONTRIBUTING.md](https://github.com/thib1984/pypodo/blob/master/CONTRIBUTING.md)
 
-
-## Tanks to contributors 
+## Tanks to contributors
 - https://github.com/bbougon
 - https://github.com/isaacvv
 - https://github.com/jeanphibaconnais

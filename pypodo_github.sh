@@ -66,7 +66,7 @@ dockerci () {
     else
         printerror "test end-to-end 5/5 ko"
         return 1
-    fi  
+    fi
 
 }
 

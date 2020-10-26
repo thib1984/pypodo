@@ -23,16 +23,16 @@ jobs:
           pip install mutatest coverage pylint termcolor freezegun
       - name: pylint
         run: |
-          pylint pypodo/__pypodo__.py    
+          pylint pypodo/__pypodo__.py
       - name: pytest
         run: |
-          python3 -m unittest -v pypodo/__pypodo__test.py        
+          python3 -m unittest -v pypodo/__pypodo__test.py
       - name: mutatest
         run: |
-          mutatest            
+          mutatest
       - name: coverage
         run: |
-          coverage run && coverage report                 
+          coverage run && coverage report
       - name: install docker
         uses: docker-practice/actions-setup-docker@master
       - name : run test

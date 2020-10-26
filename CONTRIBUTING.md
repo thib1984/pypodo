@@ -54,7 +54,7 @@ So, choose one of these commands :
 
 You can now verify, at the root of the projetc, the **test.log**, **mutation.log**, **htmlcov** folder and **pylint.log** to view results of the ci/cd.
 
-Example of script : 
+Example of script :
 
 ![image](https://user-images.githubusercontent.com/45128847/95779511-7a512f00-0cca-11eb-94c5-5d7e8af451d8.png)
 
@@ -62,12 +62,12 @@ Example of script :
 
 ```
 pip3 install --user .
-``` 
+```
 for pi
 
 ```
 docker build -t thibaultgarcon/pypodo:latest .
-``` 
+```
 for docker
 
 

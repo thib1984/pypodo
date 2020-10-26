@@ -21,16 +21,16 @@ jobs:
           pip install mutatest coverage pylint termcolor pep517 freezegun
       - name: pylint
         run: |
-          pylint pypodo/__pypodo__.py    
+          pylint pypodo/__pypodo__.py
       - name: pytest
         run: |
-          python3 -m unittest -v pypodo/__pypodo__test.py        
+          python3 -m unittest -v pypodo/__pypodo__test.py
       - name: mutatest
         run: |
-          mutatest            
+          mutatest
       - name: coverage
         run: |
-          coverage run && coverage report                 
+          coverage run && coverage report
       - name: install docker
         uses: docker-practice/actions-setup-docker@master
       - name : run test
@@ -41,12 +41,11 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
           repository: thibaultgarcon/pypodo
-          tags: latest   
+          tags: latest
       - name: build pip
         run: python3 -m pep517.build --source --binary --out-dir dist/ .
       - name: publish to pypi
         uses: pypa/gh-action-pypi-publish@master
         with:
           user: ${{ secrets.PYPI_USER }}
-          password: ${{ secrets.PYPI_PASSWORD }}          
-  
+          password: ${{ secrets.PYPI_PASSWORD }}

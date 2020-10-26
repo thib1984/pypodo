@@ -100,7 +100,7 @@ dockerci () {
         printerror "test end-to-end 1/5 ko, see output in $file_log_end_to_end"
         return 1
     fi
-    printinfo "test end-to-end 2/5 running... compare backup log"    
+    printinfo "test end-to-end 2/5 running... compare backup log"
     if grep "\[32minfo    : creating todolist backup - .todo[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]" ci_cd/cache/log_backup >> $file_log_end_to_end;
     then
         printinfo "test end-to-end 2/5 ok, see output in $file_log_end_to_end"
@@ -135,7 +135,7 @@ dockerci () {
     else
         printerror "test end-to-end 5/5 ko, see output in $file_log_end_to_end"
         return 1
-    fi   
+    fi
 }
 
 
@@ -153,7 +153,7 @@ pipci () {
     printinfo "pylint running..."
     if pylint pypodo/__pypodo__.py  2> $file_log_pylint 1> $file_log_pylint;
     then
-        printinfo "pylint ok, see output in pylint.log"    
+        printinfo "pylint ok, see output in pylint.log"
     else
         printerror "pylint ko, see output in pylint.log"
         return 1
@@ -258,7 +258,7 @@ then
     else
         printerror "ko - bad params : docker (ci/cd) [fast]"
     fi
-    
+
 elif [[ $1 = "pip" ]]
 then
     if [[ $2 = "ci" ]]
@@ -282,7 +282,7 @@ then
     else
         printerror "ko - bad params : pip (ci/cd) [fast]"
     fi
-    
+
 elif [[ $1 = "full" ]]
 then
     if dockerci "$2" && dockercd && pipcd;

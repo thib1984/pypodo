@@ -287,7 +287,7 @@ class TestMethodsWarnings(unittest.TestCase):
             mock_isfile.return_value = True
             untag(mock_open_file)
             self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
-                '\n')), "warning : the index to untag is not in numeric format - a")                
+                '\n')), "warning : the index to untag is not in numeric format - a")
 
     @patch('os.path.isfile')
     @patch('builtins.open', new_callable=mock_open)
@@ -297,7 +297,7 @@ class TestMethodsWarnings(unittest.TestCase):
             mock_isfile.return_value = True
             delete(mock_open_file)
             self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
-                '\n')), "warning : the index to delete is not in numeric format - a") 
+                '\n')), "warning : the index to delete is not in numeric format - a")
 
     @patch('os.path.isfile')
     @patch('builtins.open', new_callable=mock_open,  read_data='1 task')
@@ -307,7 +307,7 @@ class TestMethodsWarnings(unittest.TestCase):
             mock_isfile.return_value = True
             delete(mock_open_file)
             self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
-                '\n')), "warning : no task is deleted from the todolist, not existing index - 2") 
+                '\n')), "warning : no task is deleted from the todolist, not existing index - 2")
 
     @patch('os.path.isfile')
     @patch('builtins.open', new_callable=mock_open,  read_data='1 task')
@@ -317,7 +317,7 @@ class TestMethodsWarnings(unittest.TestCase):
             mock_isfile.return_value = True
             tag(mock_open_file)
             self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
-                '\n')), "warning : no task with index - 2") 
+                '\n')), "warning : no task with index - 2")
 
     @patch('os.path.isfile')
     @patch('builtins.open', new_callable=mock_open,  read_data='1 task')
@@ -327,7 +327,7 @@ class TestMethodsWarnings(unittest.TestCase):
             mock_isfile.return_value = True
             untag(mock_open_file)
             self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
-                '\n')), "warning : no task with index - 2") 
+                '\n')), "warning : no task with index - 2")
 
     @patch('os.path.isfile')
     @patch('builtins.open', new_callable=mock_open,  read_data='1 task')
@@ -337,7 +337,7 @@ class TestMethodsWarnings(unittest.TestCase):
             mock_isfile.return_value = True
             tag(mock_open_file)
             self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
-                '\n')), "warning : the list of todolist's tags is empty") 
+                '\n')), "warning : the list of todolist's tags is empty")
 
     @patch('os.path.isfile')
     @patch('builtins.open', new_callable=mock_open,  read_data='1 task #tag')
@@ -347,7 +347,7 @@ class TestMethodsWarnings(unittest.TestCase):
             mock_isfile.return_value = True
             untag(mock_open_file)
             self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
-                '\n')), "warning : the filtered todolist with no tag is empty") 
+                '\n')), "warning : the filtered todolist with no tag is empty")
 
     @patch('os.path.isfile')
     @patch('builtins.open', new_callable=mock_open)
@@ -379,7 +379,7 @@ class TestMethodsWarnings(unittest.TestCase):
             mock_isfile.return_value = True
             add(mock_open_file)
             self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
-                '\n')), 'warning : the task has not a valid format - #task')  
+                '\n')), 'warning : the task has not a valid format - #task')
 
     @patch('os.path.isfile')
     @patch('builtins.open', new_callable=mock_open)
@@ -389,7 +389,7 @@ class TestMethodsWarnings(unittest.TestCase):
             mock_isfile.return_value = True
             find(mock_open_file)
             self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
-                '\n')), "warning : the filtered todolist is empty")                              
+                '\n')), "warning : the filtered todolist is empty")
 
 
 class TestMethodsTools(unittest.TestCase):
@@ -566,7 +566,7 @@ class TestMethodsOthers(unittest.TestCase):
             delete(mock_open)
             mock_open().write.assert_called_with('4 task3')
             self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
-                '\n')), 'info    : task deleted from the todolist - 2 task2\ninfo    : task deleted from the todolist - 1 task1 #tag')                
+                '\n')), 'info    : task deleted from the todolist - 2 task2\ninfo    : task deleted from the todolist - 1 task1 #tag')
 
     @patch('os.path.isfile')
     @patch('builtins.open', new_callable=mock_open, read_data='1 task #tag2\n2 task2 #tag #tag3')
@@ -612,7 +612,7 @@ class TestMethodsOthers(unittest.TestCase):
             mock_open().write.assert_called_with('3 task3 #tag2 #tag3\n')
             self.assertEqual(escape_ansi(mock_print.getvalue().rstrip(
                 '\n')), 'info    : tag added to the task of the todolist - 2 task2 #tag1 -> 2 task2 #tag1 #tag3\ninfo    : tag added to the task of the todolist - 3 task3 #tag2 -> 3 task3 #tag2 #tag3')
-    
+
     @patch('os.path.isfile')
     @patch('builtins.open', new_callable=mock_open, read_data='1 task1 #tag\n2 task2\n3 task3\n')
     @patch('sys.stdout', new_callable=StringIO)
