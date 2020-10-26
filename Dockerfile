@@ -9,8 +9,6 @@ COPY .pylintrc .
 COPY mutatest.ini .
 COPY LICENSE.txt .
 COPY README.md .
-RUN mkdir ci_cd
-COPY ci_cd/.todo_mise_en_forme.expected ci_cd/.
 #FIXME END
 RUN python setup.py install
 RUN pip3 install coverage
@@ -18,5 +16,5 @@ RUN pip3 install mutatest
 RUN pip3 install pylint
 RUN pip3 install freezegun
 RUN pip3 install --user .
-COPY pypodo/ .
+#COPY pypodo/ .
 ENTRYPOINT ["pypodo"]
