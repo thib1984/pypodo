@@ -6,14 +6,19 @@ import os
 import re
 import sys
 import time
+import base64
+import hashlib
 from pathlib import Path
 from shutil import copyfile
 from datetime import datetime
 from datetime import date
 import configparser
 from termcolor import colored
+from cryptography.fernet import Fernet
 
 STR_PATH_HOME__TODORC_ = str(Path.home()) + "/.todo.rc"
+STR_PATH_HOME__TODOCRYPT_ = str(Path.home()) + "/.todo.crypt"
+STR_PATH_HOME__TODODECRYPT_ = str(Path.home()) + "/.todo.decrypt"
 REGEX_INDEX = "^\\d+$"
 REGEX_SPACE_OR_ENDLINE = "( |$)"
 RED = "33m#"
@@ -27,23 +32,49 @@ def pypodo(openfile=open):
     if len(sys.argv) == 1:
         helppypodo()
     elif sys.argv[1] == "list":
+        decrypt(True, "", open)
         listtask(openfile)
+        crypt(True, openfile, "")
     elif sys.argv[1] == "add":
+        decrypt(True, "", open)
         add(openfile)
+        crypt(True, "", open)
     elif sys.argv[1] == "del":
+        decrypt(True, "", open)
         delete(openfile)
+        crypt(True, "", open)
     elif sys.argv[1] == "sort":
+        decrypt(True, "", open)
         sort(openfile)
+        crypt(True, "", open)
     elif sys.argv[1] == "help":
         helppypodo()
     elif sys.argv[1] == "untag":
+        decrypt(True, "", open)
         untag(openfile)
+        crypt(True, "", open)
     elif sys.argv[1] == "tag":
+        decrypt(True, "", open)
         tag(openfile)
+        crypt(True, "", open)
     elif sys.argv[1] == "backup":
+        decrypt(True, "", open)
         backup(openfile)
+        crypt(True, "", open)
     elif sys.argv[1] == "find":
+        decrypt(True, "", open)
         find(openfile)
+        crypt(True, "", open)
+    elif sys.argv[1] == "crypt":
+        if len(sys.argv) > 2:
+            crypt(False, sys.argv[2], open)
+        else:
+            crypt(False, "", open)
+    elif sys.argv[1] == "decrypt":
+        if len(sys.argv) > 2:
+            decrypt(False, sys.argv[2], open)
+        else:
+            decrypt(False, "", open)
     else:
         helppypodo()
 
@@ -434,6 +465,105 @@ def find(openfile=open):
 
 
 # secondary functions
+def crypt(itself, cle, openfile=open):
+    """
+    Crypt the file in parameter to the standard systout
+    """
+    if itself:
+        my_password = read_config("SYSTEM", "key", "")
+    else:
+        if not cle:
+            my_password = read_config("SYSTEM", "key", "")
+        else:
+            my_password = cle
+
+    if not my_password:
+        if itself:
+            printdebug("pas de cle de crypt")
+        else:
+            printerror("pas de cle de crypt")
+    else:
+        fernet_key = obtain_fernet_key(my_password)
+        if not os.path.isfile(todofilefromconfig()):
+            printerror("not .todo file")
+        else:
+            with open(todofilefromconfig(), "rb") as file:
+                # read all file data
+                file_data = file.read()
+            # encrypt data
+            encrypted_data = fernet_key.encrypt(file_data)
+            if itself:
+                with open(todofilefromconfig(), "wb") as file:
+                    file.write(encrypted_data)
+            else:
+                with open(STR_PATH_HOME__TODOCRYPT_, "wb") as file:
+                    file.write(encrypted_data)
+                    printinfo(
+                        ".todo is crypted in "
+                        + STR_PATH_HOME__TODOCRYPT_
+                    )
+
+
+def decrypt(itself, cle, openfile=open):
+    """
+    Crypt the file in parameter to the standard systout
+    """
+    if itself:
+        my_password = read_config("SYSTEM", "key", "")
+    else:
+        if not cle:
+            my_password = read_config("SYSTEM", "key", "")
+        else:
+            my_password = cle
+
+    if not my_password:
+        if itself:
+            printdebug("pas de cle de decrypt")
+        else:
+            printerror("pas de cle de decrypt")
+    else:
+        fernet_key = obtain_fernet_key(my_password)
+        if not itself and not os.path.isfile(todofilefromconfig()):
+            printerror("not .todo file")
+        else:
+            if not os.path.isfile(todofilefromconfig()):
+                printdebug("creating .todolist file")
+                openfile(todofilefromconfig(), "w")
+            with open(todofilefromconfig(), "rb") as file:
+                # read all file data
+                file_data = file.read()
+            # encrypt data
+            decrypted_data = fernet_key.decrypt(file_data)
+            if itself:
+                with open(todofilefromconfig(), "wb") as file:
+                    file.write(decrypted_data)
+            else:
+                with open(STR_PATH_HOME__TODODECRYPT_, "wb") as file:
+                    file.write(decrypted_data)
+                    printinfo(
+                        ".todo is crypted in "
+                        + STR_PATH_HOME__TODODECRYPT_
+                    )
+
+
+def obtain_fernet_key(my_password):
+    """
+    return fernet instance
+    """
+    return Fernet(generate_key_fernet(my_password))
+
+
+def generate_key_fernet(my_password):
+    """
+    return fernet key b64 from every string (string->md5->64)
+    """
+    return base64.b64encode(
+        hashlib.md5(my_password.encode("utf-8"))
+        .hexdigest()
+        .encode("ascii")
+    ).decode("ascii")
+
+
 def listnotag(openfile=open):
     """
     Print the todofile filtered on tasks with not tags
@@ -503,7 +633,7 @@ def check(openfile=open):
                     )
                     error = True
         if error:
-            printerror("verify the .todo file")
+            printerror("verify the .todo file. Is it encrypted?")
             return False
         return True
 
@@ -580,11 +710,23 @@ def printlinetodo(line):
     print(index + " " + task + tags)
 
 
+def printdebug(text):
+    """
+    Color and key word debug for print
+    """
+    if read_config_level("SYSTEM", "messagelevel", "info") == "debug":
+        print(colored("debug   : " + text, color_info()))
+
+
 def printinfo(text):
     """
     Color and key word info for print
     """
-    if read_config_level("SYSTEM", "messagelevel", "info") == "info":
+    if (
+        read_config_level("SYSTEM", "messagelevel", "info") == "info"
+        or read_config_level("SYSTEM", "messagelevel", "info")
+        == "debug"
+    ):
         print(colored("info    : " + text, color_info()))
 
 
@@ -594,6 +736,8 @@ def printwarning(text):
     """
     if (
         read_config_level("SYSTEM", "messagelevel", "info") == "info"
+        or read_config_level("SYSTEM", "messagelevel", "info")
+        == "debug"
         or read_config_level("SYSTEM", "messagelevel", "info")
         == "warning"
     ):
@@ -706,7 +850,7 @@ def read_config_level(section, cle, defaut):
     Read the config file for level
     """
     level = read_config(section, cle, defaut)
-    if level not in ["warning", "info", "error"]:
+    if level not in ["warning", "info", "error", "debug"]:
         return defaut
     return level
 

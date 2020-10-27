@@ -156,6 +156,15 @@ alias tf='pypodo find'
 
 to improve your efficiency!
 
+## Changelog
+
+### 2.3.2
+
+- Code cleanup
+- Increased test coverage
+- Adding formatdate in configuration file
+- Documentation corrections
+
 ## For contributors :construction_worker:
 
 [Go to CONTRIBUTING.md](https://github.com/thib1984/pypodo/blob/master/CONTRIBUTING.md)
