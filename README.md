@@ -34,7 +34,7 @@ Other commands are **help**/**backup**/**sort**/**find**
 
 The default color of the tags is green. When a task is tagged "#urgent" it will be colored in red. When the task has a date pattern like YYYYmmdd with a gap to current date less than seven days, it will be colored in yellow. If the date is greater than the current date, in red . See the Configuration to change the colors.
 
-- `` pypodo list "name_of_tag"`` : display the todolist filtered on the task tagged with '_name_of_tag_'
+- `` pypodo list "name_of_tag"`` : display the todolist filtered on the tasks tagged with '_name_of_tag_'
 
 ```
 1 to do work #name_of_tag
@@ -96,6 +96,8 @@ tag = cyan
 [SYSTEM]
 #info,warning,error
 messagelevel = info
+#format double % character, use for warning and alert on dates
+#formatdate = %%Y%%m%%d
 #not modify if you use docker!
 #todofile = /tmp/.todo
 #todobackupfolder = /tmp/.todo_backup/

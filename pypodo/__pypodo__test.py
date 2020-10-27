@@ -732,13 +732,31 @@ class TestMethodsTools(unittest.TestCase):
     """
 
     @freeze_time("2020-10-14")
-    def test_date(self):
+    @patch(
+        "builtins.open",
+        new_callable=mock_open,
+    )
+    def test_date(self, mock_open_file):
         """
-        test_date
+        test_date without config
         """
         self.assertEqual("ok", test_date("20210101"))
         self.assertEqual("alert", test_date("20201009"))
         self.assertEqual("warning", test_date("20201020"))
+
+    @freeze_time("2020-10-14")
+    @patch(
+        "builtins.open",
+        new_callable=mock_open,
+        read_data="[SYSTEM]\nformatdate = %%Y%%d%%m",
+    )
+    def test_date_with_config(self, mock_open_file):
+        """
+        test_date without config
+        """
+        self.assertEqual("ok", test_date("20210101"))
+        self.assertEqual("alert", test_date("20200910"))
+        self.assertEqual("warning", test_date("20202010"))
 
     @patch(
         "builtins.open",

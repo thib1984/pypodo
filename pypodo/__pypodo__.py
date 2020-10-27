@@ -711,13 +711,21 @@ def read_config_level(section, cle, defaut):
     return level
 
 
+def read_config_date_format(section, cle, defaut):
+    """
+    Read the config file for date format
+    """
+    return read_config(section, cle, defaut)
+
+
 def test_date(datetime_str):
     """
     Comparare date en return alert state
     """
     try:
         datetime_object = datetime.strptime(
-            datetime_str, "%Y%m%d"
+            datetime_str,
+            read_config_date_format("SYSTEM", "formatdate", "%Y%m%d"),
         ).date()
     except ValueError:
         return "ok"
