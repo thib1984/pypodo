@@ -44,3 +44,7 @@ pypodo untag
 [33m1[0m [32mtask1[0m
 pypodo find t.*sk4
 [33m3[0m [32mtask4[0m [36m#tag[0m [36m#newtag[0m [36m#newtag[0m
+pypodo decrypt admin
+[31merror   : can t decrypt todo, not crypted or bad password?[0m
+pypodo crypt admin
+[32minfo    : .todo is crypted in /root/.todo.crypt[0m

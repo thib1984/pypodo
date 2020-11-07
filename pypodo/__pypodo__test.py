@@ -512,14 +512,19 @@ class TestMethodsErrors(unittest.TestCase):
         """
         with patch.object(sys, "argv", [pypodo, listtask]):
             mock_isfile.return_value = True
-            listtask(mock_open_file)
-            self.assertEqual(
-                escape_ansi(mock_print.getvalue().rstrip("\n")),
-                "warning : this line has not a valid format in .todo"
-                " - 1 my task #te#st\nwarning : this line has not a"
-                " valid format in .todo - a other task\nerror   :"
-                " verify the .todo file. Is it encrypted?",
-            )
+            try:
+                error = False
+                listtask(mock_open_file)
+            except SystemExit:
+                self.assertEqual(
+                    escape_ansi(mock_print.getvalue().rstrip("\n")),
+                    "warning : this line has not a valid format in .todo"
+                    " - 1 my task #te#st\nwarning : this line has not a"
+                    " valid format in .todo - a other task\nerror   :"
+                    " verify the .todo file. Is it encrypted?",
+                )
+                error = True
+            self.assertEqual(error, True)
 
 
 class TestMethodsWarnings(unittest.TestCase):
@@ -564,12 +569,15 @@ class TestMethodsWarnings(unittest.TestCase):
             if os.path.isfile("/tmp/.todo"):
                 os.remove("/tmp/.todo")
             try:
+                error = False
                 pypodo()
             except TypeError:
                 self.assertEqual(
                     escape_ansi(mock_print.getvalue().rstrip("\n")),
-                    "debug   : creating .todolist file",
+                    "debug   : creating .todolist file\ninfo    : creating .todolist file\nwarning : the todolist is empty",
                 )
+                error = True
+            self.assertEqual(error, True)
 
     @patch(
         "builtins.open",

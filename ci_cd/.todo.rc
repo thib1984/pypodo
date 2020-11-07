@@ -10,6 +10,7 @@ tag = grey
 [SYSTEM]
 #info,warning,error
 messagelevel = warning
+key = admin
 #not modify if you use docker!
 #todofile = /tmp/.todo
 #todobackupfolder = /tmp/.todo_backup/
