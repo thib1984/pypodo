@@ -34,3 +34,5 @@ pypodo untag
 [31m1[0m [33mtask1[0m
 pypodo find t.*sk4
 [31m3[0m [33mtask4[0m [30m#tag[0m [30m#newtag[0m [30m#newtag[0m
+pypodo decrypt admin
+pypodo crypt admin

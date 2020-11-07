@@ -20,8 +20,10 @@ dockerci () {
     export PYPODO_FILE=/tmp/.todo
     export PYPODO_BACKUP=/tmp/.todo_backup
     export PYPODO_CONF=/tmp/.todo.rc
-    smoketest="docker run --rm --mount type=bind,source=${PYPODO_FILE},target=/root/.todo --mount type=bind,source=${PYPODO_CONF},target=/root/.todo.rc --mount type=bind,source=${PYPODO_BACKUP},target=/root/.todo_backup thibaultgarcon/pypodo_test"
-    dockerpypodorun="docker run --mount type=bind,source=${PYPODO_FILE},target=/root/.todo --mount type=bind,source=${PYPODO_CONF},target=/root/.todo.rc --mount type=bind,source=${PYPODO_BACKUP},target=/root/.todo_backup -ti"
+    export PYPODO_FILE_CRYPT=/tmp/.todo.crypt
+    export PYPODO_FILE_DECRYPT=/tmp/.todo.decrypt
+    smoketest="docker run --rm --mount type=bind,source=${PYPODO_FILE},target=/root/.todo --mount type=bind,source=${PYPODO_CONF},target=/root/.todo.rc --mount type=bind,source=${PYPODO_FILE_DECRYPT},target=/root/.todo.decrypt --mount type=bind,source=${PYPODO_FILE_CRYPT},target=/root/.todo.crypt --mount type=bind,source=${PYPODO_BACKUP},target=/root/.todo_backup thibaultgarcon/pypodo_test"
+    dockerpypodorun="docker run --mount type=bind,source=${PYPODO_FILE},target=/root/.todo --mount type=bind,source=${PYPODO_CONF},target=/root/.todo.rc --mount type=bind,source=${PYPODO_FILE_DECRYPT},target=/root/.todo.decrypt --mount type=bind,source=${PYPODO_FILE_CRYPT},target=/root/.todo.crypt --mount type=bind,source=${PYPODO_BACKUP},target=/root/.todo_backup -ti"
     rm ./*.log 2> /dev/null
     touch $file_log_mutation
     (rm ci_cd/cache/*
@@ -31,7 +33,7 @@ dockerci () {
         docker rm pypodo_coverage_html
         docker rmi pypodo_coverage
         docker rmi thibaultgarcon/pypodo_test
-        touch $PYPODO_FILE && rm $PYPODO_FILE && touch $PYPODO_FILE && touch $PYPODO_CONF && rm $PYPODO_CONF && touch $PYPODO_CONF && rm -rf $PYPODO_BACKUP && mkdir $PYPODO_BACKUP
+        touch $PYPODO_FILE && rm $PYPODO_FILE && touch $PYPODO_FILE && touch $PYPODO_FILE_CRYPT && rm $PYPODO_FILE_CRYPT && touch $PYPODO_FILE_CRYPT && touch $PYPODO_FILE_DECRYPT && rm $PYPODO_FILE_DECRYPT && touch $PYPODO_FILE_DECRYPT && touch $PYPODO_CONF && rm $PYPODO_CONF && touch $PYPODO_CONF && rm -rf $PYPODO_BACKUP && mkdir $PYPODO_BACKUP
     docker rmi pypodo_coverage_html) &>> $file_log_configuration
     printinfo "configuration finished, see output in $file_log_configuration"
     #build
@@ -90,50 +92,58 @@ dockerci () {
         fi
     fi
     #end-to-end
-    printinfo "test end-to-end 1/5 running... compare log"
+    printinfo "test end-to-end 1/6 running... compare log"
     ./ci_cd/end_to_end.sh "$smoketest" > ci_cd/cache/log
     $smoketest backup > ci_cd/cache/log_backup
     if diff ci_cd/cache/log ci_cd/log.expected >> $file_log_end_to_end;
     then
-        printinfo "test end-to-end 1/5 ok, see output in $file_log_end_to_end"
+        printinfo "test end-to-end 1/6 ok, see output in $file_log_end_to_end"
     else
-        printerror "test end-to-end 1/5 ko, see output in $file_log_end_to_end"
+        printerror "test end-to-end 1/6 ko, see output in $file_log_end_to_end"
         return 1
     fi
-    printinfo "test end-to-end 2/5 running... compare backup log"
+    printinfo "test end-to-end 2/6 running... compare backup log"
     if grep "\[32minfo    : creating todolist backup - .todo[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]" ci_cd/cache/log_backup >> $file_log_end_to_end;
     then
-        printinfo "test end-to-end 2/5 ok, see output in $file_log_end_to_end"
+        printinfo "test end-to-end 2/6 ok, see output in $file_log_end_to_end"
     else
-        printerror "test end-to-end 2/5 ko, see output in $file_log_end_to_end"
+        printerror "test end-to-end 2/6 ko, see output in $file_log_end_to_end"
         return 1
     fi
-    printinfo "test end-to-end 3/5 running... compare todofile"
+    printinfo "test end-to-end 3/6 running... compare todofile"
     if diff ${PYPODO_FILE} ci_cd/.todo.expected >> $file_log_end_to_end;
     then
-        printinfo "test end-to-end 3/5 ok, see output in $file_log_end_to_end"
+        printinfo "test end-to-end 3/6 ok, see output in $file_log_end_to_end"
     else
-        printerror "test end-to-end 3/5 ko, see output in $file_log_end_to_end"
+        printerror "test end-to-end 3/6 ko, see output in $file_log_end_to_end"
         return 1
     fi
-    printinfo "test end-to-end 4/5 running... compare todobackupfile"
+    printinfo "test end-to-end 4/6 running... compare todobackupfile"
     if  diff ${PYPODO_BACKUP}/.todo* ci_cd/.todo.expected >> $file_log_end_to_end;
     then
-        printinfo "test end-to-end 4/5 ok, see output in $file_log_end_to_end"
+        printinfo "test end-to-end 4/6 ok, see output in $file_log_end_to_end"
     else
-        printerror "test end-to-end 4/5 ko, see output in $file_log_end_to_end"
+        printerror "test end-to-end 4/6 ko, see output in $file_log_end_to_end"
         return 1
     fi
-    printinfo "test end-to-end 5/5 running... compare log with special conf"
+    printinfo "test end-to-end 5/6 running... compare log with special conf"
     rm "$PYPODO_FILE"
     touch "$PYPODO_FILE"
     cp ./ci_cd/.todo.rc $PYPODO_CONF
     ./ci_cd/end_to_end.sh "$smoketest" > ci_cd/cache/log.with.conf
     if diff ci_cd/cache/log.with.conf ci_cd/log.with.conf.expected >> $file_log_end_to_end;
     then
-        printinfo "test end-to-end 5/5 ok, see output in $file_log_end_to_end"
+        printinfo "test end-to-end 5/6 ok, see output in $file_log_end_to_end"
     else
-        printerror "test end-to-end 5/5 ko, see output in $file_log_end_to_end"
+        printerror "test end-to-end 5/6 ko, see output in $file_log_end_to_end"
+        return 1
+    fi
+    printinfo "test end-to-end 6/6 running... compare log with special conf"
+    if  diff ${PYPODO_FILE_DECRYPT} ci_cd/.todo.expected.decrypt >> $file_log_end_to_end;
+    then
+        printinfo "test end-to-end 6/6 ok, see output in $file_log_end_to_end"
+    else
+        printerror "test end-to-end 6/6 ko, see output in $file_log_end_to_end"
         return 1
     fi
 }

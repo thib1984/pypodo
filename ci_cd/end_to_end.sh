@@ -30,4 +30,9 @@ echo pypodo tag &&\
 $smoketest tag &&\
 echo pypodo untag &&\
 $smoketest untag &&\
-echo pypodo find "t.*sk4" && $smoketest find "t.*sk4"
+echo pypodo find "t.*sk4" &&\
+$smoketest find "t.*sk4" &&\
+echo pypodo decrypt admin &&\
+$smoketest decrypt admin &&\
+echo pypodo crypt admin &&\
+$smoketest crypt admin

@@ -18,7 +18,7 @@ pip3 uninstall pypodo #Uninstall, use pip if pip3 does not exist
 
 Usual commands are **list**/**add**/**del**/**tag**/**untag**
 
-Other commands are **help**/**backup**/**sort**/**find**
+Other commands are **help**/**backup**/**sort**/**find**/**crypt**/**decrypt**
 
 - ``pypodo add "to do work #name_of_tag"`` : add one task '_to do work_' with the tag '_name_of_tag_'
 
@@ -64,6 +64,14 @@ The default color of the tags is green. When a task is tagged "#urgent" it will 
 
 - ``pypodo find "t.*he"`` : filter the todolist on the parameter (regex format accepted)
 
+- ``pypodo crypt admin`` : crypt the todolist in the ~/.todo.crypt file with key "admin"
+
+- ``pypodo crypt`` : crypt the todolist in the ~/.todo.crypt file with key in the config file SYSTEM.key
+
+- ``pypodo decrypt admin`` : decrypt the crypted todolist in the ~/.todo.decrypt file with key "admin"
+
+- ``pypodo decrypt`` : decrypt the crypted todolist in the ~/.todo.decrypt file with key in the config file SYSTEM.key
+
 - ``pypodo help`` : display help message
 
 - ``pypodo`` : display help message
@@ -94,13 +102,15 @@ task = green
 tag = cyan
 
 [SYSTEM]
-#info,warning,error
+#debug,info,warning,error
 messagelevel = info
 #format double % character, use for warning and alert on dates
 #formatdate = %%Y%%m%%d
 #not modify if you use docker!
 #todofile = /tmp/.todo
 #todobackupfolder = /tmp/.todo_backup/
+#use if your todofile is exposed
+#key=admin
 
 [FONCTIONAL]
 #int values
@@ -122,6 +132,8 @@ Correct the two variables (optional) :
 
 ```
 PYPODO_FILE=~/.todo
+PYPODO_FILE_CRYPT=~/.todo.crypt
+PYPODO_FILE_DECRYPT=~/.todo.decrypt
 PYPODO_BACKUP=~/.todo_backup
 PYPODO_CONFIG=~/.todo.rc
 ```
@@ -156,7 +168,21 @@ alias tf='pypodo find'
 
 to improve your efficiency!
 
+## File sharing [optional]
+
+You can use the .todo.rc configuration file to change the path of your todofile. If you used a "cloud folder" as cozy drive, you can share your pypodo app between two or more computeurs!
+
+## Crypt/Decrypt [optional]
+
+In case of sharing, you can improve security, and activate encryption of your .todo file. For that, juste add a SYSTEM.key in your .todo.rc file. If your todo file is empty or non-existent, no additionnal config is needed. If you have a non-empty todo file, run ``pypodo crypt`` and replace the content of todo file with the content of ~/.todo.crypt file. ``cp ~/.todo.crypt ~/.todo`` for example.
+
 ## Changelog
+
+
+### 3.0.0
+
+- Debug level
+- Crypt/Decrypt todofile
 
 ### 2.3.2
 

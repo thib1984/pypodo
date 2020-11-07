@@ -3,6 +3,7 @@ Pypodo Tests
 """
 
 import re
+import os
 import sys
 import unittest
 from io import StringIO
@@ -30,6 +31,7 @@ from pypodo.__pypodo__ import (
     tag,
     test_date,
     untag,
+    generate_key_fernet,
 )
 
 
@@ -58,6 +60,48 @@ class TestMethodsEntryPoint(unittest.TestCase):
     """
     Class Test for entrypoints
     """
+
+    @patch("os.path.isfile")
+    @patch(
+        "builtins.open",
+        new_callable=mock_open,
+        read_data="[SYSTEM]\nmessagelevel = debug",
+    )
+    @patch("sys.stdout", new_callable=StringIO)
+    def test_pypodo_entry_point_crypt(
+        self, mock_print, mock_open_file, mock_isfile
+    ):
+        """
+        Test pypodo entry point for crypt
+        """
+        with patch.object(sys, "argv", [pypodo, "crypt"]):
+            mock_isfile.return_value = True
+            pypodo(mock_open_file)
+            self.assertEqual(
+                escape_ansi(mock_print.getvalue().rstrip("\n")),
+                "error   : pas de cle de crypt",
+            )
+
+    @patch("os.path.isfile")
+    @patch(
+        "builtins.open",
+        new_callable=mock_open,
+        read_data="[SYSTEM]\nmessagelevel = debug",
+    )
+    @patch("sys.stdout", new_callable=StringIO)
+    def test_pypodo_entry_point_decrypt(
+        self, mock_print, mock_open_file, mock_isfile
+    ):
+        """
+        Test pypodo entry point for crypt
+        """
+        with patch.object(sys, "argv", [pypodo, "decrypt"]):
+            mock_isfile.return_value = True
+            pypodo(mock_open_file)
+            self.assertEqual(
+                escape_ansi(mock_print.getvalue().rstrip("\n")),
+                "error   : pas de cle de decrypt",
+            )
 
     @patch("os.path.isfile")
     @patch("builtins.open", new_callable=mock_open)
@@ -468,20 +512,95 @@ class TestMethodsErrors(unittest.TestCase):
         """
         with patch.object(sys, "argv", [pypodo, listtask]):
             mock_isfile.return_value = True
-            listtask(mock_open_file)
-            self.assertEqual(
-                escape_ansi(mock_print.getvalue().rstrip("\n")),
-                "warning : this line has not a valid format in .todo"
-                " - 1 my task #te#st\nwarning : this line has not a"
-                " valid format in .todo - a other task\nerror   :"
-                " verify the .todo file",
-            )
+            try:
+                error = False
+                listtask(mock_open_file)
+            except SystemExit:
+                self.assertEqual(
+                    escape_ansi(mock_print.getvalue().rstrip("\n")),
+                    "warning : this line has not a valid format in .todo"
+                    " - 1 my task #te#st\nwarning : this line has not a"
+                    " valid format in .todo - a other task\nerror   :"
+                    " verify the .todo file. Is it encrypted?",
+                )
+                error = True
+            self.assertEqual(error, True)
 
 
 class TestMethodsWarnings(unittest.TestCase):
     """
     Class Test for Warnings
     """
+
+    @patch(
+        "builtins.open",
+        new_callable=mock_open,
+        read_data="[SYSTEM]\nmessagelevel = debug\ntodofile = /tmp/.todo",
+    )
+    @patch("sys.stdout", new_callable=StringIO)
+    def test_pypodo_crypt_notodofile(
+        self, mock_print, mock_open_file
+    ):
+        """
+        Test pypodo crypt with not todofile
+        """
+        with patch.object(sys, "argv", [pypodo, "crypt", "password"]):
+            if os.path.isfile("/tmp/.todo"):
+                os.remove("/tmp/.todo")
+            pypodo()
+            self.assertEqual(
+                escape_ansi(mock_print.getvalue().rstrip("\n")),
+                "error   : not .todo file",
+            )
+
+    @patch(
+        "builtins.open",
+        new_callable=mock_open,
+        read_data="[SYSTEM]\nmessagelevel = debug\ntodofile = /tmp/.todo\nkey = password",
+    )
+    @patch("sys.stdout", new_callable=StringIO)
+    def test_pypodo_list_with_key_and_nottodofile(
+        self, mock_print, mock_open_file
+    ):
+        """
+        Test pypodo crypt with not todofile
+        """
+        with patch.object(sys, "argv", [pypodo, "list"]):
+            if os.path.isfile("/tmp/.todo"):
+                os.remove("/tmp/.todo")
+            try:
+                error = False
+                pypodo()
+            except TypeError:
+                self.assertEqual(
+                    escape_ansi(mock_print.getvalue().rstrip("\n")),
+                    "debug   : creating .todolist file\ninfo    : creating .todolist file\nwarning : the todolist is empty",
+                )
+                error = True
+            self.assertEqual(error, True)
+
+    @patch(
+        "builtins.open",
+        new_callable=mock_open,
+        read_data="[SYSTEM]\nmessagelevel = debug\ntodofile = /tmp/.todo",
+    )
+    @patch("sys.stdout", new_callable=StringIO)
+    def test_pypodo_decrypt_notodofile(
+        self, mock_print, mock_open_file
+    ):
+        """
+        Test pypodo crypt with not todofile
+        """
+        with patch.object(
+            sys, "argv", [pypodo, "decrypt", "password"]
+        ):
+            if os.path.isfile("/tmp/.todo"):
+                os.remove("/tmp/.todo")
+            pypodo()
+            self.assertEqual(
+                escape_ansi(mock_print.getvalue().rstrip("\n")),
+                "error   : not .todo file",
+            )
 
     @patch("os.path.isfile")
     @patch("builtins.open", new_callable=mock_open)
@@ -1368,6 +1487,15 @@ class TestMethodsOthers(unittest.TestCase):
         """
         helppypodo()
         mock_print.assert_called_with(AnyStringWith("SYNOPSIS"))
+
+    def test_generate_key_fernet(self):
+        """
+        test key generators
+        """
+        self.assertEqual(
+            generate_key_fernet("password"),
+            "NWY0ZGNjM2I1YWE3NjVkNjFkODMyN2RlYjg4MmNmOTk=",
+        )
 
 
 def escape_ansi(line):
