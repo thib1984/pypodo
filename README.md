@@ -178,6 +178,9 @@ In case of sharing, you can improve security, and activate encryption of your .t
 
 ## Changelog
 
+### 3.0.1 (WIP)
+
+- Improve debug messages
 
 ### 3.0.0
 

@@ -79,7 +79,7 @@ class TestMethodsEntryPoint(unittest.TestCase):
             pypodo(mock_open_file)
             self.assertEqual(
                 escape_ansi(mock_print.getvalue().rstrip("\n")),
-                "error   : pas de cle de crypt",
+                "error   : not crypt key",
             )
 
     @patch("os.path.isfile")
@@ -100,7 +100,7 @@ class TestMethodsEntryPoint(unittest.TestCase):
             pypodo(mock_open_file)
             self.assertEqual(
                 escape_ansi(mock_print.getvalue().rstrip("\n")),
-                "error   : pas de cle de decrypt",
+                "error   : not decrypt key",
             )
 
     @patch("os.path.isfile")
@@ -550,7 +550,9 @@ class TestMethodsWarnings(unittest.TestCase):
             pypodo()
             self.assertEqual(
                 escape_ansi(mock_print.getvalue().rstrip("\n")),
-                "error   : not .todo file",
+                "debug   : fernet password - password"
+                "\ndebug   : fernet key - NWY0ZGNjM2I1YWE3NjVkNjFkODMyN2RlYjg4MmNmOTk="
+                "\nerror   : not .todo file",
             )
 
     @patch(
@@ -574,7 +576,11 @@ class TestMethodsWarnings(unittest.TestCase):
             except TypeError:
                 self.assertEqual(
                     escape_ansi(mock_print.getvalue().rstrip("\n")),
-                    "debug   : creating .todolist file\ninfo    : creating .todolist file\nwarning : the todolist is empty",
+                    "debug   : fernet password - password"
+                    "\ndebug   : fernet key - NWY0ZGNjM2I1YWE3NjVkNjFkODMyN2RlYjg4MmNmOTk="
+                    "\ndebug   : creating .todolist file\ninfo    : creating .todolist file"
+                    "\nwarning : the todolist is empty\ndebug   : fernet password - password"
+                    "\ndebug   : fernet key - NWY0ZGNjM2I1YWE3NjVkNjFkODMyN2RlYjg4MmNmOTk=",
                 )
                 error = True
             self.assertEqual(error, True)
@@ -599,7 +605,9 @@ class TestMethodsWarnings(unittest.TestCase):
             pypodo()
             self.assertEqual(
                 escape_ansi(mock_print.getvalue().rstrip("\n")),
-                "error   : not .todo file",
+                "debug   : fernet password - password"
+                "\ndebug   : fernet key - NWY0ZGNjM2I1YWE3NjVkNjFkODMyN2RlYjg4MmNmOTk="
+                "\nerror   : not .todo file",
             )
 
     @patch("os.path.isfile")

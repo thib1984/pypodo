@@ -490,9 +490,9 @@ def crypt(itself, cle):
 
     if not my_password:
         if itself:
-            printdebug("pas de cle de crypt")
+            printdebug("not crypt key")
         else:
-            printerror("pas de cle de crypt")
+            printerror("not crypt key")
     else:
         fernet_key = obtain_fernet_key(my_password)
         if not os.path.isfile(todofilefromconfig()):
@@ -503,6 +503,7 @@ def crypt(itself, cle):
                 file_data = file.read()
             # encrypt data
             encrypted_data = fernet_key.encrypt(file_data)
+            printdebug("crypted file - " + str(encrypted_data))
             if itself:
                 with open(todofilefromconfig(), "wb") as file:
                     file.write(encrypted_data)
@@ -529,9 +530,9 @@ def decrypt(itself, cle, openfile=open):
 
     if not my_password:
         if itself:
-            printdebug("pas de cle de decrypt")
+            printdebug("not decrypt key")
         else:
-            printerror("pas de cle de decrypt")
+            printerror("not decrypt key")
     else:
         fernet_key = obtain_fernet_key(my_password)
         if not itself and not os.path.isfile(todofilefromconfig()):
@@ -549,7 +550,18 @@ def decrypt(itself, cle, openfile=open):
                         file_data = file.read()
                     # encrypt data
                     try:
+                        printdebug("crypted file - " + str(file_data))
                         decrypted_data = fernet_key.decrypt(file_data)
+                        printdebug(
+                            "timestamp of crypted file - "
+                            + str(
+                                datetime.fromtimestamp(
+                                    fernet_key.extract_timestamp(
+                                        file_data
+                                    )
+                                )
+                            )
+                        )
                         if itself:
                             with open(
                                 todofilefromconfig(), "wb"
@@ -582,17 +594,21 @@ def generate_key_fernet(my_password):
     """
     return fernet key b64 from every string (string->md5->64)
     """
-    return base64.b64encode(
+    printdebug("fernet password - " + my_password)
+    key = base64.b64encode(
         hashlib.md5(my_password.encode("utf-8"))
         .hexdigest()
         .encode("ascii")
     ).decode("ascii")
+    printdebug("fernet key - " + key)
+    return key
 
 
 def listnotag(openfile=open):
     """
     Print the todofile filtered on tasks with not tags
     """
+    printdebug("list tasks without tag")
     if check(openfile):
         if len(sys.argv) > 2:
             printerror("0 parameter is needed for pypodo listnotag")
@@ -613,6 +629,7 @@ def listtag(openfile=open):
     """
     Print the tags of the todofile
     """
+    printdebug("list uniq tags from task")
     if check(openfile):
         if len(sys.argv) > 2:
             printerror("0 parameter is needed for pypodo listtag")
@@ -740,7 +757,7 @@ def printdebug(text):
     Color and key word debug for print
     """
     if read_config_level("SYSTEM", "messagelevel", "info") == "debug":
-        print(colored("debug   : " + text, color_info()))
+        print(colored("debug   : " + text, color_debug()))
 
 
 def printinfo(text):
@@ -774,6 +791,13 @@ def printerror(text):
     Color and key word error for print
     """
     print(colored("error   : " + text, color_alert()))
+
+
+def color_debug():
+    """
+    Color for info
+    """
+    return read_config_color("COLOR", "debug", "grey")
 
 
 def color_info():
