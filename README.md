@@ -100,6 +100,7 @@ info = green
 index = blue
 task = green
 tag = cyan
+debug = grey
 
 [SYSTEM]
 #debug,info,warning,error
