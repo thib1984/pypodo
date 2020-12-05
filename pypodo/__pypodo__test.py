@@ -526,6 +526,34 @@ class TestMethodsErrors(unittest.TestCase):
                 error = True
             self.assertEqual(error, True)
 
+    @patch("os.path.isfile")
+    @patch(
+        "builtins.open",
+        new_callable=mock_open,
+        read_data="1 my task te#st\na other task",
+    )
+    @patch("sys.stdout", new_callable=StringIO)
+    def test_sort_with_other_invalid_todo_return_warning_and_error(
+        self, mock_print, mock_open_file, mock_isfile
+    ):
+        """
+        test_sort_with_invalid_todo_return_warning_and_error
+        """
+        with patch.object(sys, "argv", [pypodo, listtask]):
+            mock_isfile.return_value = True
+            try:
+                error = False
+                listtask(mock_open_file)
+            except SystemExit:
+                self.assertEqual(
+                    escape_ansi(mock_print.getvalue().rstrip("\n")),
+                    "warning : this line has not a"
+                    " valid format in .todo - a other task\nerror   :"
+                    " verify the .todo file. Is it encrypted?",
+                )
+                error = True
+            self.assertEqual(error, True)
+
 
 class TestMethodsWarnings(unittest.TestCase):
     """
@@ -838,6 +866,59 @@ class TestMethodsWarnings(unittest.TestCase):
     @patch("os.path.isfile")
     @patch("builtins.open", new_callable=mock_open)
     @patch("sys.stdout", new_callable=StringIO)
+    def test_add_other_task_not_valid_format_return_warning(
+        self, mock_print, mock_open_file, mock_isfile
+    ):
+        """
+        test_add_task_not_valid_format_return_warning
+        """
+        with patch.object(sys, "argv", [pypodo, add, "#task #task"]):
+            mock_isfile.return_value = True
+            add(mock_open_file)
+            self.assertEqual(
+                escape_ansi(mock_print.getvalue().rstrip("\n")),
+                "warning : the task has not a valid format - #task #task",
+            )
+
+    @patch("os.path.isfile")
+    @patch("builtins.open", new_callable=mock_open)
+    @patch("sys.stdout", new_callable=StringIO)
+    def test_add_third_task_not_valid_format_return_warning(
+        self, mock_print, mock_open_file, mock_isfile
+    ):
+        """
+        test_add_task_not_valid_format_return_warning
+        """
+        with patch.object(sys, "argv", [pypodo, add, "task # #task"]):
+            mock_isfile.return_value = True
+            add(mock_open_file)
+            self.assertEqual(
+                escape_ansi(mock_print.getvalue().rstrip("\n")),
+                "warning : the task has not a valid format - task # #task",
+            )
+
+    @patch("os.path.isfile")
+    @patch("builtins.open", new_callable=mock_open)
+    @patch("sys.stdout", new_callable=StringIO)
+    def test_add_third_task_with_valid_format_return_not_warning(
+        self, mock_print, mock_open_file, mock_isfile
+    ):
+        """
+        test_add_task_not_valid_format_return_warning
+        """
+        with patch.object(
+            sys, "argv", [pypodo, add, "task#task #task"]
+        ):
+            mock_isfile.return_value = True
+            add(mock_open_file)
+            self.assertEqual(
+                escape_ansi(mock_print.getvalue().rstrip("\n")),
+                "info    : task is added to the todolist - 1 task#task #task",
+            )
+
+    @patch("os.path.isfile")
+    @patch("builtins.open", new_callable=mock_open)
+    @patch("sys.stdout", new_callable=StringIO)
     def test_find_if_empty_result_return_warning(
         self, mock_print, mock_open_file, mock_isfile
     ):
@@ -1076,7 +1157,7 @@ class TestMethodsOthers(unittest.TestCase):
     @patch(
         "builtins.open",
         new_callable=mock_open,
-        read_data="1 task #tag1 #tag2",
+        read_data="1 t#urgentask# #tag1 #tag2",
     )
     @patch("sys.stdout", new_callable=StringIO)
     def test_list_print_one_task_and_tags(
@@ -1090,7 +1171,7 @@ class TestMethodsOthers(unittest.TestCase):
             listtask(mock_open_file)
             self.assertEqual(
                 escape_ansi(mock_print.getvalue().rstrip("\n")),
-                "1 task #tag1 #tag2",
+                "1 t#urgentask# #tag1 #tag2",
             )
 
     @freeze_time("2020-10-14")
@@ -1119,7 +1200,7 @@ class TestMethodsOthers(unittest.TestCase):
     @patch(
         "builtins.open",
         new_callable=mock_open,
-        read_data="1 task1 #tag\n2 task2 #tag2",
+        read_data="1 task1 #tag\n2 task2 #tag2\n3 task3#tag #tag3",
     )
     @patch("sys.stdout", new_callable=StringIO)
     def test_list_with_filter_return_result(
@@ -1279,6 +1360,31 @@ class TestMethodsOthers(unittest.TestCase):
     @patch(
         "builtins.open",
         new_callable=mock_open,
+        read_data="1 task#tag #tag2\n2 task#tag2 #tag #tag3",
+    )
+    @patch("sys.stdout", new_callable=StringIO)
+    def test_untag_other_one_task(
+        self, mock_print, mock_open_file, mock_isfile
+    ):
+        """
+        test_untag_one_task
+        """
+        with patch.object(sys, "argv", [pypodo, untag, "tag", "2"]):
+            mock_isfile.return_value = True
+            untag(mock_open_file)
+            mock_open_file().write.assert_called_with(
+                "2 task#tag2 #tag3\n"
+            )
+            self.assertEqual(
+                escape_ansi(mock_print.getvalue().rstrip("\n")),
+                "info    : tag deleted from the task of the todolist"
+                " - 2 task#tag2 #tag #tag3 -> 2 task#tag2 #tag3",
+            )
+
+    @patch("os.path.isfile")
+    @patch(
+        "builtins.open",
+        new_callable=mock_open,
         read_data="1 ma tache #test #toto\n2 ma seconde tache #tost"
         " #titi\n3 ma seconde tache #test #titi",
     )
@@ -1387,10 +1493,10 @@ class TestMethodsOthers(unittest.TestCase):
     @patch(
         "builtins.open",
         new_callable=mock_open,
-        read_data="1 task #tag\n2 task2 #tag\n3 task3 #tag2\n4 task4",
+        read_data="1 ta#urgentsk #tag\n2 task2 #tag\n3 task3 #tag2\n4 task4",
     )
     @patch("sys.stdout", new_callable=StringIO)
-    def test_listtag_return_result(
+    def test_listtag_return_other_result(
         self, mock_print, mock_open_file, mock_isfile
     ):
         """

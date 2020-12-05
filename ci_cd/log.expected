@@ -1,13 +1,13 @@
 pypodo list
 [33mwarning : the todolist is empty[0m
-pypodo add task1
-[32minfo    : task is added to the todolist - 1 task1[0m
+pypodo add ta#urgentsk1#
+[32minfo    : task is added to the todolist - 1 ta#urgentsk1#[0m
 pypodo add task2 #tag1 #20190101
 [32minfo    : task is added to the todolist - 2 task2 #tag1 #20190101[0m
 pypodo add task3 #urgent #30000101
 [32minfo    : task is added to the todolist - 3 task3 #urgent #30000101[0m
 pypodo list
-[33m1[0m [32mtask1[0m
+[33m1[0m [32mta#urgentsk1#[0m
 [33m2[0m [32mtask2[0m [36m#tag1[0m [31m#20190101[0m
 [33m3[0m [32mtask3[0m [31m#urgent[0m [36m#30000101[0m
 pypodo del 2
@@ -18,7 +18,7 @@ pypodo tag veryurgent 3
 [32minfo    : tag added to the task of the todolist - 3 task3 #urgent #30000101 #tag2 -> 3 task3 #urgent #30000101 #tag2 #veryurgent[0m
 pypodo sort
 [32minfo    : the todolist is sorted[0m
-[33m1[0m [32mtask1[0m
+[33m1[0m [32mta#urgentsk1#[0m
 [33m2[0m [32mtask3[0m [31m#urgent[0m [36m#30000101[0m [36m#tag2[0m [36m#veryurgent[0m
 [32minfo    : task is added to the todolist - 3 task4 #tag #retag[0m
 pypodo list tag retag
@@ -30,7 +30,7 @@ pypodo tag newtag 3 3 2
 [32minfo    : tag added to the task of the todolist - 3 task4 #tag #newtag -> 3 task4 #tag #newtag #newtag[0m
 [32minfo    : tag added to the task of the todolist - 2 task3 #urgent #30000101 #tag2 #veryurgent -> 2 task3 #urgent #30000101 #tag2 #veryurgent #newtag[0m
 pypodo list
-[33m1[0m [32mtask1[0m
+[33m1[0m [32mta#urgentsk1#[0m
 [33m2[0m [32mtask3[0m [31m#urgent[0m [36m#30000101[0m [36m#tag2[0m [36m#veryurgent[0m [36m#newtag[0m
 [33m3[0m [32mtask4[0m [36m#tag[0m [36m#newtag[0m [36m#newtag[0m
 pypodo tag
@@ -41,7 +41,7 @@ pypodo tag
 [36m#tag2[0m
 [36m#veryurgent[0m
 pypodo untag
-[33m1[0m [32mtask1[0m
+[33m1[0m [32mta#urgentsk1#[0m
 pypodo find t.*sk4
 [33m3[0m [32mtask4[0m [36m#tag[0m [36m#newtag[0m [36m#newtag[0m
 pypodo decrypt admin

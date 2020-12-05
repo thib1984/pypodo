@@ -151,7 +151,7 @@ def listtask(openfile=open):
                     for increment in range(2, len(sys.argv)):
                         tagtofilter = sys.argv[increment]
                         if not re.findall(
-                            "#"
+                            " #"
                             + re.escape(tagtofilter)
                             + REGEX_SPACE_OR_ENDLINE,
                             line.rstrip("\n"),
@@ -193,7 +193,7 @@ def add(openfile=open):
                     # check format : words* #tag1 #tag2 : task at free format,
                     # tags in one word prefixed by #
                     if not re.findall(
-                        "^([^# ])([^#])*( #[^ #]+)*$", task
+                        "^([^#]|([^ ]#))*( #[^ #]+)*$", task
                     ):
                         printwarning(
                             "the task has not a valid format - "
@@ -332,7 +332,7 @@ def untag(openfile=open):
                                     todofile.write(line)
                                 else:
                                     if re.findall(
-                                        "#"
+                                        " #"
                                         + re.escape(tagtodel)
                                         + REGEX_SPACE_OR_ENDLINE,
                                         line.rstrip("\n"),
@@ -616,7 +616,7 @@ def listnotag(openfile=open):
             empty = True
             with openfile(todofilefromconfig(), "r") as todofile:
                 for line in todofile.readlines():
-                    if not "#" in line:
+                    if not " #" in line:
                         printlinetodo(line)
                         empty = False
             if empty:
@@ -639,7 +639,7 @@ def listtag(openfile=open):
                 my_list = []
                 for line in todofile.readlines():
                     for part in line.split():
-                        if "#" in part:
+                        if part.startswith("#"):
                             if part in listalerttags():
                                 part = colored(part, color_alert())
                             elif test_date(part[1:]) == "alert":
@@ -667,7 +667,8 @@ def check(openfile=open):
             for line in todofile.readlines():
                 # verification regex, index + task + possible tags
                 if not re.findall(
-                    "^\\d+ ([^#])+( #[^ #]+)*$", line.rstrip("\n")
+                    "^\\d+ ([^#]|([^ ]#))*( #[^ #]+)*$",
+                    line.rstrip("\n"),
                 ):
                     printwarning(
                         "this line has not a valid format in .todo - "
@@ -740,7 +741,7 @@ def printlinetodo(line):
     index = colored(line.split(" ", 1)[0], color_index())
     tags = ""
     for part in line.split():
-        if "#" in part:
+        if part.startswith("#"):
             if part in listalerttags():
                 tags = tags + " " + (colored(part, color_alert()))
             elif test_date(part[1:]) == "alert":

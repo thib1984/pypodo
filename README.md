@@ -12,6 +12,8 @@ pip3 install pypodo --upgrade #Upgrade, use pip if pip3 does not exist
 pip3 uninstall pypodo #Uninstall, use pip if pip3 does not exist
 ```
 
+After the install, restart the system or play 'source ~/.profile' to access directly pypodo commands. 
+
 [https://pypi.org/project/pypodo/](https://pypi.org/project/pypodo/)
 
 ## Use
@@ -169,6 +171,15 @@ alias tf='pypodo find'
 
 to improve your efficiency!
 
+## Use with newsboat [optional]
+
+If you use [newsboat](https://github.com/newsboat/newsboat), you can modify the configuration of the rss reader to save url of your favorites articles with 'o' press.
+
+```
+browser "pypodo add '%u #rss'"
+```
+
+
 ## File sharing [optional]
 
 You can use the .todo.rc configuration file to change the path of your todofile. If you used a "cloud folder" as cozy drive, you can share your pypodo app between two or more computeurs!
@@ -179,9 +190,11 @@ In case of sharing, you can improve security, and activate encryption of your .t
 
 ## Changelog
 
-### 3.0.1 (WIP)
+### 3.0.1
 
 - Improve debug messages
+- Correction of minor bugs in docker test
+- the '#' character can be place in the task if it not preceded of an empty space
 
 ### 3.0.0
 

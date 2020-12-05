@@ -14,7 +14,7 @@ setup(
     author_email="thibault.garcon@gmail.com",
     license="mit",
     packages=["pypodo"],
-    install_requires=["termcolor", "cryptography"],
+    install_requires=["setuptools", "termcolor", "cryptography"],
     zip_safe=False,
     entry_points={
         "console_scripts": ["pypodo=pypodo.__pypodo__:pypodo"],

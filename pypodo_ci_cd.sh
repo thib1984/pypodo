@@ -31,7 +31,7 @@ dockerci () {
         docker rm pypodo_mutation
         docker rm pypodo_coverage
         docker rm pypodo_coverage_html
-        docker rmi pypodo_coverage
+        docker rmi thibaultgarcon/pypodo_coverage
         docker rmi thibaultgarcon/pypodo_test
         touch $PYPODO_FILE && rm $PYPODO_FILE && touch $PYPODO_FILE && touch $PYPODO_FILE_CRYPT && rm $PYPODO_FILE_CRYPT && touch $PYPODO_FILE_CRYPT && touch $PYPODO_FILE_DECRYPT && rm $PYPODO_FILE_DECRYPT && touch $PYPODO_FILE_DECRYPT && touch $PYPODO_CONF && rm $PYPODO_CONF && touch $PYPODO_CONF && rm -rf $PYPODO_BACKUP && mkdir $PYPODO_BACKUP
     docker rmi pypodo_coverage_html) &>> $file_log_configuration
@@ -72,8 +72,8 @@ dockerci () {
         printerror "coverage run  ko, see output in $file_log_coverage"
         return 1
     fi
-    docker commit pypodo_coverage pypodo_coverage > /dev/null
-    docker run -it --name pypodo_coverage_html --entrypoint="coverage" pypodo_coverage html
+    docker commit pypodo_coverage thibaultgarcon/pypodo_coverage > /dev/null
+    docker run -it --name pypodo_coverage_html --entrypoint="coverage" thibaultgarcon/pypodo_coverage html
     docker cp pypodo_coverage_html:/pypodo/$folder_log_coverage .
     printinfo "coverage run  ok, see output in $folder_log_coverage/index.html"
     #mutatest

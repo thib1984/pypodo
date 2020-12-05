@@ -2,8 +2,8 @@
 smoketest="$1"
 echo pypodo list &&\
 $smoketest list &&\
-echo pypodo add "task1" &&\
-$smoketest add "task1" &&\
+echo pypodo add "ta#urgentsk1#" &&\
+$smoketest add "ta#urgentsk1#" &&\
 echo pypodo add "task2 #tag1 #20190101" &&\
 $smoketest add "task2 #tag1 #20190101" &&\
 echo pypodo add "task3 #urgent #30000101" &&\
