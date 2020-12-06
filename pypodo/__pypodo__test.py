@@ -316,6 +316,23 @@ class TestMethodsErrors(unittest.TestCase):
     @patch("os.path.isfile")
     @patch("builtins.open", new_callable=mock_open)
     @patch("sys.stdout", new_callable=StringIO)
+    def test_find_with_two_parameters_return_error(
+        self, mock_print, mock_open_file, mock_isfile
+    ):
+        """
+        test_find_with_no_parameter_return_error
+        """
+        with patch.object(sys, "argv", [pypodo, find, "one", "two"]):
+            mock_isfile.return_value = True
+            find(mock_open_file)
+            self.assertEqual(
+                escape_ansi(mock_print.getvalue().rstrip("\n")),
+                "error   : 1 parameter is needed for pypodo find",
+            )
+
+    @patch("os.path.isfile")
+    @patch("builtins.open", new_callable=mock_open)
+    @patch("sys.stdout", new_callable=StringIO)
     def test_add_with_no_parameter_return_error(
         self, mock_print, mock_open_file, mock_isfile
     ):
@@ -352,13 +369,13 @@ class TestMethodsErrors(unittest.TestCase):
     @patch("os.path.isfile")
     @patch("builtins.open", new_callable=mock_open)
     @patch("sys.stdout", new_callable=StringIO)
-    def test_sort_with_parameters_return_error(
+    def test_sort_with_one_parameter_return_error(
         self, mock_print, mock_open_file, mock_isfile
     ):
         """
         test_sort_with_parameters_return_error
         """
-        with patch.object(sys, "argv", [pypodo, sort, "toto"]):
+        with patch.object(sys, "argv", [pypodo, sort, "one"]):
             mock_isfile.return_value = True
             sort(mock_open_file)
             self.assertEqual(
@@ -369,13 +386,49 @@ class TestMethodsErrors(unittest.TestCase):
     @patch("os.path.isfile")
     @patch("builtins.open", new_callable=mock_open)
     @patch("sys.stdout", new_callable=StringIO)
-    def test_backup_with_parameters_return_error(
+    def test_sort_with_two_parameter_return_error(
+        self, mock_print, mock_open_file, mock_isfile
+    ):
+        """
+        test_sort_with_parameters_return_error
+        """
+        with patch.object(sys, "argv", [pypodo, sort, "one", "two"]):
+            mock_isfile.return_value = True
+            sort(mock_open_file)
+            self.assertEqual(
+                escape_ansi(mock_print.getvalue().rstrip("\n")),
+                "error   : 0 parameter is needed for pypodo sort",
+            )
+
+    @patch("os.path.isfile")
+    @patch("builtins.open", new_callable=mock_open)
+    @patch("sys.stdout", new_callable=StringIO)
+    def test_backup_with_one_parameter_return_error(
         self, mock_print, mock_open_file, mock_isfile
     ):
         """
         test_backup_with_parameters_return_error
         """
-        with patch.object(sys, "argv", [pypodo, backup, "toto"]):
+        with patch.object(sys, "argv", [pypodo, backup, "one"]):
+            mock_isfile.return_value = True
+            backup(mock_open_file)
+            self.assertEqual(
+                escape_ansi(mock_print.getvalue().rstrip("\n")),
+                "error   : 0 parameter is needed for pypodo backup",
+            )
+
+    @patch("os.path.isfile")
+    @patch("builtins.open", new_callable=mock_open)
+    @patch("sys.stdout", new_callable=StringIO)
+    def test_backup_with_two_parameters_return_error(
+        self, mock_print, mock_open_file, mock_isfile
+    ):
+        """
+        test_backup_with_parameters_return_error
+        """
+        with patch.object(
+            sys, "argv", [pypodo, backup, "one", "two"]
+        ):
             mock_isfile.return_value = True
             backup(mock_open_file)
             self.assertEqual(
@@ -392,7 +445,7 @@ class TestMethodsErrors(unittest.TestCase):
         """
         test_tag_with_one_parameter_return_error
         """
-        with patch.object(sys, "argv", [pypodo, tag, "param"]):
+        with patch.object(sys, "argv", [pypodo, tag, "one"]):
             mock_isfile.return_value = True
             tag(mock_open_file)
             self.assertEqual(
@@ -462,11 +515,11 @@ class TestMethodsErrors(unittest.TestCase):
         "builtins.open", new_callable=mock_open, read_data="1 task"
     )
     @patch("sys.stdout", new_callable=StringIO)
-    def test_tag_with_incorrect_tag_return_error(
+    def test_tag_beginning_with_hash_return_error(
         self, mock_print, mock_open_file, mock_isfile
     ):
         """
-        test_tag_with_incorrect_tag_return_error
+        test_tag_beginning_with_hash_return_error
         """
         with patch.object(sys, "argv", [pypodo, tag, "#badtag", "1"]):
             mock_isfile.return_value = True
@@ -481,20 +534,100 @@ class TestMethodsErrors(unittest.TestCase):
         "builtins.open", new_callable=mock_open, read_data="1 task"
     )
     @patch("sys.stdout", new_callable=StringIO)
-    def test_untag_with_incorrect_tag_return_error(
+    def test_tag_containing_hash_return_error(
         self, mock_print, mock_open_file, mock_isfile
     ):
         """
-        test_untag_with_incorrect_tag_return_error
+        test_tag_containing_hash_return_error
+        """
+        with patch.object(sys, "argv", [pypodo, tag, "bad#tag", "1"]):
+            mock_isfile.return_value = True
+            tag(mock_open_file)
+            self.assertEqual(
+                escape_ansi(mock_print.getvalue().rstrip("\n")),
+                "error   : the tag has not a valid format - bad#tag",
+            )
+
+    @patch("os.path.isfile")
+    @patch(
+        "builtins.open", new_callable=mock_open, read_data="1 task"
+    )
+    @patch("sys.stdout", new_callable=StringIO)
+    def test_tag_finishing_with_hash_return_error(
+        self, mock_print, mock_open_file, mock_isfile
+    ):
+        """
+        test_tag_finishing_with_hash_return_error
+        """
+        with patch.object(sys, "argv", [pypodo, tag, "badtag#", "1"]):
+            mock_isfile.return_value = True
+            tag(mock_open_file)
+            self.assertEqual(
+                escape_ansi(mock_print.getvalue().rstrip("\n")),
+                "error   : the tag has not a valid format - badtag#",
+            )
+
+    @patch("os.path.isfile")
+    @patch(
+        "builtins.open", new_callable=mock_open, read_data="1 task"
+    )
+    @patch("sys.stdout", new_callable=StringIO)
+    def test_untag_beginning_with_hash_return_error(
+        self, mock_print, mock_open_file, mock_isfile
+    ):
+        """
+        test_untag_beginning_with_hash_return_error
         """
         with patch.object(
             sys, "argv", [pypodo, untag, "#badtag", "1"]
         ):
             mock_isfile.return_value = True
-            untag(mock_open_file)
+            tag(mock_open_file)
             self.assertEqual(
                 escape_ansi(mock_print.getvalue().rstrip("\n")),
                 "error   : the tag has not a valid format - #badtag",
+            )
+
+    @patch("os.path.isfile")
+    @patch(
+        "builtins.open", new_callable=mock_open, read_data="1 task"
+    )
+    @patch("sys.stdout", new_callable=StringIO)
+    def test_untag_containing_hash_return_error(
+        self, mock_print, mock_open_file, mock_isfile
+    ):
+        """
+        test_untag_containing_hash_return_error
+        """
+        with patch.object(
+            sys, "argv", [pypodo, untag, "bad#tag", "1"]
+        ):
+            mock_isfile.return_value = True
+            tag(mock_open_file)
+            self.assertEqual(
+                escape_ansi(mock_print.getvalue().rstrip("\n")),
+                "error   : the tag has not a valid format - bad#tag",
+            )
+
+    @patch("os.path.isfile")
+    @patch(
+        "builtins.open", new_callable=mock_open, read_data="1 task"
+    )
+    @patch("sys.stdout", new_callable=StringIO)
+    def test_untag_finishing_with_hash_return_error(
+        self, mock_print, mock_open_file, mock_isfile
+    ):
+        """
+        test_untag_finishing_with_hash_return_error
+        """
+        with patch.object(
+            sys, "argv", [pypodo, untag, "badtag#", "1"]
+        ):
+            mock_isfile.return_value = True
+            tag(mock_open_file)
+            self.assertEqual(
+                escape_ansi(mock_print.getvalue().rstrip("\n")),
+                "error   : the tag has not a valid format - badtag#",
             )
 
     @patch("os.path.isfile")
