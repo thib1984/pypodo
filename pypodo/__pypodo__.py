@@ -540,7 +540,15 @@ def decrypt(itself, cle, openfile=open):
         else:
             if not os.path.isfile(todofilefromconfig()):
                 printdebug("creating .todolist file")
-                openfile(todofilefromconfig(), "w")
+                try:
+                    openfile(todofilefromconfig(), "w")
+                except FileNotFoundError:
+                    printerror(
+                        "the path "
+                        + todofilefromconfig()
+                        + " does not exist, correct it (in the .todo.rc file)"
+                    )
+                    sys.exit()
             else:
                 if os.stat(todofilefromconfig()).st_size == 0:
                     printinfo("emtpy todofile")
