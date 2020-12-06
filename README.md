@@ -190,6 +190,14 @@ In case of sharing, you can improve security, and activate encryption of your .t
 
 ## Changelog
 
+
+### 3.0.2 - WIP
+
+- Optimize docker image size
+- For dev only : Clean test classe
+- For dev only : Add clear_workspace script
+- For dev only : Use of  ubuntu 20.04 for Guthub Actions
+
 ### 3.0.1
 
 - Improve debug messages
