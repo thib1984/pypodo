@@ -681,7 +681,15 @@ def check(openfile=open):
         return True
 
     printinfo("creating .todolist file")
-    openfile(todofilefromconfig(), "a")
+    try:
+        openfile(todofilefromconfig(), "a")
+    except FileNotFoundError:
+        printerror(
+            "the path "
+            + todofilefromconfig()
+            + " does not exist, correct it (in the .todo.rc file)"
+        )
+        sys.exit()
     return True
 
 
