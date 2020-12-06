@@ -194,6 +194,7 @@ In case of sharing, you can improve security, and activate encryption of your .t
 ### 3.0.2 - WIP
 
 - Optimize docker image size
+- Correction if incorrect path todofile
 - For dev only : Clean test classe
 - For dev only : Add clear_workspace script
 - For dev only : Use of  ubuntu 20.04 for Guthub Actions
