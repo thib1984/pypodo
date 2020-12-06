@@ -1,5 +1,5 @@
 #not 3.8-alpine is not compatible with cryptoex
-FROM python:3.8
+FROM python:3.8-slim-buster
 WORKDIR /pypodo
 COPY pypodo/ pypodo/
 COPY setup.py .
