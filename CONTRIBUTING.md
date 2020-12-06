@@ -58,6 +58,12 @@ Example of script :
 
 ![image](https://user-images.githubusercontent.com/45128847/95779511-7a512f00-0cca-11eb-94c5-5d7e8af451d8.png)
 
+To clear your workspace, you can use :
+
+```
+./clear_workspace.sh
+```
+
 ## Construct app directly
 
 ```
