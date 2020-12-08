@@ -443,14 +443,28 @@ def backup(openfile=open):
         else:
             dir_exists = os.path.exists(todobackupfoderfromconfig())
             if not dir_exists:
-                os.makedirs(todobackupfoderfromconfig())
+                try:
+                    os.makedirs(todobackupfoderfromconfig())
+                except PermissionError:
+                    printerror(
+                        "permission error to create the backup folder : "
+                        + todobackupfoderfromconfig()
+                    )
+                    sys.exit()
                 printinfo("creating todolist backup folder")
             time_suffix = time.strftime("%Y%m%d%H%M%S")
             todo_backup_name = ".todo" + time_suffix
             backup_name = (
                 todobackupfoderfromconfig() + todo_backup_name
             )
-            copyfile(todofilefromconfig(), backup_name)
+            try:
+                copyfile(todofilefromconfig(), backup_name)
+            except PermissionError:
+                printerror(
+                    "permission error to create the backup folder : "
+                    + todobackupfoderfromconfig()
+                )
+                sys.exit()
             printinfo(
                 "creating todolist backup - " + todo_backup_name
             )
@@ -670,23 +684,30 @@ def check(openfile=open):
     """
     file_exists = os.path.isfile(todofilefromconfig())
     if file_exists:
-        with openfile(todofilefromconfig(), "r") as todofile:
-            error = False
-            for line in todofile.readlines():
-                # verification regex, index + task + possible tags
-                if not re.findall(
-                    "^\\d+ ([^#]|([^ ]#))*( #[^ #]+)*$",
-                    line.rstrip("\n"),
-                ):
-                    printwarning(
-                        "this line has not a valid format in .todo - "
-                        + line.rstrip("\n")
-                    )
-                    error = True
-        if error:
-            printerror("verify the .todo file. Is it encrypted?")
+        try:
+            with openfile(todofilefromconfig(), "r") as todofile:
+                error = False
+                for line in todofile.readlines():
+                    # verification regex, index + task + possible tags
+                    if not re.findall(
+                        "^\\d+ ([^#]|([^ ]#))*( #[^ #]+)*$",
+                        line.rstrip("\n"),
+                    ):
+                        printwarning(
+                            "this line has not a valid format in .todo - "
+                            + line.rstrip("\n")
+                        )
+                        error = True
+            if error:
+                printerror("verify the .todo file. Is it encrypted?")
+                sys.exit()
+            return True
+        except PermissionError:
+            printerror(
+                "permission error to open the todofile : "
+                + todofilefromconfig()
+            )
             sys.exit()
-        return True
 
     printinfo("creating .todolist file")
     try:
@@ -860,12 +881,26 @@ def color_alert():
 
 
 # config functions
-def read_config(section, cle, defaut):
+def read_config(section, cle, defaut, openfile=open):
     """
     Read the config file
     """
     config = configparser.ConfigParser()
     try:
+        try:
+            try:
+                openfile(STR_PATH_HOME__TODORC_, "r")
+            except PermissionError:
+                print(
+                    colored(
+                        "error   : permission error to open the ~/todo.rc file",
+                        "red",
+                    )
+                )
+                sys.exit()
+        except FileNotFoundError:
+            openfile(STR_PATH_HOME__TODORC_, "w")
+
         config.read(STR_PATH_HOME__TODORC_)
         return config[section][cle]
     except (configparser.MissingSectionHeaderError, KeyError):

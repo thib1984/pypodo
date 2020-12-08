@@ -195,6 +195,7 @@ In case of sharing, you can improve security, and activate encryption of your .t
 
 - Optimize docker image size
 - Correction if incorrect path todofile
+- Correction if permission errors
 - For dev only : Clean test classe
 - For dev only : Add clear_workspace script
 - For dev only : Use of  ubuntu 20.04 for Github Actions
