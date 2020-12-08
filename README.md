@@ -191,7 +191,7 @@ In case of sharing, you can improve security, and activate encryption of your .t
 ## Changelog
 
 
-### 3.0.2 - WIP
+### 3.0.2
 
 - Optimize docker image size
 - Correction if incorrect path todofile
