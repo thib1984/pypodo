@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name="pypodo",
-    version="3.0.2",
+    version="3.0.3",
     description="pypodo is a todolist tool which works with a .todo file at the root of the home directory. It has a mecanism of indexes and tags.",
     long_description=long_description,
     long_description_content_type="text/markdown",
