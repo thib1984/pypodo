@@ -48,15 +48,21 @@ The default color of the tags is green. When a task is tagged "#urgent" it will 
 
 - ``pypodo del 1 2`` : remove the 2 tasks (index=1 and index=2)
 
+- ``pypodo del 2-4`` : remove the 3 tasks (from index=2 to index=4)
+
 - ``pypodo tag new_tag 1`` : add the tag '_new_tag_' to the task with index=1
 
 - ``pypodo tag new_tag 1 2`` : add the tag '_new_tag_' to both tasks index=1 and index=2
+
+- ``pypodo tag new_tag 2-4`` : add the tag '_new_tag_' to the 3 tasks (from index=2 to index=4)
 
 - ``pypodo tag`` : display all tags of the todolist
 
 - ``pypodo untag new_tag 1`` : remove tag '_new_tag_' from the task with index=1
 
 - ``pypodo untag new_tag 1 2`` : remove the tag '_new_tag_' from both tasks index=1 and index=2
+
+- ``pypodo tag new_tag 2-4`` : remove the tag '_new_tag_' from the 3 tasks (from index=2 to index=4)
 
 - ``pypodo untag`` : display all tasks without tags
 
@@ -192,6 +198,7 @@ In case of sharing, you can improve security, and activate encryption of your .t
 
 ### 3.0.3 -WIP-
 
+- Add new parameter formatlist for index : "1-3" for example
 
 ### 3.0.2
 

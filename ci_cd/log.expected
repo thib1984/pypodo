@@ -24,11 +24,11 @@ pypodo sort
 pypodo list tag retag
 [33m3[0m [32mtask4[0m [36m#tag[0m [36m#retag[0m
 pypodo untag retag 3
-[32minfo    : tag deleted from the task of the todolist - 3 task4 #tag #retag -> 3 task4 #tag [0m
-pypodo tag newtag 3 3 2
+[32minfo    : tag deleted from the task of the todolist - 3 task4 #tag #retag -> 3 task4 #tag[0m
+pypodo tag newtag 2-3 3
+[32minfo    : tag added to the task of the todolist - 2 task3 #urgent #30000101 #tag2 #veryurgent -> 2 task3 #urgent #30000101 #tag2 #veryurgent #newtag[0m
 [32minfo    : tag added to the task of the todolist - 3 task4 #tag -> 3 task4 #tag #newtag[0m
 [32minfo    : tag added to the task of the todolist - 3 task4 #tag #newtag -> 3 task4 #tag #newtag #newtag[0m
-[32minfo    : tag added to the task of the todolist - 2 task3 #urgent #30000101 #tag2 #veryurgent -> 2 task3 #urgent #30000101 #tag2 #veryurgent #newtag[0m
 pypodo list
 [33m1[0m [32mta#urgentsk1#[0m
 [33m2[0m [32mtask3[0m [31m#urgent[0m [36m#30000101[0m [36m#tag2[0m [36m#veryurgent[0m [36m#newtag[0m

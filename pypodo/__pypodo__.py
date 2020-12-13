@@ -220,40 +220,24 @@ def delete(openfile=open):
             # loop on the indexes
             for increment in range(2, len(sys.argv)):
                 index = sys.argv[increment]
-                # check the numeric format of the index
 
-                if not re.findall(REGEX_INDEX, index):
+                # check the numeric format of the index
+                if re.findall(REGEX_INDEX, index):
+                    deleteone(index, openfile)
+                elif re.findall("^\\d+-\\d+$", index) and int(
+                    index.split("-")[0]
+                ) < int(index.split("-")[1]):
+                    for indexlist in range(
+                        int(index.split("-")[0]),
+                        int(index.split("-")[1]) + 1,
+                    ):
+                        deleteone(str(indexlist), openfile)
+                else:
                     printwarning(
                         "the index to delete is not in numeric format - "
                         + index
                     )
-                else:
-                    index_existant = False
-                    with openfile(
-                        todofilefromconfig(), "r"
-                    ) as todofile:
-                        lines = todofile.readlines()
-                    with openfile(
-                        todofilefromconfig(), "w"
-                    ) as todofile:
-                        for line in lines:
-                            # if the current row doesn't contain the index it is kept
-                            if not re.findall(
-                                "^" + index + " ", line
-                            ):
-                                todofile.write(line)
-                            # else it is deleted by not being copied
-                            else:
-                                printinfo(
-                                    "task deleted from the todolist - "
-                                    + line.rstrip("\n")
-                                )
-                                index_existant = True
-                    if not index_existant:
-                        printwarning(
-                            "no task is deleted from the todolist, not existing index - "
-                            + index
-                        )
+
             if (
                 read_config_boolean("FONCTIONAL", "autosort", "False")
                 == "True"
@@ -264,6 +248,32 @@ def delete(openfile=open):
             printerror(
                 "1 or more parameter is needed for pypodo del - indexes to delete in numeric format"
             )
+
+
+def deleteone(indextodelete, openfile=open):
+    """
+    Delete a task from the todofile
+    """
+    index_existant = False
+    with openfile(todofilefromconfig(), "r") as todofile:
+        lines = todofile.readlines()
+    with openfile(todofilefromconfig(), "w") as todofile:
+        for line in lines:
+            # if the current row doesn't contain the index it is kept
+            if not re.findall("^" + indextodelete + " ", line):
+                todofile.write(line)
+            # else it is deleted by not being copied
+            else:
+                printinfo(
+                    "task deleted from the todolist - "
+                    + line.rstrip("\n")
+                )
+                index_existant = True
+    if not index_existant:
+        printwarning(
+            "no task is deleted from the todolist, not existing index - "
+            + indextodelete
+        )
 
 
 def sort(openfile=open):
@@ -311,64 +321,73 @@ def untag(openfile=open):
                 # loop on the indexes
                 for increment in range(3, len(sys.argv)):
                     index = sys.argv[increment]
-                    if not re.findall(REGEX_INDEX, index):
+                    # check the numeric format of the index
+                    if re.findall(REGEX_INDEX, index):
+                        untagone(index, tagtodel, openfile)
+                    elif re.findall("^\\d+-\\d+$", index) and int(
+                        index.split("-")[0]
+                    ) < int(index.split("-")[1]):
+                        for indexlist in range(
+                            int(index.split("-")[0]),
+                            int(index.split("-")[1]) + 1,
+                        ):
+                            untagone(
+                                str(indexlist), tagtodel, openfile
+                            )
+                    else:
                         printwarning(
                             "the index to untag is not in numeric format - "
                             + index
                         )
-                    else:
-                        index_trouve = False
-                        with openfile(
-                            todofilefromconfig(), "r"
-                        ) as todofile:
-                            lines = todofile.readlines()
-                        with openfile(
-                            todofilefromconfig(), "w"
-                        ) as todofile:
-                            for line in lines:
-                                if not re.findall(
-                                    "^" + index + " ", line
-                                ):
-                                    todofile.write(line)
-                                else:
-                                    if re.findall(
-                                        " #"
-                                        + re.escape(tagtodel)
-                                        + REGEX_SPACE_OR_ENDLINE,
-                                        line.rstrip("\n"),
-                                    ):
-                                        newline = re.sub(
-                                            "#"
-                                            + re.escape(tagtodel)
-                                            + REGEX_SPACE_OR_ENDLINE,
-                                            "",
-                                            line,
-                                        ).rstrip("\n")
-                                        todofile.write(
-                                            newline.rstrip() + "\n"
-                                        )
-                                        printinfo(
-                                            "tag deleted from the task of the todolist - "
-                                            + line.rstrip("\n")
-                                            + " -> "
-                                            + newline
-                                        )
-                                    else:
-                                        todofile.write(line)
-                                        printwarning(
-                                            "no tags is deleted from the todolist for the task - "
-                                            + line.rstrip("\n")
-                                        )
-                                    index_trouve = True
-                        if not index_trouve:
-                            printwarning(
-                                "no task with index - " + index
-                            )
+
         else:
             printerror(
                 "0,2 or more parameters is needed for pypodo untag : the tag to delete and"
                 " the indexes of the task whose tags to delete - nothing to list task without tags"
             )
+
+
+def untagone(index, tagtodel, openfile):
+    """
+    Untag on task
+    """
+    index_trouve = False
+    with openfile(todofilefromconfig(), "r") as todofile:
+        lines = todofile.readlines()
+    with openfile(todofilefromconfig(), "w") as todofile:
+        for line in lines:
+            if not re.findall("^" + index + " ", line):
+                todofile.write(line)
+            else:
+                if re.findall(
+                    " #"
+                    + re.escape(tagtodel)
+                    + REGEX_SPACE_OR_ENDLINE,
+                    line.rstrip("\n"),
+                ):
+                    newline = re.sub(
+                        "#"
+                        + re.escape(tagtodel)
+                        + REGEX_SPACE_OR_ENDLINE,
+                        "",
+                        line,
+                    ).rstrip("\n")
+                    todofile.write(newline.rstrip() + "\n")
+                    printinfo(
+                        "tag deleted from the task of the todolist - "
+                        + line.rstrip("\n")
+                        + " -> "
+                        + newline.rstrip()
+                    )
+                else:
+                    todofile.write(line)
+                    printwarning(
+                        "no tags is deleted from the todolist for the task - "
+                        + line.rstrip("\n")
+                    )
+                index_trouve = True
+    if not index_trouve:
+        printwarning("no task with index - " + index)
 
 
 def tag(openfile=open):
@@ -388,49 +407,54 @@ def tag(openfile=open):
                 # loop on the indexes
                 for increment in range(3, len(sys.argv)):
                     index = sys.argv[increment]
-                    if not re.findall(REGEX_INDEX, index):
+                    # check the numeric format of the index
+                    if re.findall(REGEX_INDEX, index):
+                        tagone(index, tagtoadd, openfile)
+                    elif re.findall("^\\d+-\\d+$", index) and int(
+                        index.split("-")[0]
+                    ) < int(index.split("-")[1]):
+                        for indexlist in range(
+                            int(index.split("-")[0]),
+                            int(index.split("-")[1]) + 1,
+                        ):
+                            tagone(str(indexlist), tagtoadd, openfile)
+                    else:
                         printwarning(
                             "the index to tag is not in numeric format - "
                             + index
                         )
-                    else:
-                        index_trouve = False
-                        with openfile(
-                            todofilefromconfig(), "r"
-                        ) as todofile:
-                            lines = todofile.readlines()
-                        with openfile(
-                            todofilefromconfig(), "w"
-                        ) as todofile:
-                            for line in lines:
-                                if not re.findall(
-                                    "^" + index + " ", line
-                                ):
-                                    todofile.write(line)
-                                else:
-                                    newline = (
-                                        line.rstrip("\n")
-                                        + " #"
-                                        + tagtoadd
-                                    )
-                                    todofile.write(newline + "\n")
-                                    printinfo(
-                                        "tag added to the task of the todolist - "
-                                        + line.rstrip("\n")
-                                        + " -> "
-                                        + newline
-                                    )
-                                    index_trouve = True
-                        if not index_trouve:
-                            printwarning(
-                                "no task with index - " + index
-                            )
+
         else:
             printerror(
                 "0,2 or more parameters is needed for pypodo tag : the tag to add and"
                 " the indexes of the task whose tags to add - nothing to list tags of"
                 " the todolist"
             )
+
+
+def tagone(index, tagtoadd, openfile):
+    """
+    Tag on task
+    """
+    index_trouve = False
+    with openfile(todofilefromconfig(), "r") as todofile:
+        lines = todofile.readlines()
+    with openfile(todofilefromconfig(), "w") as todofile:
+        for line in lines:
+            if not re.findall("^" + index + " ", line):
+                todofile.write(line)
+            else:
+                newline = line.rstrip("\n") + " #" + tagtoadd
+                todofile.write(newline + "\n")
+                printinfo(
+                    "tag added to the task of the todolist - "
+                    + line.rstrip("\n")
+                    + " -> "
+                    + newline.rstrip()
+                )
+                index_trouve = True
+    if not index_trouve:
+        printwarning("no task with index - " + index)
 
 
 def backup(openfile=open):

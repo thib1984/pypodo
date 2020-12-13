@@ -20,7 +20,7 @@ pypodo sort
 pypodo list tag retag
 [31m3[0m [33mtask4[0m [30m#tag[0m [30m#retag[0m
 pypodo untag retag 3
-pypodo tag newtag 3 3 2
+pypodo tag newtag 2-3 3
 pypodo list
 [31m1[0m [33mta#urgentsk1#[0m
 [31m2[0m [33mtask3[0m [35m#urgent[0m [30m#30000101[0m [30m#newtag[0m

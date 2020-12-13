@@ -22,8 +22,8 @@ echo pypodo list tag retag &&\
 $smoketest list tag retag &&\
 echo pypodo untag retag 3 &&\
 $smoketest untag retag 3 &&\
-echo pypodo tag newtag 3 3 2 &&\
-$smoketest tag newtag 3 3 2 &&\
+echo pypodo tag newtag 2-3 3 &&\
+$smoketest tag newtag 2-3 3 &&\
 echo pypodo list &&\
 $smoketest list &&\
 echo pypodo tag &&\

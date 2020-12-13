@@ -534,6 +534,27 @@ class TestMethodsErrors(unittest.TestCase):
         "builtins.open", new_callable=mock_open, read_data="1 task"
     )
     @patch("sys.stdout", new_callable=StringIO)
+    def test_untag_beginning_with_hash_return_error(
+        self, mock_print, mock_open_file, mock_isfile
+    ):
+        """
+        test_untag_beginning_with_hash_return_error
+        """
+        with patch.object(
+            sys, "argv", [pypodo, untag, "#badtag", "1"]
+        ):
+            mock_isfile.return_value = True
+            tag(mock_open_file)
+            self.assertEqual(
+                escape_ansi(mock_print.getvalue().rstrip("\n")),
+                "error   : the tag has not a valid format - #badtag",
+            )
+
+    @patch("os.path.isfile")
+    @patch(
+        "builtins.open", new_callable=mock_open, read_data="1 task"
+    )
+    @patch("sys.stdout", new_callable=StringIO)
     def test_tag_containing_hash_return_error(
         self, mock_print, mock_open_file, mock_isfile
     ):
@@ -1469,6 +1490,59 @@ class TestMethodsOthers(unittest.TestCase):
     @patch(
         "builtins.open",
         new_callable=mock_open,
+        read_data="1 task1 #tag\n2 task2\n4 task3",
+    )
+    @patch("sys.stdout", new_callable=StringIO)
+    def test_delete_multi_task_with_minus(
+        self, mock_print, mock_open_file, mock_isfile
+    ):
+        """
+        test_delete_multi_task_with_min
+        """
+        with patch.object(
+            sys, "argv", [pypodo, delete, "1-3", "2-2", "4-3"]
+        ):
+            mock_isfile.return_value = True
+            delete(mock_open_file)
+
+            self.assertEqual(
+                escape_ansi(mock_print.getvalue().rstrip("\n")),
+                "info    : task deleted from the todolist - 1 task1 #tag"
+                "\ninfo    : task deleted from the todolist - 2 task2"
+                "\nwarning : no task is deleted from the todolist, not existing index - 3"
+                "\nwarning : the index to delete is not in numeric format - 2-2"
+                "\nwarning : the index to delete is not in numeric format - 4-3",
+            )
+
+    @patch("os.path.isfile")
+    @patch(
+        "builtins.open",
+        new_callable=mock_open,
+        read_data="1 task1 #tag\n2 task2\n4 task3\n5 task5\n6 task6\n7 task7\n8 task8\n9 task9\n10 task10",
+    )
+    @patch("sys.stdout", new_callable=StringIO)
+    def test_delete_other_multi_task_with_minus(
+        self, mock_print, mock_open_file, mock_isfile
+    ):
+        """
+        test_delete_multi_task_with_min
+        """
+        with patch.object(sys, "argv", [pypodo, delete, "6-9"]):
+            mock_isfile.return_value = True
+            delete(mock_open_file)
+
+            self.assertEqual(
+                escape_ansi(mock_print.getvalue().rstrip("\n")),
+                "info    : task deleted from the todolist - 6 task6"
+                "\ninfo    : task deleted from the todolist - 7 task7"
+                "\ninfo    : task deleted from the todolist - 8 task8"
+                "\ninfo    : task deleted from the todolist - 9 task9",
+            )
+
+    @patch("os.path.isfile")
+    @patch(
+        "builtins.open",
+        new_callable=mock_open,
         read_data="1 task #tag2\n2 task2 #tag #tag3",
     )
     @patch("sys.stdout", new_callable=StringIO)
@@ -1546,6 +1620,66 @@ class TestMethodsOthers(unittest.TestCase):
                 " - 2 ma seconde tache #tost #titi\ninfo    : tag deleted"
                 " from the task of the todolist - 3 ma seconde tache"
                 " #test #titi -> 3 ma seconde tache #titi",
+            )
+
+    @patch("os.path.isfile")
+    @patch(
+        "builtins.open",
+        new_callable=mock_open,
+        read_data="1 task1 #tag\n3 task3 #tag\n4 task4 #tag",
+    )
+    @patch("sys.stdout", new_callable=StringIO)
+    def test_untag_multi_task_with_minus(
+        self, mock_print, mock_open_file, mock_isfile
+    ):
+        """
+        test_untag_multi_task_with_min
+        """
+        with patch.object(
+            sys, "argv", [pypodo, untag, "tag", "1-3", "2-2", "4-3"]
+        ):
+            mock_isfile.return_value = True
+            untag(mock_open_file)
+
+            self.assertEqual(
+                escape_ansi(mock_print.getvalue().rstrip("\n")),
+                "info    : tag deleted from the task of the todolist"
+                " - 1 task1 #tag -> 1 task1"
+                "\nwarning : no task with index - 2"
+                "\ninfo    : tag deleted from the task of the todolist"
+                " - 3 task3 #tag -> 3 task3"
+                "\nwarning : the index to untag is not in numeric format - 2-2"
+                "\nwarning : the index to untag is not in numeric format - 4-3",
+            )
+
+    @patch("os.path.isfile")
+    @patch(
+        "builtins.open",
+        new_callable=mock_open,
+        read_data="1 task1 #tagone\n3 task3 #tagtwo\n4 task4 #tagthree",
+    )
+    @patch("sys.stdout", new_callable=StringIO)
+    def test_tag_multi_task_with_minus(
+        self, mock_print, mock_open_file, mock_isfile
+    ):
+        """
+        test_tag_multi_task_with_min
+        """
+        with patch.object(
+            sys, "argv", [pypodo, tag, "newtag", "1-3", "2-2", "4-3"]
+        ):
+            mock_isfile.return_value = True
+            tag(mock_open_file)
+
+            self.assertEqual(
+                escape_ansi(mock_print.getvalue().rstrip("\n")),
+                "info    : tag added to the task of the todolist"
+                " - 1 task1 #tagone -> 1 task1 #tagone #newtag"
+                "\nwarning : no task with index - 2"
+                "\ninfo    : tag added to the task of the todolist"
+                " - 3 task3 #tagtwo -> 3 task3 #tagtwo #newtag"
+                "\nwarning : the index to tag is not in numeric format - 2-2"
+                "\nwarning : the index to tag is not in numeric format - 4-3",
             )
 
     @patch("os.path.isfile")
