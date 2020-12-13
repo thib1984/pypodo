@@ -534,27 +534,6 @@ class TestMethodsErrors(unittest.TestCase):
         "builtins.open", new_callable=mock_open, read_data="1 task"
     )
     @patch("sys.stdout", new_callable=StringIO)
-    def test_untag_beginning_with_hash_return_error(
-        self, mock_print, mock_open_file, mock_isfile
-    ):
-        """
-        test_untag_beginning_with_hash_return_error
-        """
-        with patch.object(
-            sys, "argv", [pypodo, untag, "#badtag", "1"]
-        ):
-            mock_isfile.return_value = True
-            tag(mock_open_file)
-            self.assertEqual(
-                escape_ansi(mock_print.getvalue().rstrip("\n")),
-                "error   : the tag has not a valid format - #badtag",
-            )
-
-    @patch("os.path.isfile")
-    @patch(
-        "builtins.open", new_callable=mock_open, read_data="1 task"
-    )
-    @patch("sys.stdout", new_callable=StringIO)
     def test_tag_containing_hash_return_error(
         self, mock_print, mock_open_file, mock_isfile
     ):
@@ -603,7 +582,7 @@ class TestMethodsErrors(unittest.TestCase):
             sys, "argv", [pypodo, untag, "#badtag", "1"]
         ):
             mock_isfile.return_value = True
-            tag(mock_open_file)
+            untag(mock_open_file)
             self.assertEqual(
                 escape_ansi(mock_print.getvalue().rstrip("\n")),
                 "error   : the tag has not a valid format - #badtag",
