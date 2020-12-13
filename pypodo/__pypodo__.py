@@ -137,7 +137,6 @@ def listtask(openfile=open):
     Print the todofile with filters or not
     """
     if check(openfile):
-
         empty = True
         with openfile(todofilefromconfig(), "r") as todofile:
             for line in todofile.readlines():
@@ -579,7 +578,8 @@ def decrypt(itself, cle, openfile=open):
             if not os.path.isfile(todofilefromconfig()):
                 printdebug("creating .todolist file")
                 try:
-                    openfile(todofilefromconfig(), "w")
+                    f = openfile(todofilefromconfig(), "w")
+                    f.close
                 except FileNotFoundError:
                     printerror(
                         "the path "
@@ -735,7 +735,8 @@ def check(openfile=open):
 
     printinfo("creating .todolist file")
     try:
-        openfile(todofilefromconfig(), "a")
+        f = openfile(todofilefromconfig(), "a")
+        f.close
     except FileNotFoundError:
         printerror(
             "the path "
@@ -913,7 +914,8 @@ def read_config(section, cle, defaut, openfile=open):
     try:
         try:
             try:
-                openfile(STR_PATH_HOME__TODORC_, "r")
+                f = openfile(STR_PATH_HOME__TODORC_, "r")
+                f.close()
             except PermissionError:
                 print(
                     colored(
@@ -923,8 +925,8 @@ def read_config(section, cle, defaut, openfile=open):
                 )
                 sys.exit()
         except FileNotFoundError:
-            openfile(STR_PATH_HOME__TODORC_, "w")
-
+            f = openfile(STR_PATH_HOME__TODORC_, "w")
+            f.close()
         config.read(STR_PATH_HOME__TODORC_)
         return config[section][cle]
     except (configparser.MissingSectionHeaderError, KeyError):

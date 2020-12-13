@@ -196,7 +196,12 @@ In case of sharing, you can improve security, and activate encryption of your .t
 
 ## Changelog
 
-### 3.0.3 -WIP-
+
+### 3.0.4
+
+- Clean tests
+
+### 3.0.3
 
 - Add new parameter formatlist for index : "1-3" for example
 
