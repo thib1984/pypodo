@@ -3,8 +3,6 @@
 
 **pypodo** (\pipudu\\) is a pip package (or docker image if you want, see below!). It is a todolist tool which works with a .todo file at the root of the home directory. It has a mecanism of indexes and tags.
 
-[![Downloads](https://static.pepy.tech/personalized-badge/pypodo?period=total&units=none&left_color=black&right_color=orange&left_text=Downloads)](https://pepy.tech/project/pypodo)
-
 ## Install/Upgrade/Uninstall
 
 :warning: Not compatible with python2 (deprecated), Use python3.
