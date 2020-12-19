@@ -24,7 +24,7 @@ jobs:
           pylint pypodo/*.py
       - name: pytest
         run: |
-          python3 -W ignore:ImportWarning -v pypodo/__pypodo__test.py
+          python3 -v pypodo/__pypodo__test.py
       - name: mutatest
         run: |
           mutatest

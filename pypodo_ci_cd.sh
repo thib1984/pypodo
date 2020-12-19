@@ -56,7 +56,7 @@ dockerci () {
     fi
     printinfo "unittest running..."
     #unittest
-    if $dockerpypodorun --rm --entrypoint="python" thibaultgarcon/pypodo_test -W ignore:ImportWarning -m unittest -v pypodo/__pypodo__test.py > $file_log_test
+    if $dockerpypodorun --rm --entrypoint="python" thibaultgarcon/pypodo_test -m unittest -v pypodo/__pypodo__test.py > $file_log_test
     then
         printinfo "unittest ok, see output in $file_log_test"
     else
@@ -170,7 +170,7 @@ pipci () {
     fi
     #unittest
     printinfo "unittest running..."
-    if python3 -W ignore:ImportWarning -m unittest -v pypodo/__pypodo__test.py 2> $file_log_test;
+    if python3 -m unittest -v pypodo/__pypodo__test.py 2> $file_log_test;
     then
         printinfo "unittest ok, see output in $file_log_test"
     else

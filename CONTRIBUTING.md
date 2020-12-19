@@ -24,7 +24,7 @@ You can launch tests, measure coverage, test mutations or evaluate the quality o
 
 ```
 #in the root of the project
-python3 -W ignore:ImportWarning -m unittest -v pypodo/__pypodo__test.py #to execute unit tests
+python3 -m unittest -v pypodo/__pypodo__test.py #to execute unit tests
 coverage run && coverage html #to generate html : report in htmlcov folder
 mutatest #to test mutations #to generate mutations
 pylint pypodo/*.py #to evaluate quality of code
