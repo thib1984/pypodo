@@ -68,9 +68,9 @@ print the todolist filtered to the tag '_name_of_tag_' :
 
 See [this page](install.md) to improve your velocity !
 
-# Contribution
+# :construction_worker: Contribution
 
-## For contributors :construction_worker:
+## For contributors
 
 Go to [CONTRIBUTING.md](CONTRIBUTING.md).
 
