@@ -1,47 +1,50 @@
 pypodo list
 [33mwarning : the todolist is empty[0m
-pypodo add tache1
-[32minfo : task is added to the todolist - 1 tache1[0m
-pypodo add tache2 #montag
-[32minfo : task is added to the todolist - 2 tache2 #montag[0m
-pypodo add tache3 #urgent
-[32minfo : task is added to the todolist - 3 tache3 #urgent[0m
+pypodo add ta#urgentsk1#
+[32minfo    : task is added to the todolist - 1 ta#urgentsk1#[0m
+pypodo add task2 #tag1 #20190101
+[32minfo    : task is added to the todolist - 2 task2 #tag1 #20190101[0m
+pypodo add task3 #urgent #30000101
+[32minfo    : task is added to the todolist - 3 task3 #urgent #30000101[0m
 pypodo list
-[34m1[0m [32mtache1[0m
-[34m2[0m [32mtache2 [0m[33m#montag[0m
-[34m3[0m [32mtache3 [0m[31m#urgent[0m
+[33m1[0m [32mta#urgentsk1#[0m
+[33m2[0m [32mtask2[0m [36m#tag1[0m [31m#20190101[0m
+[33m3[0m [32mtask3[0m [31m#urgent[0m [36m#30000101[0m
 pypodo del 2
-[32minfo : task deleted from the todolist - 2 tache2 #montag[0m
-pypodo tag montag2 3
-[32minfo : tag added to the task of the todolist - 3 tache3 #urgent -> 3 tache3 #urgent #montag2[0m
-pypodo ag urgente 3
-[32minfo : tag added to the task of the todolist - 3 tache3 #urgent #montag2 -> 3 tache3 #urgent #montag2 #urgente[0m
+[32minfo    : task deleted from the todolist - 2 task2 #tag1 #20190101[0m
+pypodo tag tag2 3
+[32minfo    : tag added to the task of the todolist - 3 task3 #urgent #30000101 -> 3 task3 #urgent #30000101 #tag2[0m
+pypodo tag veryurgent 3
+[32minfo    : tag added to the task of the todolist - 3 task3 #urgent #30000101 #tag2 -> 3 task3 #urgent #30000101 #tag2 #veryurgent[0m
 pypodo sort
-[32minfo : the todolist is sorted[0m
-[34m1[0m [32mtache1[0m
-[34m2[0m [32mtache3 [0m[31m#urgent [0m[33m#montag2 [0m[31m#urgente[0m
-[32minfo : task is added to the todolist - 3 mon autre tache #tag #retag[0m
+[32minfo    : the todolist is sorted[0m
+[33m1[0m [32mta#urgentsk1#[0m
+[33m2[0m [32mtask3[0m [31m#urgent[0m [36m#30000101[0m [36m#tag2[0m [36m#veryurgent[0m
+[32minfo    : task is added to the todolist - 3 task4 #tag #retag[0m
 pypodo list tag retag
-[34m3[0m [32mmon autre tache [0m[33m#tag [0m[33m#retag[0m
+[33m3[0m [32mtask4[0m [36m#tag[0m [36m#retag[0m
 pypodo untag retag 3
-[32minfo : tag deleted from the task of the todolist - 3 mon autre tache #tag #retag -> 3 mon autre tache #tag [0m
-pypodo tag newtag 3 3 2
-[32minfo : tag added to the task of the todolist - 3 mon autre tache #tag -> 3 mon autre tache #tag #newtag[0m
-[32minfo : tag added to the task of the todolist - 3 mon autre tache #tag #newtag -> 3 mon autre tache #tag #newtag #newtag[0m
-[32minfo : tag added to the task of the todolist - 2 tache3 #urgent #montag2 #urgente -> 2 tache3 #urgent #montag2 #urgente #newtag[0m
+[32minfo    : tag deleted from the task of the todolist - 3 task4 #tag #retag -> 3 task4 #tag[0m
+pypodo tag newtag 2-3 3
+[32minfo    : tag added to the task of the todolist - 2 task3 #urgent #30000101 #tag2 #veryurgent -> 2 task3 #urgent #30000101 #tag2 #veryurgent #newtag[0m
+[32minfo    : tag added to the task of the todolist - 3 task4 #tag -> 3 task4 #tag #newtag[0m
+[32minfo    : tag added to the task of the todolist - 3 task4 #tag #newtag -> 3 task4 #tag #newtag #newtag[0m
 pypodo list
-[34m1[0m [32mtache1[0m
-[34m2[0m [32mtache3 [0m[31m#urgent [0m[33m#montag2 [0m[31m#urgente [0m[33m#newtag[0m
-[34m3[0m [32mmon autre tache [0m[33m#tag [0m[33m#newtag [0m[33m#newtag[0m
+[33m1[0m [32mta#urgentsk1#[0m
+[33m2[0m [32mtask3[0m [31m#urgent[0m [36m#30000101[0m [36m#tag2[0m [36m#veryurgent[0m [36m#newtag[0m
+[33m3[0m [32mtask4[0m [36m#tag[0m [36m#newtag[0m [36m#newtag[0m
 pypodo tag
-[32m#montag2
-#newtag
-#tag
-#urgent
-#urgente[0m
+[31m#urgent[0m
+[36m#30000101[0m
+[36m#newtag[0m
+[36m#tag[0m
+[36m#tag2[0m
+[36m#veryurgent[0m
 pypodo untag
-[34m1[0m [32mtache1[0m
-pypodo find t.*che
-[34m1[0m [32mtache1[0m
-[34m2[0m [32mtache3 [0m[31m#urgent [0m[33m#montag2 [0m[31m#urgente [0m[33m#newtag[0m
-[34m3[0m [32mmon autre tache [0m[33m#tag [0m[33m#newtag [0m[33m#newtag[0m
+[33m1[0m [32mta#urgentsk1#[0m
+pypodo find t.*sk4
+[33m3[0m [32mtask4[0m [36m#tag[0m [36m#newtag[0m [36m#newtag[0m
+pypodo decrypt admin
+[31merror   : can t decrypt todo, not crypted or bad password?[0m
+pypodo crypt admin
+[32minfo    : .todo is crypted in /root/.todo.crypt[0m

@@ -3,4 +3,4 @@
 omit =
     */site-packages/*
     pypodo/__pypodo__test.py
-command_line = -m unittest pypodo/__pypodo__test.py   
+command_line = -m unittest pypodo/__pypodo__test.py

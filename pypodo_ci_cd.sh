@@ -1,234 +1,307 @@
 #!/bin/bash
 green="\e[32m"
 red="\e[31m"
-
+yellow="\e[33m"
+default="\e[39m"
+file_log_pylint=./pylint.log
+file_log_build_docker_test=./build_test.log
+file_log_build_docker_prod=./build_prod.log
+file_log_configuration=./configuration.log
+file_log_test=./test.log
+file_log_coverage=./coverage.log
+file_log_mutation=./mutation.log
+file_log_end_to_end=./end_to_end.log
+file_log_install=./install.log
+folder_log_coverage=./htmlcov
 
 dockerci () {
-    echo "*****DEBUT_CONFIGURATION_CLEAR******"
-    docker rm pypodo_mutation
-    docker rm pypodo_coverage
-    docker rmi pypodo_coverage
-    docker rmi pypodo_test
-    docker rm pypodo_coverage_html
-    docker rmi pypodo_coverage_html
-    rm ci_cd/cache/*
-    rm -rf htmlcov/*
-    rm mutation.log
-    rm pylint.log
-    export PYPODO_FILE=/tmp/.todo && touch $PYPODO_FILE && rm $PYPODO_FILE && touch $PYPODO_FILE
-    export PYPODO_BACKUP=/tmp/.todo_backup && rm -rf $PYPODO_BACKUP && mkdir $PYPODO_BACKUP
-    smoketest="docker run --rm --mount type=bind,source=${PYPODO_FILE},target=/root/.todo --mount type=bind,source=${PYPODO_BACKUP},target=/root/.todo_backup pypodo_test" &&\
-    dockerpypodorun="docker run --mount type=bind,source=${PYPODO_FILE},target=/root/.todo --mount type=bind,source=${PYPODO_BACKUP},target=/root/.todo_backup -ti" &&\
-    
-    
-    echo "*****FIN_CONFIGURATION_CLEAR******"
-    echo "" &&\
-    echo "" &&\
-    echo "" &&\
-    echo "*****DEBUT_DOCKER_BUILD******" &&\
-    docker build -t pypodo_test . --no-cache &&\
-    echo "*****FIN_DOCKER_BUILD******" &&\
-    echo "" &&\
-    echo "" &&\
-    echo "" &&\
-    echo "*****DEBUT_PYLINT******" &&\
-    #FIXME actually we have two commande to display the log AND save it AND exit if fail
-    $dockerpypodorun --rm --entrypoint="pylint" pypodo_test pypodo/__pypodo__.py 2>&1 | tee "pylint.log" &&\
-    #$dockerpypodorun --rm --entrypoint="pylint" pypodo_test pypodo/__pypodo__.py 2>&1 > /dev/null &&\
-    
-    echo "*****FINPYLINT******" &&\
-    echo "" &&\
-    echo "" &&\
-    echo "" &&\
-    echo "*****DEBUT_TU_TEST******" &&\
-    #FIXME actually we have two commande to display the log AND save it AND exit if fail
-    $dockerpypodorun --rm --entrypoint="python" pypodo_test -m unittest -v pypodo/__pypodo__test.py | tee "test.log" &&\
-    $dockerpypodorun --rm --entrypoint="python" pypodo_test -m unittest -v pypodo/__pypodo__test.py > /dev/null &&\
-    
-    echo "*****FIN_TU_TEST******" &&\
-    echo "" &&\
-    echo "" &&\
-    echo "" &&\
-    echo "*****DEBUT_TU_COVERAGE******" &&\
-    $dockerpypodorun --name pypodo_coverage --entrypoint="coverage" pypodo_test run &&\
-    #FIXME actually we commit the container as an image to restart one other container and launch html...
-    docker commit pypodo_coverage pypodo_coverage &&\
-    docker run -it --name pypodo_coverage_html --entrypoint="coverage" pypodo_coverage html &&\
-    docker cp pypodo_coverage_html:/pypodo/htmlcov . && echo "you can see the coverage in htmlcov folder" &&\
-    echo "*****FIN_TU_COVERAGE******" &&\
-    echo "" &&\
-    echo "" &&\
-    echo "" &&\
-    echo "*****DEBUT_TU_MUTATION******" &&\
+    #configuration
+    printinfo "configuration running..."
+    export PYPODO_FILE=/tmp/.todo
+    export PYPODO_BACKUP=/tmp/.todo_backup
+    export PYPODO_CONF=/tmp/.todo.rc
+    export PYPODO_FILE_CRYPT=/tmp/.todo.crypt
+    export PYPODO_FILE_DECRYPT=/tmp/.todo.decrypt
+    smoketest="docker run --rm --mount type=bind,source=${PYPODO_FILE},target=/root/.todo --mount type=bind,source=${PYPODO_CONF},target=/root/.todo.rc --mount type=bind,source=${PYPODO_FILE_DECRYPT},target=/root/.todo.decrypt --mount type=bind,source=${PYPODO_FILE_CRYPT},target=/root/.todo.crypt --mount type=bind,source=${PYPODO_BACKUP},target=/root/.todo_backup thibaultgarcon/pypodo_test"
+    dockerpypodorun="docker run --mount type=bind,source=${PYPODO_FILE},target=/root/.todo --mount type=bind,source=${PYPODO_CONF},target=/root/.todo.rc --mount type=bind,source=${PYPODO_FILE_DECRYPT},target=/root/.todo.decrypt --mount type=bind,source=${PYPODO_FILE_CRYPT},target=/root/.todo.crypt --mount type=bind,source=${PYPODO_BACKUP},target=/root/.todo_backup -ti"
+    rm ./*.log 2> /dev/null
+    touch $file_log_mutation
+    (rm ci_cd/cache/*
+        touch $file_log_coverage $file_log_build_docker_test $file_log_test $file_log_pylint $file_log_build_docker_prod
+        docker rm pypodo_mutation
+        docker rm pypodo_coverage
+        docker rm pypodo_coverage_html
+        docker rmi thibaultgarcon/pypodo_coverage
+        docker rmi thibaultgarcon/pypodo_test
+        touch $PYPODO_FILE && rm $PYPODO_FILE && touch $PYPODO_FILE && touch $PYPODO_FILE_CRYPT && rm $PYPODO_FILE_CRYPT && touch $PYPODO_FILE_CRYPT && touch $PYPODO_FILE_DECRYPT && rm $PYPODO_FILE_DECRYPT && touch $PYPODO_FILE_DECRYPT && touch $PYPODO_CONF && rm $PYPODO_CONF && touch $PYPODO_CONF && rm -rf $PYPODO_BACKUP && mkdir $PYPODO_BACKUP
+    docker rmi pypodo_coverage_html) &>> $file_log_configuration
+    printinfo "configuration finished, see output in $file_log_configuration"
+    #build
+    printinfo "docker build running..."
+    if docker build -t thibaultgarcon/pypodo_test . --no-cache 1>>$file_log_build_docker_test 2>>$file_log_build_docker_test;
+    then
+        printinfo "docker build ok, see output in $file_log_build_docker_test"
+    else
+        printerror "docker build ko, see output in $file_log_build_docker_test"
+        return 1
+    fi
+    #pylint
+    printinfo "pylint running..."
+    if $dockerpypodorun --rm --entrypoint="pylint" thibaultgarcon/pypodo_test pypodo/*.py 2>>$file_log_pylint 1> $file_log_pylint;
+    then
+        printinfo "pylint ok, see output in $file_log_pylint"
+    else
+        printerror "pylint ko, see output in $file_log_pylint"
+        return 1
+    fi
+    printinfo "unittest running..."
+    #unittest
+    if $dockerpypodorun --rm --entrypoint="python" thibaultgarcon/pypodo_test -m unittest -v pypodo/__pypodo__test.py > $file_log_test
+    then
+        printinfo "unittest ok, see output in $file_log_test"
+    else
+        printerror "unittest ko, see output in $file_log_test"
+        return 1
+    fi
+    #coverage
+    printinfo "coverage run running..."
+    if $dockerpypodorun --name pypodo_coverage --entrypoint="coverage" thibaultgarcon/pypodo_test run 1>> $file_log_coverage 2>> $file_log_coverage;
+    then
+        printinfo "coverage run  ok, see output in $file_log_coverage"
+    else
+        printerror "coverage run  ko, see output in $file_log_coverage"
+        return 1
+    fi
+    docker commit pypodo_coverage thibaultgarcon/pypodo_coverage > /dev/null
+    docker run -it --name pypodo_coverage_html --entrypoint="coverage" thibaultgarcon/pypodo_coverage html
+    docker cp pypodo_coverage_html:/pypodo/$folder_log_coverage .
+    printinfo "coverage run  ok, see output in $folder_log_coverage/index.html"
+    #mutatest
     if [[ $1 = "fast" ]]
     then
-        echo -e "$red""mutatest disabled""\e[39m"
+        printwarning "mutatest disabled"
     else
-        #FIXME no idea to otain full Number of location
-        $dockerpypodorun --name pypodo_mutation --entrypoint="mutatest" pypodo_test &&\
-        docker cp pypodo_mutation:/pypodo/mutation.log . && echo "you can see the coverage in mutation.log"
-    fi &&\
-    
-    echo "*****FIN_TU_MUTATION******" &&\
-    echo "" &&\
-    echo "" &&\
-    echo "" &&\
-    echo "*****DEBUT_SMOKE_TEST******" &&\
-    (echo pypodo list &&\
-    $smoketest list  &&\
-    echo pypodo add "tache1" &&\
-    $smoketest add "tache1" &&\
-    echo pypodo add "tache2 #montag" &&\
-    $smoketest add "tache2 #montag" &&\
-    echo pypodo add "tache3 #urgent" &&\
-    $smoketest add "tache3 #urgent" &&\
-    echo pypodo list &&\
-    $smoketest list &&\
-    echo pypodo del 2 &&\
-    $smoketest del 2 &&\
-    echo pypodo tag montag2 3 &&\
-    $smoketest tag montag2 3 &&\
-    echo pypodo ag urgente 3 &&\
-    $smoketest tag urgente 3 &&\
-    echo pypodo sort &&
-    $smoketest sort &&\
-    $smoketest add "mon autre tache #tag #retag" &&\
-    echo pypodo list tag retag &&\
-    $smoketest list tag retag &&\
-    echo pypodo untag retag 3 &&\
-    $smoketest untag retag 3 &&\
-    echo pypodo tag newtag 3 3 2 &&\
-    $smoketest tag newtag 3 3 2 &&\
-    echo pypodo list &&\
-    $smoketest list &&\
-    echo pypodo tag &&\
-    $smoketest tag &&\
-    echo pypodo untag &&\
-    $smoketest untag &&\
-    echo pypodo find "t.*che" &&\
-    $smoketest find "t.*che") > ci_cd/cache/log &&\
-    $smoketest backup > ci_cd/cache/log_backup &&\
-    ##ajouter log si ko
-    diff ci_cd/cache/log ci_cd/log.expected && echo "log ok" &&\
-    grep "\[32minfo : creating todolist backup - .todo[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]" ci_cd/cache/log_backup && echo "log backup ok" &&\
-    echo "*****FIN_SMOKE_TEST******" &&\
-    echo "" &&\
-    echo "" &&\
-    echo "" &&\
-    echo "*****DEBUT_COMPARAISON_TODO******" &&\
-    diff ${PYPODO_FILE} ci_cd/.todo.expected && echo "comparaison todo ok" &&\
-    echo "*****FIN_COMPARAISON_TODO******" &&\
-    echo "" &&\
-    echo "" &&\
-    echo "" &&\
-    echo "*****DEBUT_VERIF_BACKUP_TODO******" &&\
-    diff ${PYPODO_BACKUP}/.todo* ci_cd/.todo.expected && echo "comparaison backup ok" &&\
-    echo "*****FIN_VERIF_BACKUP_TODO******" &&\
-    echo "" &&\
-    echo "" &&\
-    echo "" &&\
-    echo "*****DEBUT_VERIF_MISE_EN_FORME_TODO******" &&\
-    $smoketest list > ci_cd/cache/.todo_mise_en_forme &&\
-    diff ci_cd/cache/.todo_mise_en_forme ci_cd/.todo_mise_en_forme.expected && echo "comparaison mise en forme ok" &&\
-    echo "*****FIN_VERIF_MISE_EN_FORME_TODO******"  &&\
-    echo "*****DEBUT_VERIF_MISE_EN_FORME_LISTE_TAGS******" &&\
-    $smoketest tag > ci_cd/cache/.tags_mise_en_forme &&\
-    diff ci_cd/cache/.tags_mise_en_forme ci_cd/.tags_mise_en_forme.expected && echo "comparaison mise en forme ok" &&\
-    echo "*****FIN_VERIF_MISE_EN_FORME_LISTE_TAGS******" &&\
-    echo "*****DEBUT_VERIF_MISE_EN_FORME_SEARCH******" &&\
-    $smoketest find "t.*che" > ci_cd/cache/.search_mise_en_forme &&\
-    diff ci_cd/cache/.search_mise_en_forme ci_cd/.search_mise_en_forme.expected && echo "comparaison mise en forme ok" &&\
-    echo "*****FIN_VERIF_MISE_EN_FORME_SEARCH******"
+        printinfo "mutatest running..."
+        if $dockerpypodorun --name pypodo_mutation --entrypoint="mutatest" thibaultgarcon/pypodo_test > /dev/null 2>> $file_log_mutation;
+        then
+            printinfo "coverage run  ok, see output in $file_log_mutation"
+        else
+            docker cp pypodo_mutation:/pypodo/$file_log_mutation .
+            printerror "coverage run  ko, see output in $file_log_mutation"
+            return 1
+        fi
+    fi
+    #end-to-end
+    printinfo "test end-to-end 1/6 running... compare log"
+    ./ci_cd/end_to_end.sh "$smoketest" > ci_cd/cache/log
+    $smoketest backup > ci_cd/cache/log_backup
+    if diff ci_cd/cache/log ci_cd/log.expected >> $file_log_end_to_end;
+    then
+        printinfo "test end-to-end 1/6 ok, see output in $file_log_end_to_end"
+    else
+        printerror "test end-to-end 1/6 ko, see output in $file_log_end_to_end"
+        return 1
+    fi
+    printinfo "test end-to-end 2/6 running... compare backup log"
+    if grep "\[32minfo    : creating todolist backup - .todo[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]" ci_cd/cache/log_backup >> $file_log_end_to_end;
+    then
+        printinfo "test end-to-end 2/6 ok, see output in $file_log_end_to_end"
+    else
+        printerror "test end-to-end 2/6 ko, see output in $file_log_end_to_end"
+        return 1
+    fi
+    printinfo "test end-to-end 3/6 running... compare todofile"
+    if diff ${PYPODO_FILE} ci_cd/.todo.expected >> $file_log_end_to_end;
+    then
+        printinfo "test end-to-end 3/6 ok, see output in $file_log_end_to_end"
+    else
+        printerror "test end-to-end 3/6 ko, see output in $file_log_end_to_end"
+        return 1
+    fi
+    printinfo "test end-to-end 4/6 running... compare todobackupfile"
+    if  diff ${PYPODO_BACKUP}/.todo* ci_cd/.todo.expected >> $file_log_end_to_end;
+    then
+        printinfo "test end-to-end 4/6 ok, see output in $file_log_end_to_end"
+    else
+        printerror "test end-to-end 4/6 ko, see output in $file_log_end_to_end"
+        return 1
+    fi
+    printinfo "test end-to-end 5/6 running... compare log with special conf"
+    rm "$PYPODO_FILE"
+    touch "$PYPODO_FILE"
+    cp ./ci_cd/.todo.rc $PYPODO_CONF
+    ./ci_cd/end_to_end.sh "$smoketest" > ci_cd/cache/log.with.conf
+    if diff ci_cd/cache/log.with.conf ci_cd/log.with.conf.expected >> $file_log_end_to_end;
+    then
+        printinfo "test end-to-end 5/6 ok, see output in $file_log_end_to_end"
+    else
+        printerror "test end-to-end 5/6 ko, see output in $file_log_end_to_end"
+        return 1
+    fi
+    printinfo "test end-to-end 6/6 running... compare log with special conf"
+    if  diff ${PYPODO_FILE_DECRYPT} ci_cd/.todo.expected.decrypt >> $file_log_end_to_end;
+    then
+        printinfo "test end-to-end 6/6 ok, see output in $file_log_end_to_end"
+    else
+        printerror "test end-to-end 6/6 ko, see output in $file_log_end_to_end"
+        return 1
+    fi
 }
 
 
 pipci () {
-    echo "*****DEBUT_CONFIGURATION_CLEAR******"
-    rm -rf htmlcov/*
-    rm mutation.log
-    rm test.log
-    rm pylint.log
-    pip3 install mutatest
-    pip3 install coverage
-    pip3 install pylint
-    echo "*****FIN_CONFIGURATION_CLEAR******"
-    pylint pypodo/__pypodo__.py  2>&1 | tee  ./pylint.log &&\
-    python3 -m unittest -v pypodo/__pypodo__test.py 2>&1 | tee test.log &&\
-    coverage run &&\
-    coverage html &&\
+    #configuration
+    printinfo "configuration running..."
+    (rm -rf htmlcov/*
+        rm ./*.log
+        touch $file_log_coverage $file_log_mutation $file_log_configuration $file_log_install $file_log_test $file_log_pylint
+        pip3 install mutatest
+        pip3 install coverage
+    pip3 install pylint) 1>> $file_log_configuration 2>> $file_log_configuration
+    printinfo "configuration ok, see output in configuration.log"
+    #pylint
+    printinfo "pylint running..."
+    if pylint pypodo/*.py  2> $file_log_pylint 1> $file_log_pylint;
+    then
+        printinfo "pylint ok, see output in pylint.log"
+    else
+        printerror "pylint ko, see output in pylint.log"
+        return 1
+    fi
+    #unittest
+    printinfo "unittest running..."
+    if python3 -m unittest -v pypodo/__pypodo__test.py 2> $file_log_test;
+    then
+        printinfo "unittest ok, see output in $file_log_test"
+    else
+        printerror "unittest ko, see output in $file_log_test"
+        return 1
+    fi
+    #coverage
+    printinfo "coverage run running..."
+    if coverage run 1>> $file_log_coverage 2>> $file_log_coverage;
+    then
+        printinfo "coverage run ok, see output in $file_log_coverage"
+    else
+        printerror "coverage run ko, see output in $file_log_coverage"
+        return 1
+    fi
+    printinfo "coverage html running..."
+    if coverage html > /dev/null 2>&1;
+    then
+        printinfo "coverage html, see output in $folder_log_coverage"
+    else
+        printerror "coverage html, see output in $folder_log_coverage"
+        return 1
+    fi
+    #mutatest
     if [[ $1 = "fast" ]]
     then
-        echo -e "$red""mutatest disabled""\e[39m"
+        printwarning "mutatest disabled"
     else
-        mutatest
+        printinfo "mutatest running..."
+        if mutatest > /dev/null 2>> $file_log_mutation;
+        then
+            printinfo "mutatest ok, see output in $file_log_mutation"
+        else
+            printerror "mutatest ko, see output in $file_log_mutation"
+            return 1
+        fi
     fi
 }
 
 dockercd () {
-    docker build -t pypodo . --no-cache
+    if docker build -t thibaultgarcon/pypodo:latest . --no-cache 1>> $file_log_build_docker_prod 2>> $file_log_build_docker_prod;
+    then
+        printinfo "docker build ok, see output in $file_log_build_docker_prod "
+    else
+        printerror "docker build ko, see output in $file_log_build_docker_prod "
+        return 1
+    fi
 }
 
 pipcd () {
-    pip3 install --user .
+    #install
+    printinfo "pip3 install running..."
+    if pip3 install --user . 2>> $file_log_install 1>> $file_log_install;
+    then
+        printinfo "pip3 install ok, see output in $file_log_install"
+    else
+        printerror "pip3 install ko, see output in $file_log_install"
+        return 1
+    fi
 }
+
+printinfo () {
+    echo -e "$green""info    : ""$1$default"
+}
+
+printerror () {
+    echo -e "$red""error   : ""$1$default"
+}
+
+printwarning () {
+    echo -e "$yellow""warning : ""$1$default"
+}
+
 
 if [[ $1 = "docker" ]]
 then
     if [[ $2 = "ci" ]]
     then
-        dockerci "$3"
-        if [[ $? = 0 ]]
+        if dockerci "$3";
         then
-            echo -e "$green""CI DOCKER OK""\e[39m"
+            printinfo "docker ci ok"
         else
-            echo -e "$red""CI DOCKER KO""\e[39m"
+            printerror "docker ci ko"
+            exit 1
         fi
     elif [[ $2 = "cd" ]]
     then
-        dockerci "$3" && dockercd
-        if [[ $? = 0 ]]
+        if dockerci "$3" && dockercd;
         then
-            echo -e "$green""CI_CD DOCKER OK""\e[39m"
+            printinfo "docker ci_cd ok"
         else
-            echo -e "$red""CI_CD DOCKER KO""\e[39m"
+            printerror "docker ci_cd ko"
+            exit 1
         fi
     else
-        echo -e "$red""KO - bad params : docker (ci/cd) [fast]""\e[39m"
+        printerror "ko - bad params : docker (ci/cd) [fast]"
     fi
     
 elif [[ $1 = "pip" ]]
 then
     if [[ $2 = "ci" ]]
     then
-        pipci "$3"
-        if [[ $? = 0 ]]
+        if pipci "$3";
         then
-            echo -e "$green""CI PIP OK""\e[39m"
+            printinfo "pip ci ok"
         else
-            echo -e "$red""CI PIP KO""\e[39m"
+            printerror "pip ci ko"
+            exit 1
         fi
     elif [[ $2 = "cd" ]]
     then
-        pipci "$3" && pipcd
-        if [[ $? = 0 ]]
+        if pipci "$3" && pipcd;
         then
-            echo -e "$green""CI_CD PIP OK""\e[39m"
+            printinfo "pip ci_cd ok"
         else
-            echo -e "$red""CI_CD PIP KO""\e[39m"
+            printerror "pip ci_cd ko"
+            exit 1
         fi
     else
-        echo -e "$red""KO - bad params : pip (ci/cd) [fast]""\e[39m"
+        printerror "ko - bad params : pip (ci/cd) [fast]"
     fi
     
 elif [[ $1 = "full" ]]
 then
-    dockerci $2 && dockercd && pipcd
-    if [[ $? = 0 ]]
+    if dockerci "$2" && dockercd && pipcd;
     then
-        echo -e "$green""CI_CD FULL OK""\e[39m"
+        printinfo "full ci_cd ok"
     else
-        echo -e "$red""CI_CD FULL KO""\e[39m"
+        printerror "full ci_cd ko"
+        exit 1
     fi
 else
-    echo -e "$red""KO - bad params : (docker/pip) (ci/cd) [fast] or full [fast]""\e[39m"
+    printerror "ko - bad params : (docker/pip) (ci/cd) [fast] or full [fast]"
 fi
