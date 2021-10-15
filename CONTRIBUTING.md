@@ -1,7 +1,7 @@
 ## Work with Github
 
 ```
-git clone https://github.com/thib1984/pypodo.git #or your fork repo ;)
+git clone https://github.com/thib1984/pypodo.git #or your fork repo :)
 cd pypodo
 #work with git
 git add .
@@ -27,8 +27,10 @@ You can launch tests, measure coverage, test mutations or evaluate the quality o
 python3 -m unittest -v pypodo/__pypodo__test.py #to execute unit tests
 coverage run && coverage html #to generate html : report in htmlcov folder
 mutatest #to test mutations #to generate mutations
-pylint pypodo/__pypodo__.py #to evaluate quality of code unit tests
+pylint pypodo/*.py #to evaluate quality of code
 ```
+
+:warning: if you observe unexpecting ko tests, launch ``mutatest`` once. A mutation could stay if a previous run is stopped.
 
 ##  Local CI/CD
 
@@ -51,3 +53,34 @@ So, choose one of these commands :
 ```
 
 You can now verify, at the root of the projetc, the **test.log**, **mutation.log**, **htmlcov** folder and **pylint.log** to view results of the ci/cd.
+
+Example of script :
+
+![image](https://user-images.githubusercontent.com/45128847/95779511-7a512f00-0cca-11eb-94c5-5d7e8af451d8.png)
+
+To clear your workspace, you can use :
+
+```
+./clear_workspace.sh
+```
+
+## Construct app directly
+
+```
+pip3 install --user .
+```
+for pi
+
+```
+docker build -t thibaultgarcon/pypodo:latest .
+```
+for docker
+
+
+## Github Actions
+
+For each commit in head master : https://github.com/thib1984/pypodo/actions?query=workflow%3A%22pipeline+ci%22 (run tests and metrics -mutatest, pylint...-)
+For each release : https://github.com/thib1984/pypodo/actions?query=workflow%3A%22pipeline+release%22 (run tests and metrics -mutatest, pylint...- and push pip and docker image)
+
+To test a part of the Github Action, you can run the ./pypodo_github.sh (without parameter)
+

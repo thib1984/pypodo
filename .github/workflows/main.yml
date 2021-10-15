@@ -1,4 +1,4 @@
-name: CI
+name: pipeline ci
 
 on:
   push:
@@ -7,23 +7,33 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    
+  push_to_registry:
+    name: run tests and metrics
+    runs-on: ubuntu-20.04
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
-
-      - name: Build l'image docker
-        uses: docker/build-push-action@v2
+      - name: checkout the repo
+        uses: actions/checkout@v2
+      - name: install python3
+        uses: actions/setup-python@v2
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-          registry: docker.pkg.github.com
-          repository: jeanphibaconnais/pypodo
-          tag_with_ref: true
-
-      - name: Run a multi-line script
+          python-version: '3.8.5'
+      - name: install dependencies python3
         run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+          python3 -m pip install --upgrade pip
+          pip install mutatest coverage pylint termcolor freezegun cryptography
+      - name: pylint
+        run: |
+          pylint pypodo/*.py
+      - name: pytest
+        run: |
+          python3 -m unittest -v pypodo/__pypodo__test.py
+      - name: mutatest
+        run: |
+          mutatest
+      - name: coverage
+        run: |
+          coverage run && coverage report
+      - name: install docker
+        uses: docker-practice/actions-setup-docker@master
+      - name : run test
+        run: ./pypodo_github.sh
