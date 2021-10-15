@@ -17,9 +17,11 @@ Common commands are `**list**/**add**/**del**/**tag**/**untag**`. Others command
 
 - `pypodo add "to do work #name_of_tag"` : add the task '_to do work_' with the tag '_name_of_tag_'
 
+
 - `pypodo add "to do other_work #name_of_other_tag" "to do other_big_work #name_of_other_tag"`
 
 - ``pypodo add "to do work #name_of_tag"`` : add one task '_to do work_' with the tag '_name_of_tag_'
+
 
 
 - `pypodo list`
@@ -32,7 +34,6 @@ Common commands are `**list**/**add**/**del**/**tag**/**untag**`. Others command
 2 to do other_work #name_of_other_tag
 3 to do other_big_work #name_of_other_tag
 ```
-
 
 - ` pypodo list "name_of_tag"`
 
@@ -52,7 +53,6 @@ print the todolist filtered to the tag '_name_of_tag_' :
 
 - `pypodo tag new_tag 1` : add the tag '_new_tag_' to the first task
 
-
 - `pypodo tag new_tag 1 2` : add the tag '_new_tag_' to the first and second task
 
 
@@ -68,6 +68,7 @@ print the todolist filtered to the tag '_name_of_tag_' :
 
 - `pypodo sort` : reorder all tasks by index
 
+
 - `pypodo backup` : backup the actual .todo in a backup folder with a name suffixed by a timestamp
 
 - `pypodo find "t.*he"` : filter the todolist on the parameter (regex format)
@@ -80,11 +81,15 @@ print the todolist filtered to the tag '_name_of_tag_' :
 
 See [this page](install.md) to improve your velocity !
 
+
 # :construction_worker: Contribution
 
 ## For contributors
 
 Go to [CONTRIBUTING.md](CONTRIBUTING.md).
+
+Please read and follow our [Code of Conduct](CODE_OF_CONDUCT.md).
+
 
 ## Tanks to contributors
 
