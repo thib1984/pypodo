@@ -9,7 +9,7 @@
 
 The indexes are in blue, the tasks in green, and the tags in yellow or red.
 
-![image](https://user-images.githubusercontent.com/45128847/95683314-c75dd400-0bea-11eb-900c-bf1aafc09999.png)
+![image](https://user-images.githubusercontent.com/45128847/137579798-1d0fb4b9-6cd1-473d-805c-43f657673694.gif))
 
 # 🚀 How use **pypodo**
 
@@ -17,15 +17,7 @@ Common commands are `**list**/**add**/**del**/**tag**/**untag**`. Others command
 
 - `pypodo add "to do work #name_of_tag"` : add the task '_to do work_' with the tag '_name_of_tag_'
 
-
-- `pypodo add "to do other_work #name_of_other_tag" "to do other_big_work #name_of_other_tag"`
-
-- ``pypodo add "to do work #name_of_tag"`` : add one task '_to do work_' with the tag '_name_of_tag_'
-
-
-
-- `pypodo list`
-
+- `pypodo add "to do other_work #name_of_other_tag" "to do other_big_work #name_of_other_tag"` : add multi-task
 
 - ``pypodo list`` : display the todolist with the index of each task
 
@@ -39,11 +31,9 @@ Common commands are `**list**/**add**/**del**/**tag**/**untag**`. Others command
 
 print the todolist filtered to the tag '_name_of_tag_' :
 
-
 ```
 1 to do work #name_of_tag
 ```
-
 
 - ` pypodo list "name_of_tag" "other_tag"` : print the todolist filtered to tasks with the 2 tags together
 
@@ -55,23 +45,27 @@ print the todolist filtered to the tag '_name_of_tag_' :
 
 - `pypodo tag new_tag 1 2` : add the tag '_new_tag_' to the first and second task
 
-
 - `pypodo tag` : display all tags of the todolist
 
 - `pypodo untag new_tag 1` : remove tag '_new_tag_' from the first task
-
 
 - `pypodo untag new_tag 1 2` : remove the tag '_new_tag_' to the first and second task
 
 - `pypodo untag` : display all tasks without tags
 
-
 - `pypodo sort` : reorder all tasks by index
-
 
 - `pypodo backup` : backup the actual .todo in a backup folder with a name suffixed by a timestamp
 
 - `pypodo find "t.*he"` : filter the todolist on the parameter (regex format)
+
+- `pypodo crypt admin` : crypt the todolist in the ~/.todo.crypt file with key "admin"
+
+- `pypodo crypt` : crypt the todolist in the ~/.todo.crypt file with key in the config file SYSTEM.key
+
+- `pypodo decrypt admin` : decrypt the crypted todolist in the ~/.todo.decrypt file with key "admin"
+
+- `pypodo decrypt` : decrypt the crypted todolist in the ~/.todo.decrypt file with key in the config file SYSTEM.key
 
 - `pypodo help` : display help message
 
@@ -79,8 +73,7 @@ print the todolist filtered to the tag '_name_of_tag_' :
 
 # ⚙️ Install
 
-See [this page](install.md) to improve your velocity !
-
+See [this page](INSTALL.md) to improve your velocity !
 
 # :construction_worker: Contribution
 
@@ -89,7 +82,6 @@ See [this page](install.md) to improve your velocity !
 Go to [CONTRIBUTING.md](CONTRIBUTING.md).
 
 Please read and follow our [Code of Conduct](CODE_OF_CONDUCT.md).
-
 
 ## Tanks to contributors
 
