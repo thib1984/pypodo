@@ -10,7 +10,7 @@
 
 # 🚀 How use **pypodo**
 
-Common commands are `**list**/**add**/**del**/**tag**/**untag**`. Others commands are `**help**/**backup**/**sort**/**find**`.
+Common commands are **list**/**add**/**del**/**tag**/**untag**. Others commands are **help**/**backup**/**sort**/**find**.
 
 - `pypodo add "to do work #name_of_tag"` : add the task '_to do work_' with the tag '_name_of_tag_'
 
