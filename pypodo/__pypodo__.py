@@ -464,28 +464,28 @@ def backup(openfile=open):
         if len(sys.argv) > 2:
             printerror("0 parameter is needed for pypodo backup")
         else:
-            dir_exists = os.path.exists(todobackupfoderfromconfig())
+            dir_exists = os.path.exists(todobackupfolderfromconfig())
             if not dir_exists:
                 try:
-                    os.makedirs(todobackupfoderfromconfig())
+                    os.makedirs(todobackupfolderfromconfig())
                 except PermissionError:
                     printerror(
                         "permission error to create the backup folder : "
-                        + todobackupfoderfromconfig()
+                        + todobackupfolderfromconfig()
                     )
                     sys.exit()
                 printinfo("creating todolist backup folder")
             time_suffix = time.strftime("%Y%m%d%H%M%S")
             todo_backup_name = ".todo" + time_suffix
             backup_name = (
-                todobackupfoderfromconfig() + todo_backup_name
+                todobackupfolderfromconfig() + todo_backup_name
             )
             try:
                 copyfile(todofilefromconfig(), backup_name)
             except PermissionError:
                 printerror(
                     "permission error to create the backup folder : "
-                    + todobackupfoderfromconfig()
+                    + todobackupfolderfromconfig()
                 )
                 sys.exit()
             printinfo(
@@ -757,7 +757,7 @@ def todofilefromconfig():
     )
 
 
-def todobackupfoderfromconfig():
+def todobackupfolderfromconfig():
     """
     Obtain path to todobackupfolder
     """
