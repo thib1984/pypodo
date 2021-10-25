@@ -93,6 +93,7 @@ dockerci () {
     fi
     #end-to-end
     printinfo "test end-to-end 1/6 running... compare log"
+    mkdir -p ci_cd/cache
     ./ci_cd/end_to_end.sh "$smoketest" > ci_cd/cache/log
     $smoketest backup > ci_cd/cache/log_backup
     if diff ci_cd/cache/log ci_cd/log.expected >> $file_log_end_to_end;
