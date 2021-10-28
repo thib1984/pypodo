@@ -20,8 +20,6 @@ Correct the two variables (optional) :
 
 ```
 PYPODO_FILE=~/.todo
-PYPODO_FILE_CRYPT=~/.todo.crypt
-PYPODO_FILE_DECRYPT=~/.todo.decrypt
 PYPODO_BACKUP=~/.todo_backup
 PYPODO_CONFIG=~/.todo.rc
 ```
@@ -104,6 +102,3 @@ browser "pypodo add '%u #rss'"
 
 You can use the .todo.rc configuration file to change the path of your todofile. If you used a "cloud folder" as cozy drive, you can share your pypodo app between two or more computeurs!
 
-## Crypt/Decrypt [optional]
-
-In case of sharing, you can improve security, and activate encryption of your .todo file. For that, juste add a SYSTEM.key in your .todo.rc file. If your todo file is empty or non-existent, no additionnal config is needed. If you have a non-empty todo file, run ``pypodo crypt`` and replace the content of todo file with the content of ~/.todo.crypt file. ``cp ~/.todo.crypt ~/.todo`` for example.

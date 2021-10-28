@@ -18,7 +18,7 @@ jobs:
       - name: install dependencies python3
         run: |
           python3 -m pip install --upgrade pip
-          pip install mutatest coverage pylint termcolor pep517 freezegun cryptography
+          pip install mutatest coverage pylint termcolor pep517 freezegun
       - name: pylint
         run: |
           pylint pypodo/*.py

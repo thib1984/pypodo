@@ -1,11 +1,10 @@
 ## Changelog
 
 
-### 3.0.4 (WIP)
+### 4.0.0
 
-- Clean tests
-- Clean README/INSTALL/...
-
+- Rework argparse
+- Remove crypt/uncrypt
 ### 3.0.3
 
 - Add new parameter formatlist for index : "1-3" for example

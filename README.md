@@ -56,14 +56,6 @@ print the todolist filtered to the tag '_name_of_tag_' :
 
 - `pypodo find "t.*he"` : filter the todolist on the parameter (regex format)
 
-- `pypodo crypt admin` : crypt the todolist in the ~/.todo.crypt file with key "admin"
-
-- `pypodo crypt` : crypt the todolist in the ~/.todo.crypt file with key in the config file SYSTEM.key
-
-- `pypodo decrypt admin` : decrypt the crypted todolist in the ~/.todo.decrypt file with key "admin"
-
-- `pypodo decrypt` : decrypt the crypted todolist in the ~/.todo.decrypt file with key in the config file SYSTEM.key
-
 - `pypodo help` : display help message
 
 - `pypodo` : display help message
