@@ -105,5 +105,18 @@ def compute_args():
         help="search in the todolist with the REGEX given",
     )     
 
+    my_parser.add_argument(
+        "-n",
+        "--nocolor",
+        action="store_true",
+        help="disable color in sysout",
+    )   
+ 
+    my_parser.add_argument(
+        "-v",
+        "--verbose",
+        action="store_true",
+        help="verbose mode",
+    )    
     args = my_parser.parse_args()
     return args

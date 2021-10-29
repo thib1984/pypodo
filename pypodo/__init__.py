@@ -488,22 +488,22 @@ def printlinetodo(line):
     """
     Display task with colors
     """
-    task = colored(
+    task = my_colored(
         re.sub(" #.*", "", re.sub("^[^ ]+ ", "", line.rstrip("\n"))),
         color_task(),
     )
-    index = colored(line.split(" ", 1)[0], color_index())
+    index = my_colored(line.split(" ", 1)[0], color_index())
     tags = ""
     for part in line.split():
         if part.startswith("#"):
             if part in listalerttags():
-                tags = tags + " " + (colored(part, color_alert()))
+                tags = tags + " " + (my_colored(part, color_alert()))
             elif test_date(part[1:]) == "alert":
-                tags = tags + " " + (colored(part, color_alert()))
+                tags = tags + " " + (my_colored(part, color_alert()))
             elif test_date(part[1:]) == "warning":
-                tags = tags + " " + (colored(part, color_warning()))
+                tags = tags + " " + (my_colored(part, color_warning()))
             else:
-                tags = tags + " " + (colored(part, color_tag()))
+                tags = tags + " " + (my_colored(part, color_tag()))
     print(index + " " + task + tags)
 
 
@@ -511,8 +511,8 @@ def printdebug(text):
     """
     Color and key word debug for print
     """
-    if read_config_level("SYSTEM", "messagelevel", "info") == "debug":
-        print(colored("debug   : " + text, color_debug()))
+    if read_config_level("SYSTEM", "messagelevel", "info") == "debug" or compute_args().verbose:
+        print(my_colored("debug   : " + text, color_debug()))
 
 
 def printinfo(text):
@@ -522,9 +522,9 @@ def printinfo(text):
     if (
         read_config_level("SYSTEM", "messagelevel", "info") == "info"
         or read_config_level("SYSTEM", "messagelevel", "info")
-        == "debug"
+        == "debug" or compute_args().verbose
     ):
-        print(colored("info    : " + text, color_info()))
+        print(my_colored("info    : " + text, color_info()))
 
 
 def printwarning(text):
@@ -536,16 +536,16 @@ def printwarning(text):
         or read_config_level("SYSTEM", "messagelevel", "info")
         == "debug"
         or read_config_level("SYSTEM", "messagelevel", "info")
-        == "warning"
+        == "warning" or compute_args().verbose
     ):
-        print(colored("warning : " + text, color_warning()))
+        print(my_colored("warning : " + text, color_warning()))
 
 
 def printerror(text):
     """
     Color and key word error for print
     """
-    print(colored("error   : " + text, color_alert()))
+    print(my_colored("error   : " + text, color_alert()))
 
 
 def color_debug():
@@ -610,7 +610,7 @@ def read_config(section, cle, defaut, openfile=open):
                 f.close()
             except PermissionError:
                 print(
-                    colored(
+                    my_colored(
                         "error   : permission error to open the ~/todo.rc file",
                         "red",
                     )
@@ -697,3 +697,9 @@ def test_date(datetime_str):
     if (date.today() - datetime_object).days >= -1 * periodwarning():
         return "warning"
     return "ok"
+
+
+def my_colored(text,color):
+    if not compute_args().nocolor:
+        return colored(text,color)
+    return text    
