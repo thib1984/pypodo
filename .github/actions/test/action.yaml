@@ -1,0 +1,30 @@
+name: 'Minimal Test'
+description: 'Test for pypodo'   
+runs:
+  using: "composite"
+  steps:
+    - name: "pypodo light"
+      shell: bash
+      run: |
+        echo '----> test return pypodo --help'        
+        pypodo --help | grep "pypodo is a todolist tool which works with a .todo"
+        echo '----> test return pypodo if empty todolist'        
+        pypodo | grep "the todolist is empty"         
+        echo '----> test 3 pypodo --add'        
+        pypodo --add "my first task #withtag"
+        pypodo --add "my second task #withothertag"
+        pypodo --add "my third task"
+        echo '----> test return pypodo with 3 tasks has 3 lines'        
+        pypodo | wc -l | grep 3         
+        echo '----> test return pypodo with 3 tasks has the 2nd task'        
+        pypodo | grep "my second task"
+        pypodo | grep "#withothertag"
+        pypodo | grep "2"
+        echo '----> test return pypodo --filter has 1 and correct line if tag correct'        
+        pypodo --filter withtag | wc -l | grep 1
+        pypodo --filter withtag | grep "my first task"
+        pypodo --filter withtag | grep "#withtag"
+        pypodo --filter withtag | grep "1"
+        echo '----> test return pypodo --filter has 1 and warning line if tag incorrect'        
+        pypodo --filter withnotag | wc -l | grep 1
+        pypodo --filter withnotag | grep "is empty"                     
