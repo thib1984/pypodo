@@ -6,7 +6,7 @@ on:
       - created
 jobs:
   push_to_registry:
-    name: run tests and metrics + push docker image and pip package
+    name: run tests + push pip package
     runs-on: ubuntu-18.04
     steps:
       - name: checkout the repo
@@ -25,6 +25,9 @@ jobs:
       #test
       - name: Launch test
         uses: ./.github/actions/test 
+      - name: install pep517
+        run: |
+          pip install pep517        
       - name: build pip
         run: python3 -m pep517.build --source --binary --out-dir dist/ .
       - name: publish to pypi
