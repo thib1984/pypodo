@@ -5,9 +5,9 @@
 
 # Install/Upgrade/Uninstall
 
-``pip3 install pypodo``* to install
-``pypodo --update`` or ``pip3 install --upgrade``* to upgrade
-``pip3 uninstall pypodo``* to uninstall
+- ``pip3 install pypodo``* to install
+- ``pypodo --update`` or ``pip3 install --upgrade``* to upgrade
+- ``pip3 uninstall pypodo``* to uninstall
 
 *_Use pip instead of pip3, if pip3 does not exist_
 # Configuration [optional]
@@ -15,33 +15,33 @@
 You can customize the application with the ``~/.todo.rc`` file. Create it if it does not exist and copy paste this content. The autosort option runs a pypodo sort after pypodo del.
 
 ```
-#grey,red,green,yellow,blue,magenta,cyan,white only ;)
+####grey,red,green,yellow,blue,magenta,cyan,white only ;)
 [COLOR]
-alert = red
-warning = yellow
-info = green
-index = blue
-task = green
-tag = cyan
-debug = grey
+#alert = red
+#warning = yellow
+#info = green
+#index = blue
+#task = green
+#tag = cyan
+#debug = grey
 
 [SYSTEM]
-#debug,info,warning,error
-messagelevel = info
-#format double % character, use for warning and alert on dates
+####debug,info,warning,error
+#messagelevel = info
+####format double % character, use for warning and alert on dates
 #formatdate = %%Y%%m%%d
-#todofile = /tmp/.todo
-#todobackupfolder = /tmp/.todo_backup/
+#todofile = ~/.todo
+#todobackupfolder = ~/.todo_backup/
 
 
 [FONCTIONAL]
-#int values
-periodalert = 0
-periodwarning = 7
-#tags with '#' and with a coma separation
-alerttags = #urgent
-#True to autosort todolist
-#autosort = True
+####int values
+#periodalert = 0
+#periodwarning = 7
+####tags with '#' and with a coma separation
+#alerttags = #urgent
+####True to autosort todolist
+#autosort = False
 ```
 # Use with newsboat [optional]
 

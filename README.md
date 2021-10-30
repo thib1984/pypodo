@@ -1,7 +1,7 @@
 
 # 🐍 pypodo
 
-**pypodo** (\pipudu\\) is a pip package (or docker image if you want, see below !) : a todolist tool which works with a .todo file positionned the root of the home directory.
+**pypodo** (\pipudu\\) is a pip package : a todolist tool which works with a .todo file positionned the root of the home directory.
 
 
 # 💫 Demo
@@ -10,35 +10,42 @@
 
 # 🚀 How use **pypodo**
 
-- ``pypodo `` print your actual todolist.
+## Beginner
 
-- ``pypodo --add/-a ITEM ... `` add items in the todolist
+- ``pypodo`` print your actual todolist.
 
-- ``pypodo --del/-d INDEX ... `` delete items by the indexes in your todolist
+- ``pypodo --add/-a ITEM ...`` add items in the todolist
 
-- ``pypodo --tag/-t TAG INDEX ... `` add a TAG at the items by the indexes
+- ``pypodo --del/-d INDEX ...``* delete items by the indexes in your todolist
+- ``pypodo --update/-U`` update pypodo with pip or pip3
 
-- ``pypodo --untag/-u TAG INDEX ... `` remove a TAG at the items by the indexes
+- ``pypodo --version/-V`` display the version of pypodo
 
-- ``pypodo --filter/-f TAG ... `` filter todolist with the tags given
+- ``pypodo --help/-h`` show the help message
+## Intermediate
 
-- ``pypodo --order/-o `` reorder the todolist with consecutive indexes
+- ``pypodo --tag/-t TAG INDEX ...``* add a TAG at the items by the indexes
 
-- ``pypodo --backup/-b `` create a backup from the todolist in ~/.todoabckup folder
+- ``pypodo --untag/-u TAG INDEX ...``* remove a TAG at the items by the indexes
 
-- ``pypodo --search/-s REGEX `` search regex given in the totolist
+- ``pypodo --filter/-f TAG ...`` filter todolist with the tags given (cumulative filter)
 
-- ``pypodo --update/-U `` update pypodo with pip or pip3
+*for ``INDEX ...``, we can use short expression for consecutives index : for example, you can replace 2 3 4 by 2-4 
+## Expert
 
-- ``pypodo --version/-V `` display the version of pypodo
+- ``pypodo --order/-o`` reorder the todolist with consecutive indexes
 
-- ``pypodo --help/-h `` show the help message
+- ``pypodo --backup/-b`` create a backup from the todolist in ~/.todo_backup folder, with timestamp suffix (.todoYYYYMMddHHmmSS)
+
+- ``pypodo --search/-s REGEX`` search regex given in the totolist
+
+
 
 You can also add other options :
 
-- `` --nocolor/-n `` disable colour in sysout
+- `` --nocolor/-n`` disable colour in sysout (overwrite the config file)
 
-- `` --verbose/-v `` verbose mode
+- `` --verbose/-v`` verbose mode  (overwrite the config file)
 
 # ⚙️ Install
 
@@ -46,14 +53,25 @@ See [this page](INSTALL.md) to improve your velocity !
 
 # :construction_worker: Contribution
 
-## For contributors
 
 Go to [CONTRIBUTING.md](CONTRIBUTING.md).
 
 Please read and follow our [Code of Conduct](CODE_OF_CONDUCT.md).
 
-## Tanks to contributors
+Tanks to contributors :
 
 - https://github.com/bbougon
 - https://github.com/isaacvv
 - https://github.com/jeanphibaconnais
+
+# :package: Changelog
+
+
+See [this page](CHANGELOG.md)
+# License
+
+MIT License
+
+Copyright (c) 2021 [thib1984](https://github.com/thib1984)
+
+See [this page](LICENSE.txt) for details
