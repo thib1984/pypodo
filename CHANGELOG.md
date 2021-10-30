@@ -1,10 +1,12 @@
 ## Changelog
 
-
 ### 4.0.0
 
-- Rework argparse
-- Remove crypt/uncrypt
+- Add argparse
+- Remove crypt/uncrypt support
+- Remove docker support
+- Modify launch arguments
+- Move test in github action
 ### 3.0.3
 
 - Add new parameter formatlist for index : "1-3" for example

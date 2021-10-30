@@ -10,55 +10,35 @@
 
 # 🚀 How use **pypodo**
 
-Common commands are **list**/**add**/**del**/**tag**/**untag**. Others commands are **help**/**backup**/**sort**/**find**.
+- ``pypodo `` print your actual todolist.
 
-- `pypodo add "to do work #name_of_tag"` : add the task '_to do work_' with the tag '_name_of_tag_'
+- ``pypodo --add/-a ITEM ... `` add items in the todolist
 
-- `pypodo add "to do other_work #name_of_other_tag" "to do other_big_work #name_of_other_tag"` : add multi-task
+- ``pypodo --del/-d INDEX ... `` delete items by the indexes in your todolist
 
-- ``pypodo list`` : display the todolist with the index of each task
+- ``pypodo --tag/-t TAG INDEX ... `` add a TAG at the items by the indexes
 
-```
-1 to do work #name_of_tag
-2 to do other_work #name_of_other_tag
-3 to do other_big_work #name_of_other_tag
-```
+- ``pypodo --untag/-u TAG INDEX ... `` remove a TAG at the items by the indexes
 
-- ` pypodo list "name_of_tag"`
+- ``pypodo --filter/-f TAG ... `` filter todolist with the tags given
 
-print the todolist filtered to the tag '_name_of_tag_' :
+- ``pypodo --order/-o `` reorder the todolist with consecutive indexes
 
-```
-1 to do work #name_of_tag
-```
+- ``pypodo --backup/-b `` create a backup from the todolist in ~/.todoabckup folder
 
-- ` pypodo list "name_of_tag" "other_tag"` : print the todolist filtered to tasks with the 2 tags together
+- ``pypodo --search/-s REGEX `` search regex given in the totolist
 
-- `pypodo del 2` : delete the second task of the todolist
+- ``pypodo --update/-U `` update pypodo with pip or pip3
 
-- `pypodo del 1 2` : remove the 2 tasks
+- ``pypodo --version/-V `` display the version of pypodo
 
-- `pypodo tag new_tag 1` : add the tag '_new_tag_' to the first task
+- ``pypodo --help/-h `` show the help message
 
-- `pypodo tag new_tag 1 2` : add the tag '_new_tag_' to the first and second task
+You can also add other options :
 
-- `pypodo tag` : display all tags of the todolist
+- `` --nocolor/-n `` disable colour in sysout
 
-- `pypodo untag new_tag 1` : remove tag '_new_tag_' from the first task
-
-- `pypodo untag new_tag 1 2` : remove the tag '_new_tag_' to the first and second task
-
-- `pypodo untag` : display all tasks without tags
-
-- `pypodo sort` : reorder all tasks by index
-
-- `pypodo backup` : backup the actual .todo in a backup folder with a name suffixed by a timestamp
-
-- `pypodo find "t.*he"` : filter the todolist on the parameter (regex format)
-
-- `pypodo help` : display help message
-
-- `pypodo` : display help message
+- `` --verbose/-v `` verbose mode
 
 # ⚙️ Install
 

@@ -1,86 +1,40 @@
-## Work with Github
+# 🙏 Thanks !
+
+Oh if you open this page, it's for contributing for this project, great ! A big thanks 🙏
+
+To contribute, it's simple, check the [existing issues](https://github.com/thib1984/pypodo/issues). If you see an issue you are interested to work, please let a message and i assign you the task. With this, all people know you are working on this issue.
+
+If it's a new subject, don't hesitate to create an issue. I will check this one to affect some labels and let contribution open 😉
+
+You can initialize a draft merge request directly when you start to work on an issue.
+
+When you finish, past the merge request in "ready" mode and i will check this quickly.
+
+If you are any questions, don't try to ping me 😁
+
+# Local install to develop
 
 ```
-git clone https://github.com/thib1984/pypodo.git #or your fork repo :)
-cd pypodo
-#work with git
-git add .
-git commit -am "my commit"
-git push
+git clone https://github.com/[your-forked-repo]/pypodo.git
+cd pypodo 
+#work!
+pip3 install . #to build
+#test!
+#pip3 uninstall pypodo #to properly uninstall the dev version
+#git add/commit/push [...]
+``` 
+# Test
+
+## Prerequisites
+
+With [act](https://github.com/nektos/act), you can play Github Action locally.
+
+To install it :
 ```
-
-##  "Manual" tests
-
-
-After installing the prerequisites
-
+curl https://raw.githubusercontent.com/nektos/act/master/install.sh | sudo bash
 ```
-pip3 install mutatest
-pip3 install coverage
-pip3 install pylint
-```
+or go to [this page](https://github.com/nektos/act#installation)
 
-You can launch tests, measure coverage, test mutations or evaluate the quality of code with one of the commands :
+## Launch test
 
-```
-#in the root of the project
-python3 -m unittest -v pypodo/__pypodo__test.py #to execute unit tests
-coverage run && coverage html #to generate html : report in htmlcov folder
-mutatest #to test mutations #to generate mutations
-pylint pypodo/*.py #to evaluate quality of code
-```
-
-:warning: if you observe unexpecting ko tests, launch ``mutatest`` once. A mutation could stay if a previous run is stopped.
-
-##  Local CI/CD
-
-If you want, you can use "local" CI/CD with pip or docker. Add the "fast" parameter desactivates the mutation testing who takes a lot of time.
-So, choose one of these commands :
-
-```
-#in the root of the project
-./pypodo_ci_cd.sh pip ci #to launch pylint, unit test, coverage and mutation
-./pypodo_ci_cd.sh pip ci fast #to launch pylint, unit test and coverage
-./pypodo_ci_cd.sh pip cd #to launch unit pylint, test, coverage, and mutation + build pip
-./pypodo_ci_cd.sh pip cd fast #to launch pylint, unit test and coverage + build pip
-./pypodo_ci_cd.sh docker ci #to launch pylint, unit test, coverage, mutation and end to end test with docker
-./pypodo_ci_cd.sh docker ci fast #to pylint, launch unit test, coverage and end to end test with docker
-./pypodo_ci_cd.sh docker cd #to launch pylint, unit test, coverage, mutation and end to end test with docker + build image pypodo
-./pypodo_ci_cd.sh docker cd fast #to launch pylint, unit test, coverage and end to end test with docker + build image pypodo
-./pypodo_ci_cd.sh full #to launch pylint, unit test, coverage, mutation and end to end test with docker + build pip + build image pypodo
-./pypodo_ci_cd.sh full fast #to launch pylint, unit test, coverage and end to end test with docker + build pip + build image pypodo
-
-```
-
-You can now verify, at the root of the projetc, the **test.log**, **mutation.log**, **htmlcov** folder and **pylint.log** to view results of the ci/cd.
-
-Example of script :
-
-![image](https://user-images.githubusercontent.com/45128847/95779511-7a512f00-0cca-11eb-94c5-5d7e8af451d8.png)
-
-To clear your workspace, you can use :
-
-```
-./clear_workspace.sh
-```
-
-## Construct app directly
-
-```
-pip3 install --user .
-```
-for pi
-
-```
-docker build -t thibaultgarcon/pypodo:latest .
-```
-for docker
-
-
-## Github Actions
-
-For each commit in head master : https://github.com/thib1984/pypodo/actions?query=workflow%3A%22pipeline+ci%22 (run tests and metrics -mutatest, pylint...-)
-For each release : https://github.com/thib1984/pypodo/actions?query=workflow%3A%22pipeline+release%22 (run tests and metrics -mutatest, pylint...- and push pip and docker image)
-
-To test a part of the Github Action, you can run the ./pypodo_github.sh (without parameter)
-
+Just, go to the root of the project and play ``act -j full_test`` (test OS ubuntu 20.04/python 3.9)
