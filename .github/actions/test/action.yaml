@@ -1,0 +1,62 @@
+name: 'Minimal Test'
+description: 'Test for pypodo'   
+runs:
+  using: "composite"
+  steps:
+    - name: "pypodo light"
+      shell: bash
+      run: |
+        echo '----> test return pypodo --help'        
+        pypodo --help | grep "pypodo is a todolist tool which works with a .todo"
+        echo '----> test return pypodo if empty todolist'        
+        pypodo | grep "warning : the todolist is empty"         
+        echo '----> test 3 pypodo --add'        
+        pypodo --add "my first task #withtag"
+        pypodo --add "my second task #withothertag"
+        pypodo --add "my third task"
+        echo '----> test return pypodo with 3 tasks has 3 lines'        
+        pypodo | wc -l | grep 3         
+        echo '----> test return pypodo with 3 tasks has the 2nd task'        
+        pypodo -n | grep "2 my second task #withothertag"
+        echo '----> test return pypodo --filter has 1 and correct line if tag correct'        
+        pypodo --filter withtag | wc -l | grep 1
+        pypodo -n --filter withtag | grep "1 my first task #withtag"
+        echo '----> test return pypodo --filter has 1 and warning line if tag incorrect'        
+        pypodo --filter withnotag | wc -l | grep 1
+        pypodo --filter withnotag | grep "warning : the filtered todolist is empty"
+        echo "----> test pypodo tag"
+        pypodo -t newtag 1 3
+        echo "----> test pypodo list after tags"
+        pypodo --filter newtag | wc -l | grep 2    
+        pypodo -n --filter newtag | grep "1 my first task #withtag #newtag"
+        pypodo -n --filter newtag | grep "3 my third task #newtag"            
+        echo "----> test pypodo untag"
+        pypodo -u newtag 1 3
+        echo "----> test pypodo list after tags"
+        pypodo --filter newtag | wc -l | grep 1    
+        pypodo -n --filter newtag | grep "warning : the filtered todolist is empty"
+        echo "----> test pypodo del"
+        pypodo -d 1 3
+        echo "----> test pypodo list after del"
+        pypodo | wc -l | grep 1    
+        pypodo -n | grep "2 my second task #withothertag"
+        echo '----> test 2 pypodo --add and del one'        
+        pypodo --add "my first task #withtag"
+        pypodo --add "my other task #withothertag"
+        pypodo --del 3
+        echo '----> test pypodo -o'
+        pypodo -o
+        echo "----> test pypodo clean"
+        pypodo | wc -l | grep 2
+        pypodo -n | grep "1 my second task #withothertag"
+        pypodo -n | grep "2 my other task #withothertag"
+        echo "----> test pypodo search"
+        pypodo -n -s "sec.nd" | wc -l | grep 1
+        pypodo -n -s "sec.nd" | grep "1 my second task #withothertag"
+        echo "----> test pypodo backup"
+        pypodo -b
+        diff ~/.todo ~/.todo_backup/.todo*
+        echo '----> test return pypodo --version'        
+        pypodo --version | grep "version pypodo : "               
+        echo '----> test return pypodo --update'        
+        pypodo --update | grep "already"        

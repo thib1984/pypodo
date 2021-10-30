@@ -1,11 +1,12 @@
 ## Changelog
 
+### 4.0.0
 
-### 3.0.4 (WIP)
-
-- Clean tests
-- Clean README/INSTALL/...
-
+- Add argparse
+- Remove crypt/uncrypt support
+- Remove docker support
+- Modify launch arguments
+- Move test in github action
 ### 3.0.3
 
 - Add new parameter formatlist for index : "1-3" for example
