@@ -6,7 +6,7 @@
 
 # 💫 Demo
 
-![image](https://user-images.githubusercontent.com/45128847/137579798-1d0fb4b9-6cd1-473d-805c-43f657673694.gif))
+![image](./demo.gif))
 
 # 🚀 How use **pypodo**
 
