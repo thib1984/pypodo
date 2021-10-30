@@ -8,9 +8,9 @@
 
 ![image](./demo.gif))
 
-# 🚀 How use **pypodo**
+# :book: How use **pypodo**
 
-## :baby: Beginner
+## :bird: Beginner
 
 - ``pypodo`` print your actual todolist.
 
@@ -19,7 +19,7 @@
 - ``pypodo --del/-d INDEX ...``* delete items by the indexes in your todolist
 
 - ``pypodo --help/-h`` show the help message
-## :bike: Intermediate
+## :airplane: Intermediate
 
 - ``pypodo --tag/-t TAG INDEX ...``* add a TAG at the items by the indexes
 
@@ -27,7 +27,7 @@
 
 - ``pypodo --filter/-f TAG ...`` filter todolist with the tags given (cumulative filter)
 
-## :racing_car: Expert
+## 🚀 Expert
 
 - ``pypodo --order/-o`` reorder the todolist with consecutive indexes
 
