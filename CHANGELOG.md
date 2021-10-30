@@ -1,5 +1,8 @@
 ## Changelog
 
+### 4.0.1
+
+- Fix readme from pypi
 ### 4.0.0
 
 - Add argparse
