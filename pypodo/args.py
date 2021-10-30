@@ -97,6 +97,18 @@ def compute_args():
         help="backup the todolist",
     )
     my_group.add_argument(
+        "-V",
+        "--version",
+        action="store_true",
+        help="print the version",
+    )
+    my_group.add_argument(
+        "-U",
+        "--update",
+        action="store_true",
+        help="update pypodo",
+    )          
+    my_group.add_argument(
         "-s",
         "--search",
         action="store",

@@ -13,9 +13,14 @@ from pathlib import Path
 from shutil import copyfile
 from datetime import datetime
 from datetime import date
+import pkg_resources
 import configparser
 from termcolor import colored
 from pypodo.args import compute_args
+import subprocess
+from shutil import which
+
+
 STR_PATH_HOME__TODORC_ = str(Path.home()) + "/.todo.rc"
 REGEX_INDEX = "^\\d+$"
 REGEX_SPACE_OR_ENDLINE = "( |$)"
@@ -45,6 +50,10 @@ def pypodo(openfile=open):
             backup(openfile)
         elif compute_args().search:
             find(openfile)
+        elif compute_args().version:
+            version()
+        elif compute_args().update:
+            update()          
         else:
             listtask(openfile)       
 
@@ -703,3 +712,30 @@ def my_colored(text,color):
     if not compute_args().nocolor:
         return colored(text,color)
     return text    
+
+
+def version():
+    """
+    entry point for --version
+    """
+    print(
+        "version pygitscrum : "
+        + pkg_resources.get_distribution("pypodo").version
+    )
+
+
+
+def update():
+    """
+    entry point for --update
+    """
+    prog = "pip3"
+    if (which("pip3")) is None:
+        prog = "pip"
+    params = [
+        prog,
+        "install",
+        "--upgrade",
+        "pypodo",
+    ]
+    subprocess.check_call(params)
