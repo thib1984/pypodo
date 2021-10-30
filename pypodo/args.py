@@ -3,8 +3,6 @@ pypodo argparse gestion
 """
 
 import argparse
-import sys
-
 
 
 class CustomHelpFormatter(argparse.HelpFormatter):
@@ -13,14 +11,17 @@ class CustomHelpFormatter(argparse.HelpFormatter):
             return super()._format_action_invocation(action)
         default = self._get_default_metavar_for_optional(action)
         args_string = self._format_args(action, default)
-        return ', '.join(action.option_strings) + ' ' + args_string
+        return ", ".join(action.option_strings) + " " + args_string
+
     def _format_args(self, action, default_metavar):
         get_metavar = self._metavar_formatter(action, default_metavar)
         if action.nargs == argparse.ONE_OR_MORE:
-            return '%s' % get_metavar(1)
+            return "%s" % get_metavar(1)
         else:
-            return super(CustomHelpFormatter, self)._format_args(action, default_metavar)
-           
+            return super(CustomHelpFormatter, self)._format_args(
+                action, default_metavar
+            )
+
 
 def compute_args():
     """
@@ -36,14 +37,14 @@ def compute_args():
         This is free software: you are free to change and redistribute it.
         There is NO WARRANTY, to the extent permitted by law.
         Written by thib1984.""",
-        formatter_class=CustomHelpFormatter
+        formatter_class=CustomHelpFormatter,
     )
     my_group = my_parser.add_mutually_exclusive_group()
     my_group.add_argument(
         "-f",
         "--filter",
         action="store",
-        nargs='+',
+        nargs="+",
         type=str,
         metavar="TAG ...",
         help="print the todolist filtered with TAG(s) given",
@@ -52,7 +53,7 @@ def compute_args():
         "-a",
         "--add",
         action="store",
-        nargs='+',
+        nargs="+",
         type=str,
         metavar="ITEM ...",
         help="add ITEM(s) in the todolist",
@@ -62,7 +63,7 @@ def compute_args():
         "--delete",
         action="store",
         metavar="INDEX ...",
-        nargs='+',
+        nargs="+",
         type=str,
         help="delete item with the given INDEX(es)",
     )
@@ -70,7 +71,7 @@ def compute_args():
         "-t",
         "--tag",
         action="store",
-        nargs='+',
+        nargs="+",
         type=str,
         metavar="TAG INDEX ...",
         help="TAG item with the given INDEX(es)",
@@ -79,7 +80,7 @@ def compute_args():
         "-u",
         "--untag",
         action="store",
-        nargs='+',
+        nargs="+",
         type=str,
         metavar="TAG INDEX ...",
         help="unTAG item with the given INDEX(es)",
@@ -107,7 +108,7 @@ def compute_args():
         "--update",
         action="store_true",
         help="update pypodo",
-    )          
+    )
     my_group.add_argument(
         "-s",
         "--search",
@@ -115,20 +116,20 @@ def compute_args():
         type=str,
         metavar="REGEX",
         help="search in the todolist with the REGEX given",
-    )     
+    )
 
     my_parser.add_argument(
         "-n",
         "--nocolor",
         action="store_true",
         help="disable color in sysout",
-    )   
- 
+    )
+
     my_parser.add_argument(
         "-v",
         "--verbose",
         action="store_true",
         help="verbose mode",
-    )    
+    )
     args = my_parser.parse_args()
     return args

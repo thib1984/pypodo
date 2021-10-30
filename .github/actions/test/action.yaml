@@ -55,4 +55,8 @@ runs:
         pypodo -n -s "sec.nd" | grep "1 my second task #withothertag"
         echo "----> test pypodo backup"
         pypodo -b
-        diff ~/.todo ~/.todo_backup/.todo*       
+        diff ~/.todo ~/.todo_backup/.todo*
+        echo '----> test return pypodo --version'        
+        pypodo --version | grep "version pypodo : "               
+        echo '----> test return pypodo --update'        
+        pypodo --update | grep "already"        
