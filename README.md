@@ -1,5 +1,5 @@
 
-# 🐍 pypodo
+# :ballot_box_with_check: pypodo
 
 **pypodo** (\pipudu\\) is a pip package : a todolist tool which works with a .todo file positionned the root of the home directory.
 
@@ -10,19 +10,16 @@
 
 # 🚀 How use **pypodo**
 
-## Beginner
+## :baby: Beginner
 
 - ``pypodo`` print your actual todolist.
 
 - ``pypodo --add/-a ITEM ...`` add items in the todolist
 
 - ``pypodo --del/-d INDEX ...``* delete items by the indexes in your todolist
-- ``pypodo --update/-U`` update pypodo with pip or pip3
-
-- ``pypodo --version/-V`` display the version of pypodo
 
 - ``pypodo --help/-h`` show the help message
-## Intermediate
+## :bike: Intermediate
 
 - ``pypodo --tag/-t TAG INDEX ...``* add a TAG at the items by the indexes
 
@@ -30,14 +27,17 @@
 
 - ``pypodo --filter/-f TAG ...`` filter todolist with the tags given (cumulative filter)
 
-*for ``INDEX ...``, we can use short expression for consecutives index : for example, you can replace 2 3 4 by 2-4 
-## Expert
+## :racing_car: Expert
 
 - ``pypodo --order/-o`` reorder the todolist with consecutive indexes
 
 - ``pypodo --backup/-b`` create a backup from the todolist in ~/.todo_backup folder, with timestamp suffix (.todoYYYYMMddHHmmSS)
 
 - ``pypodo --search/-s REGEX`` search regex given in the totolist
+
+- ``pypodo --update/-U`` update pypodo with pip or pip3
+
+- ``pypodo --version/-V`` display the version of pypodo
 
 
 
@@ -46,6 +46,8 @@ You can also add other options :
 - `` --nocolor/-n`` disable colour in sysout (overwrite the config file)
 
 - `` --verbose/-v`` verbose mode  (overwrite the config file)
+
+*for ``INDEX ...``, we can use short expression for consecutives index : for example, you can replace 2 3 4 by 2-4 
 
 # ⚙️ Install
 
@@ -68,7 +70,7 @@ Tanks to contributors :
 
 
 See [this page](CHANGELOG.md)
-# License
+# :pencil: License
 
 MIT License
 
