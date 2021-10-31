@@ -1,5 +1,9 @@
 ## Changelog
 
+### 4.0.2 (WIP)
+
+- Reorder help message
+
 ### 4.0.1
 
 - Fix readme from pypi

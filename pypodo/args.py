@@ -41,15 +41,6 @@ def compute_args():
     )
     my_group = my_parser.add_mutually_exclusive_group()
     my_group.add_argument(
-        "-f",
-        "--filter",
-        action="store",
-        nargs="+",
-        type=str,
-        metavar="TAG ...",
-        help="print the todolist filtered with TAG(s) given",
-    )
-    my_group.add_argument(
         "-a",
         "--add",
         action="store",
@@ -66,6 +57,7 @@ def compute_args():
         nargs="+",
         type=str,
         help="delete item with the given INDEX(es)",
+
     )
     my_group.add_argument(
         "-t",
@@ -86,6 +78,15 @@ def compute_args():
         help="unTAG item with the given INDEX(es)",
     )
     my_group.add_argument(
+        "-f",
+        "--filter",
+        action="store",
+        nargs="+",
+        type=str,
+        metavar="TAG ...",
+        help="print the todolist filtered with TAG(s) given",
+    )
+    my_group.add_argument(
         "-o",
         "--order",
         action="store_true",
@@ -98,6 +99,15 @@ def compute_args():
         help="backup the todolist",
     )
     my_group.add_argument(
+        "-s",
+        "--search",
+        action="store",
+        type=str,
+        metavar="REGEX",
+        help="search in the todolist with the REGEX given",
+    )
+
+    my_group.add_argument(
         "-V",
         "--version",
         action="store_true",
@@ -108,14 +118,6 @@ def compute_args():
         "--update",
         action="store_true",
         help="update pypodo",
-    )
-    my_group.add_argument(
-        "-s",
-        "--search",
-        action="store",
-        type=str,
-        metavar="REGEX",
-        help="search in the todolist with the REGEX given",
     )
 
     my_parser.add_argument(

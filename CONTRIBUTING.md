@@ -37,4 +37,4 @@ or go to [this page](https://github.com/nektos/act#installation)
 
 ## Launch test
 
-Just, go to the root of the project and play ``act -j full_test`` (test OS ubuntu 20.04/python 3.9)
+Just, go to the root of the project and play ``act -j full_test`` (test OS ubuntu 20.04/python 3.9) with  "Medium size image"
