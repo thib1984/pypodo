@@ -1,9 +1,12 @@
 ## Changelog
 
+### TODO
+
+- [ ] condensate mode in config file
 ### 4.1.0 
 
 - [x] Reorder help message
-- [ ] Use columnar
+- [x] Use columnar
 
 ### 4.0.1
 

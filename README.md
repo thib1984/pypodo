@@ -47,6 +47,8 @@ You can also add other options :
 
 - `` --verbose/-v`` verbose mode  (overwrite the config file)
 
+- `` --condensate/-c`` condensate mode
+
 *for ``INDEX ...``, we can use short expression for consecutives index : for example, you can replace 2 3 4 by 2-4 
 
 # ⚙️ Install
