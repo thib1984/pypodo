@@ -3,6 +3,11 @@
 ### TODO
 
 - [ ] condensate mode in config file
+
+### 4.1.1
+
+- [x] Publish tweet on release 
+
 ### 4.1.0 
 
 - [x] Reorder help message
