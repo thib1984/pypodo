@@ -17,10 +17,10 @@ runs:
         echo '----> test return pypodo with 3 tasks has 3 lines'        
         pypodo -nc | wc -l | grep 5         
         echo '----> test return pypodo with 3 tasks has the 2nd task'        
-        pypodo -n | grep "2 my second task #withothertag"
+        pypodo -n | grep "my second task"
         echo '----> test return pypodo --filter has 1 and correct line if tag correct'        
         pypodo --filter withtag | wc -l | grep 1
-        pypodo -n --filter withtag | grep "1 my first task #withtag"
+        pypodo -n --filter withtag | grep "#withtag"
         echo '----> test return pypodo --filter has 1 and warning line if tag incorrect'        
         pypodo --filter withnotag | wc -l | grep 1
         pypodo --filter withnotag | grep "warning : the filtered todolist is empty"
@@ -28,8 +28,8 @@ runs:
         pypodo -t newtag 1 3
         echo "----> test pypodo list after tags"
         pypodo --filter newtag | wc -l | grep 2    
-        pypodo -n --filter newtag | grep "1 my first task #withtag #newtag"
-        pypodo -n --filter newtag | grep "3 my third task #newtag"            
+        pypodo -n --filter newtag | grep "#withtag #newtag"
+        pypodo -n --filter newtag | grep "#newtag"            
         echo "----> test pypodo untag"
         pypodo -u newtag 1 3
         echo "----> test pypodo list after tags"
@@ -39,7 +39,7 @@ runs:
         pypodo -d 1 3
         echo "----> test pypodo list after del"
         pypodo | wc -l | grep 1    
-        pypodo -n | grep "2 my second task #withothertag"
+        pypodo -n | grep "my second task"
         echo '----> test 2 pypodo --add and del one'        
         pypodo --add "my first task #withtag"
         pypodo --add "my other task #withothertag"
@@ -48,11 +48,11 @@ runs:
         pypodo -o
         echo "----> test pypodo clean"
         pypodo | wc -l | grep 2
-        pypodo -n | grep "1 my second task #withothertag"
-        pypodo -n | grep "2 my other task #withothertag"
+        pypodo -n | grep "1"
+        pypodo -n | grep "2"
         echo "----> test pypodo search"
         pypodo -n -s "sec.nd" | wc -l | grep 1
-        pypodo -n -s "sec.nd" | grep "1 my second task #withothertag"
+        pypodo -n -s "sec.nd" | grep "my second task"
         echo "----> test pypodo backup"
         pypodo -b
         diff ~/.todo ~/.todo_backup/.todo*
