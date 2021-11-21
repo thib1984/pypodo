@@ -34,5 +34,8 @@ def find(openfile=open):
     if empty:
         printwarning("the filtered todolist is empty")
     else:
-        table = columnar(data, headers, no_borders=False, wrap_max=0)
-        print(table)       
+        if compute_args().condensate:
+            table = columnar(data, no_borders=True, wrap_max=0)
+        else:
+            table = columnar(data, headers, no_borders=False, wrap_max=0)            
+        print(table)     
