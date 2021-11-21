@@ -10,10 +10,7 @@ from pypodo.args import compute_args
 from pypodo.print import (
     printwarning,
     printinfo,
-
 )
-
-
 
 
 def add(openfile=open):

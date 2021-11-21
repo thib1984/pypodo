@@ -3,6 +3,7 @@ Pypodo scripts
 """
 
 import re
+from columnar import columnar
 from pypodo.properties import (
     REGEX_SPACE_OR_ENDLINE,
 )
@@ -22,11 +23,13 @@ def listtask(openfile=open):
     Print the todofile with filters or not
     """
     empty = True
+    headers = ["index","task","tags"]
+    data = []
     with openfile(todofilefromconfig(), "r") as todofile:
         for line in todofile.readlines():
             # without filter -> we print all
             if not compute_args().filter:
-                printlinetodo(line)
+                data.append(printlinetodo(line))
                 empty = False
             # with filter -> we check tag
             else:
@@ -41,11 +44,16 @@ def listtask(openfile=open):
                     ):
                         display = False
                 if display:
-                    printlinetodo(line)
+                    data.append(printlinetodo(line))
                     empty = False
     if empty:
         if compute_args().filter:
             printwarning("the filtered todolist is empty")
         else:
             printwarning("the todolist is empty")
-
+    else:
+        if compute_args().condensate:
+            table = columnar(data, no_borders=True, wrap_max=0)
+        else:
+            table = columnar(data, headers, no_borders=False, wrap_max=0)            
+        print(table) 

@@ -35,3 +35,14 @@ jobs:
         with:
           user: ${{ secrets.PYPI_USER }}
           password: ${{ secrets.PYPI_PASSWORD }}
+      - name: Deduce relase
+        id: vars
+        run: echo ::set-output name=relase_tag::$(grep version setup.py | cut -d "\"" -f2)
+      - name: tweet
+        env: 
+          CONSUMER_KEY: ${{ secrets.CONSUMER_KEY }}
+          CONSUMER_SECRET: ${{ secrets.CONSUMER_SECRET }}
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          ACCESS_TOKEN_SECRET: ${{ secrets.ACCESS_TOKEN_SECRET }}
+          VERSION: ${{ steps.vars.outputs.relase_tag }}
+        run: pip install twython && python .github/publish_tweet.py             

@@ -15,7 +15,7 @@ runs:
         pypodo --add "my second task #withothertag"
         pypodo --add "my third task"
         echo '----> test return pypodo with 3 tasks has 3 lines'        
-        pypodo | wc -l | grep 3         
+        pypodo -nc | wc -l | grep 5         
         echo '----> test return pypodo with 3 tasks has the 2nd task'        
         pypodo -n | grep "2 my second task #withothertag"
         echo '----> test return pypodo --filter has 1 and correct line if tag correct'        

@@ -128,6 +128,13 @@ def compute_args():
     )
 
     my_parser.add_argument(
+        "-c",
+        "--condensate",
+        action="store_true",
+        help="condensate sysout",
+    )
+
+    my_parser.add_argument(
         "-v",
         "--verbose",
         action="store_true",

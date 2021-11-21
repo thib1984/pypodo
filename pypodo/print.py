@@ -1,15 +1,9 @@
 from pypodo.config import (
-    read_config,
-    read_config_date_format,
-    read_config_boolean,
     read_config_color,
-    read_config_int,
     read_config_level,
     my_colored,
     listalerttags,
-    periodalert,
-    periodwarning,
-    test_date
+    test_date,
 )
 from pypodo.args import compute_args
 import re
@@ -37,7 +31,7 @@ def printlinetodo(line):
                 )
             else:
                 tags = tags + " " + (my_colored(part, color_tag()))
-    print(index + " " + task + tags)
+    return [index,task,tags]
 
 
 def printdebug(text):

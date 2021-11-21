@@ -1,46 +1,47 @@
 ## Changelog
 
-### 4.0.2 (WIP)
+### 4.1.0 
 
-- Reorder help message
+- [x] Reorder help message
+- [ ] Use columnar
 
 ### 4.0.1
 
 - Fix readme from pypi
 ### 4.0.0
 
-- Add argparse
-- Remove crypt/uncrypt support
-- Remove docker support
-- Modify launch arguments
-- Move test in github action
+- [x] Add argparse
+- [x] Remove crypt/uncrypt support
+- [x] Remove docker support
+- [x] Modify launch arguments
+- [x] Move test in github action
 ### 3.0.3
 
-- Add new parameter formatlist for index : "1-3" for example
+- [x] Add new parameter formatlist for index : "1-3" for example
 
 ### 3.0.2
 
-- Optimize docker image size
-- Correction if incorrect path todofile
-- Correction if permission errors
-- For dev only : Clean test classe
-- For dev only : Add clear_workspace script
-- For dev only : Use of  ubuntu 20.04 for Github Actions
+- [x] Optimize docker image size
+- [x] Correction if incorrect path todofile
+- [x] Correction if permission errors
+- [x] For dev only : Clean test classe
+- [x] For dev only : Add clear_workspace script
+- [x] For dev only : Use of  ubuntu 20.04 for Github Actions
 
 ### 3.0.1
 
-- Improve debug messages
-- Correction of minor bugs in docker test
-- the '#' character can be place in the task if it not preceded of an empty space
+- [x] Improve debug messages
+- [x] Correction of minor bugs in docker test
+- [x] the '#' character can be place in the task if it not preceded of an empty space
 
 ### 3.0.0
 
-- Debug level
-- Crypt/Decrypt todofile
+- [x] Debug level
+- [x] Crypt/Decrypt todofile
 
 ### 2.3.2
 
-- Code cleanup
-- Increased test coverage
-- Adding formatdate in configuration file
-- Documentation corrections
+- [x] Code cleanup
+- [x] Increased test coverage
+- [x] Adding formatdate in configuration file
+- [x] Documentation corrections
