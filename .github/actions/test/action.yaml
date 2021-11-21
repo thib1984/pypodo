@@ -27,7 +27,7 @@ runs:
         echo "----> test pypodo tag"
         pypodo -t newtag 1 3
         echo "----> test pypodo list after tags"
-        pypodo --filter newtag | wc -l | grep 2    
+        pypodo -c --filter newtag | wc -l | grep 4    
         pypodo -n --filter newtag | grep "#withtag #newtag"
         pypodo -n --filter newtag | grep "#newtag"            
         echo "----> test pypodo untag"
