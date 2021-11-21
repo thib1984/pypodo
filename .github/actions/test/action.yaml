@@ -51,7 +51,7 @@ runs:
         pypodo -n | grep "1"
         pypodo -n | grep "2"
         echo "----> test pypodo search"
-        pypodo -n -s "sec.nd" | wc -l | grep 1
+        pypodo -nc -s "sec.nd" | wc -l | grep 3
         pypodo -n -s "sec.nd" | grep "my second task"
         echo "----> test pypodo backup"
         pypodo -b
