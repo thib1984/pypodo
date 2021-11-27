@@ -6,6 +6,7 @@ runs:
     - name: "pypodo light"
       shell: bash
       run: |
+        echo ${{ matrix.os-version }}
         echo '----> test return pypodo --help'        
         pypodo --help | grep "pypodo is a todolist tool which works with a .todo"
         echo '----> test return pypodo --info'        
