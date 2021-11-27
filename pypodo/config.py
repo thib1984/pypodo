@@ -14,14 +14,14 @@ def get_user_config_directory_pyweather():
         appdata = os.getenv("LOCALAPPDATA")
         if appdata:
             ze_path = os.path.join(
-                appdata, DOSSIER_CONFIG_PYWEATHER, ""
+                appdata, DOSSIER_CONFIG_PYPODO, ""
             )
             Path(ze_path).mkdir(parents=True, exist_ok=True)
             return ze_path
         appdata = os.getenv("APPDATA")
         if appdata:
             ze_path = os.path.join(
-                appdata, DOSSIER_CONFIG_PYWEATHER, ""
+                appdata, DOSSIER_CONFIG_PYPODO, ""
             )
             Path(ze_path).mkdir(parents=True, exist_ok=True)
             return ze_path
