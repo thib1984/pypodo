@@ -58,7 +58,8 @@ runs:
         pypodo -nc -s "sec.nd" | wc -l | grep 3
         pypodo -n -s "sec.nd" | grep "my second task"
         echo "----> test pypodo backup"
-        pypodo -b
-        diff ~/.config/pypodo/todo ~/.config/pypodo/backup/todo*
+        #TODO change for windows
+        #pypodo -b
+        #diff ~/.config/pypodo/todo ~/.config/pypodo/backup/todo*
         echo '----> test return pypodo --update'        
         pypodo --update | grep "already"        
