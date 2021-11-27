@@ -14,7 +14,7 @@ setup(
     author_email="thibault.garcon@gmail.com",
     license="mit",
     packages=["pypodo"],
-    install_requires=["setuptools", "termcolor","columnar"],
+    install_requires=["termcolor","columnar"],
     zip_safe=False,
     entry_points={
         "console_scripts": ["pypodo=pypodo.__init__:pypodo"],
