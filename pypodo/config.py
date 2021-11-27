@@ -36,7 +36,6 @@ def get_user_config_directory_pyweather():
     if xdg_config_home:
         ze_path = os.path.join(xdg_config_home, "")
         Path(ze_path).mkdir(parents=True, exist_ok=True)
-        return ze_path
     ze_path = os.path.join(
         os.path.expanduser("~"),
         ".config",
