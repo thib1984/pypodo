@@ -1,4 +1,4 @@
-name: test ubuntulatest pythonlatest
+name: test full
 
 on:
   workflow_dispatch:
