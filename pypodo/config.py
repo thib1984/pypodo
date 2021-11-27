@@ -1,13 +1,49 @@
 from datetime import datetime
 from datetime import date
 import configparser
+import os
 from os import sys
-from pypodo.properties import (
-    STR_PATH_HOME__TODORC_,
-)
 from termcolor import colored
 from pypodo.args import compute_args
 from pathlib import Path
+from pypodo.properties import DOSSIER_CONFIG_PYPODO, TODO_RC_FILE
+
+
+def get_user_config_directory_pypodo():
+    if os.name == "nt":
+        appdata = os.getenv("LOCALAPPDATA")
+        if appdata:
+            ze_path = os.path.join(
+                appdata, DOSSIER_CONFIG_PYPODO, ""
+            )
+            Path(ze_path).mkdir(parents=True, exist_ok=True)
+            return ze_path
+        appdata = os.getenv("APPDATA")
+        if appdata:
+            ze_path = os.path.join(
+                appdata, DOSSIER_CONFIG_PYPODO, ""
+            )
+            Path(ze_path).mkdir(parents=True, exist_ok=True)
+            return ze_path
+        print(
+            my_colored(
+                "erreur : impossible de créer le dossier de config",
+                "red",
+            )
+        )
+        sys.exit(1)
+    xdg_config_home = os.getenv("XDG_CONFIG_HOME")
+    if xdg_config_home:
+        ze_path = os.path.join(xdg_config_home, "")
+        Path(ze_path).mkdir(parents=True, exist_ok=True)
+    ze_path = os.path.join(
+        os.path.expanduser("~"),
+        ".config",
+        DOSSIER_CONFIG_PYPODO,
+        "",
+    )
+    Path(ze_path).mkdir(parents=True, exist_ok=True)
+    return ze_path
 
 # config functions
 def read_config(section, cle, defaut, openfile=open):
@@ -18,7 +54,7 @@ def read_config(section, cle, defaut, openfile=open):
     try:
         try:
             try:
-                f = openfile(STR_PATH_HOME__TODORC_, "r")
+                f = openfile(os.path.join(get_user_config_directory_pypodo(),TODO_RC_FILE), "r")
                 f.close()
             except PermissionError:
                 print(
@@ -29,9 +65,9 @@ def read_config(section, cle, defaut, openfile=open):
                 )
                 sys.exit()
         except FileNotFoundError:
-            f = openfile(STR_PATH_HOME__TODORC_, "w")
+            f = openfile(os.path.join(get_user_config_directory_pypodo(),TODO_RC_FILE), "w")
             f.close()
-        config.read(STR_PATH_HOME__TODORC_)
+        config.read(os.path.join(get_user_config_directory_pypodo(),TODO_RC_FILE))
         return config[section][cle]
     except (configparser.MissingSectionHeaderError, KeyError):
         return defaut
@@ -75,7 +111,6 @@ def read_config_boolean(section, cle, defaut):
         return defaut
     return myboool
 
-
 def read_config_level(section, cle, defaut):
     """
     Read the config file for level
@@ -95,7 +130,10 @@ def read_config_date_format(section, cle, defaut):
 
 def my_colored(text, color):
     if not compute_args().nocolor:
-        return colored(text, color)
+        if (read_config_boolean("FONCTIONAL", "nocolor", "False")== "True"):
+            return text
+        else:                 
+            return colored(text, color)
     return text
 
 
@@ -145,7 +183,7 @@ def todofilefromconfig():
     Obtain path to todofile
     """
     return read_config(
-        "SYSTEM", "todofile", str(Path.home()) + "/.todo"
+        "SYSTEM", "todofile", os.path.join(get_user_config_directory_pypodo(),"todo")
     )  
 
 
@@ -156,5 +194,5 @@ def todobackupfolderfromconfig():
     return read_config(
         "SYSTEM",
         "todobackupfolder",
-        str(Path.home()) + "/.todo_backup/",
+        os.path.join(get_user_config_directory_pypodo(),"backup"),
     )

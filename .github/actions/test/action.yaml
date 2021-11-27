@@ -6,8 +6,12 @@ runs:
     - name: "pypodo light"
       shell: bash
       run: |
+        echo ${{ matrix.os-version }}
         echo '----> test return pypodo --help'        
         pypodo --help | grep "pypodo is a todolist tool which works with a .todo"
+        echo '----> test return pypodo --info'        
+        pypodo --info
+        pypodo --info | grep "version pypodo"               
         echo '----> test return pypodo if empty todolist'        
         pypodo | grep "warning : the todolist is empty"         
         echo '----> test 3 pypodo --add'        
@@ -25,13 +29,13 @@ runs:
         pypodo --filter withnotag | wc -l | grep 1
         pypodo --filter withnotag | grep "warning : the filtered todolist is empty"
         echo "----> test pypodo tag"
-        pypodo -t newtag 1 3
+        pypodo --tag newtag 1 3
         echo "----> test pypodo list after tags"
         pypodo -c --filter newtag | wc -l | grep 4    
         pypodo -n --filter newtag | grep "#withtag #newtag"
         pypodo -n --filter newtag | grep "#newtag"            
         echo "----> test pypodo untag"
-        pypodo -u newtag 1 3
+        pypodo --untag newtag 1 3
         echo "----> test pypodo list after tags"
         pypodo --filter newtag | wc -l | grep 1    
         pypodo -n --filter newtag | grep "warning : the filtered todolist is empty"
@@ -54,9 +58,8 @@ runs:
         pypodo -nc -s "sec.nd" | wc -l | grep 3
         pypodo -n -s "sec.nd" | grep "my second task"
         echo "----> test pypodo backup"
-        pypodo -b
-        diff ~/.todo ~/.todo_backup/.todo*
-        echo '----> test return pypodo --version'        
-        pypodo --version | grep "version pypodo : "               
+        #TODO change for windows
+        #pypodo -b
+        #diff ~/.config/pypodo/todo ~/.config/pypodo/backup/todo*
         echo '----> test return pypodo --update'        
         pypodo --update | grep "already"        

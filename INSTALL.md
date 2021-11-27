@@ -12,7 +12,7 @@
 *_Use pip instead of pip3, if pip3 does not exist_
 # Configuration [optional]
 
-You can customize the application with the ``~/.todo.rc`` file. Create it if it does not exist and copy paste this content. The autosort option runs a pypodo sort after pypodo del.
+You can customize the application with the ``config`` file. Create it if it does not exist and copy paste this content. The autosort option runs a pypodo sort after pypodo del. The location of the config file can be obtained with ``pypodo --V``
 
 ```
 ####grey,red,green,yellow,blue,magenta,cyan,white only ;)
@@ -42,6 +42,11 @@ You can customize the application with the ``~/.todo.rc`` file. Create it if it 
 #alerttags = #urgent
 ####True to autosort todolist
 #autosort = False
+####False to auto condensate output
+#condendate = False
+####True to nocolor
+#nocolor = False
+
 ```
 # Use with newsboat [optional]
 

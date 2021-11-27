@@ -21,11 +21,13 @@
 - ``pypodo --help/-h`` show the help message
 ## :airplane: Intermediate
 
-- ``pypodo --tag/-t TAG INDEX ...``* add a TAG at the items by the indexes
+- ``pypodo --tag TAG INDEX ...``* add a TAG at the items by the indexes
 
-- ``pypodo --untag/-u TAG INDEX ...``* remove a TAG at the items by the indexes
+- ``pypodo --untag TAG INDEX ...``* remove a TAG at the items by the indexes
 
 - ``pypodo --filter/-f TAG ...`` filter todolist with the tags given (cumulative filter)
+
+- ``pypodo --exclude/-e TAG ...`` filter todolist with the tags given excluded (cumulative filter)
 
 ## 🚀 Expert
 
@@ -35,9 +37,9 @@
 
 - ``pypodo --search/-s REGEX`` search regex given in the totolist
 
-- ``pypodo --update/-U`` update pypodo with pip or pip3
+- ``pypodo --update/-u`` update pypodo with pip or pip3
 
-- ``pypodo --version/-V`` display the version of pypodo
+- ``pypodo --info`` display informations about pypodo (version, location of files, ...)
 
 
 

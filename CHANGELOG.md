@@ -2,8 +2,20 @@
 
 ### TODO
 
-- [ ] condensate mode in config file
+### 5.0.0
 
+:warning: In the case of an update from 4.x version, with this version the location of the todo file, the config file and default backup folder change! Play ``pypodo --info`` to see the new location and move you actual config file.
+
+- [x] improve and condensate help message
+- [x] remove -u -t for --untag --tag and use -u for update
+- [x] condensate mode in config file
+- [x] nocolor mode in config file
+- [x] move todorc file in .config/pypodo/backup
+- [x] move backup file in .config/pypodo/config
+- [x] move todo file in .config/pypodo/config
+- [x] fix color alert
+- [x] add minimal test multi os
+- [x] exclude filter
 ### 4.1.1
 
 - [x] Publish tweet on release 
