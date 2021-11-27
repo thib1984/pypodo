@@ -1,8 +1,5 @@
 from setuptools import setup
 
-with open("README.md", "r") as fh:
-    long_description = fh.read()
-
 setup(
     name="pypodo",
     version="5.0.0",
@@ -14,14 +11,7 @@ setup(
     author_email="thibault.garcon@gmail.com",
     license="mit",
     packages=["pypodo"],
-    install_requires=[
-        "youtube-search-python",
-        "yt_dlp",
-        "tinytag",
-        "unidecode",
-        "termcolor",
-        "colorama",
-    ],
+    install_requires=["termcolor","columnar"],
     zip_safe=False,
     entry_points={
         "console_scripts": ["pypodo=pypodo.__init__:pypodo"],
