@@ -8,6 +8,7 @@ runs:
       run: |
         echo '----> test return pypodo --help'        
         pypodo --help | grep "pypodo is a todolist tool which works with a .todo"
+        pypodo --info | grep "version pypodo : "               
         echo '----> test return pypodo if empty todolist'        
         pypodo | grep "warning : the todolist is empty"         
         echo '----> test 3 pypodo --add'        
@@ -55,8 +56,7 @@ runs:
         pypodo -n -s "sec.nd" | grep "my second task"
         echo "----> test pypodo backup"
         pypodo -b
-        diff ~/.todo ~/.todo_backup/.todo*
+        diff ~/.todo ~/.config/pypodo/backup/todo*
         echo '----> test return pypodo --version'        
-        pypodo --info | grep "version pypodo : "               
         echo '----> test return pypodo --update'        
         pypodo --update | grep "already"        
