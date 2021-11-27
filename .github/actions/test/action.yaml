@@ -57,6 +57,6 @@ runs:
         pypodo -b
         diff ~/.todo ~/.todo_backup/.todo*
         echo '----> test return pypodo --version'        
-        pypodo --version | grep "version pypodo : "               
+        pypodo --info | grep "version pypodo : "               
         echo '----> test return pypodo --update'        
         pypodo --update | grep "already"        

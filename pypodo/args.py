@@ -60,7 +60,6 @@ def compute_args():
 
     )
     my_group.add_argument(
-        "-t",
         "--tag",
         action="store",
         nargs="+",
@@ -69,7 +68,6 @@ def compute_args():
         help="TAG item with the given INDEX(es)",
     )
     my_group.add_argument(
-        "-u",
         "--untag",
         action="store",
         nargs="+",
@@ -77,7 +75,7 @@ def compute_args():
         metavar="TAG INDEX ...",
         help="unTAG item with the given INDEX(es)",
     )
-    my_group.add_argument(
+    my_parser.add_argument(
         "-f",
         "--filter",
         action="store",
@@ -85,6 +83,15 @@ def compute_args():
         type=str,
         metavar="TAG ...",
         help="print the todolist filtered with TAG(s) given",
+    )
+    my_parser.add_argument(
+        "-e",
+        "--exclude",
+        action="store",
+        nargs="+",
+        type=str,
+        metavar="TAG ...",
+        help="print the todolist with TAG(s) given excluden",
     )
     my_group.add_argument(
         "-o",
@@ -108,13 +115,12 @@ def compute_args():
     )
 
     my_group.add_argument(
-        "-V",
-        "--version",
+        "--info",
         action="store_true",
-        help="print the version",
+        help="print the infos",
     )
     my_group.add_argument(
-        "-U",
+        "-u",
         "--update",
         action="store_true",
         help="update pypodo",

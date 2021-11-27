@@ -16,7 +16,6 @@ from datetime import date
 from pypodo.properties import (
     REGEX_INDEX,
     REGEX_SPACE_OR_ENDLINE,
-    STR_PATH_HOME__TODORC_,
 )
 from pypodo.config import (
     read_config,
@@ -73,7 +72,7 @@ def pypodo(openfile=open):
             backup(openfile)
         elif compute_args().search:
             find(openfile)
-        elif compute_args().version:
+        elif compute_args().info:
             version()
         elif compute_args().update:
             update()

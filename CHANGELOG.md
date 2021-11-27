@@ -2,8 +2,17 @@
 
 ### TODO
 
-- [ ] condensate mode in config file
+### 5.0.0 (WIP)
 
+- [x] improve and condensate help message
+- [x] remove -u -t for --untag --tag and use -u for update
+- [x] condensate mode in config file
+- [x] nocolor mode in config file
+- [x] move todorc file in .local/pypodo/backup
+- [x] move backup file in .local/pypodo/config
+- [x] fix color alert
+- [ ] add minimal test multi os
+- [x] exclude filter
 ### 4.1.1
 
 - [x] Publish tweet on release 

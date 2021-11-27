@@ -19,18 +19,23 @@ def printlinetodo(line):
     )
     index = my_colored(line.split(" ", 1)[0], color_index())
     tags = ""
+    isalert= False
+    iswarning= False
     for part in line.split():
         if part.startswith("#"):
             if part in listalerttags():
-                tags = tags + " " + (my_colored(part, color_alert()))
+                isalert = True
             elif test_date(part[1:]) == "alert":
-                tags = tags + " " + (my_colored(part, color_alert()))
+                isalert = True
             elif test_date(part[1:]) == "warning":
-                tags = (
-                    tags + " " + (my_colored(part, color_warning()))
-                )
-            else:
-                tags = tags + " " + (my_colored(part, color_tag()))
+                iswarning = True     
+            tags = tags + " " + part
+    if isalert:
+        tags= my_colored(tags, color_alert())
+    elif iswarning:
+        tags= my_colored(tags, color_warning())
+    else:
+        tags = my_colored(tags, color_tag())         
     return [index,task,tags]
 
 

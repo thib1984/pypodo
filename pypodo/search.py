@@ -9,6 +9,7 @@ from pypodo.properties import (
 )
 from pypodo.config import (
     todofilefromconfig,
+    read_config_boolean
 )
 from pypodo.args import compute_args
 from pypodo.print import (
@@ -37,5 +38,8 @@ def find(openfile=open):
         if compute_args().condensate:
             table = columnar(data, no_borders=True, wrap_max=0)
         else:
-            table = columnar(data, headers, no_borders=False, wrap_max=0)            
-        print(table)     
+            if (read_config_boolean("FONCTIONAL", "condensate", "False")== "True"):
+                table = columnar(data, no_borders=True, wrap_max=0)
+            else:    
+                table = columnar(data, headers, no_borders=False, wrap_max=0)            
+        print(table)    
