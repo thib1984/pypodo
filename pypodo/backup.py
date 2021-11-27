@@ -34,7 +34,7 @@ def backup(openfile=open):
         printinfo("creating todolist backup folder")
     time_suffix = time.strftime("%Y%m%d%H%M%S")
     todo_backup_name = "todo" + time_suffix
-    backup_name = todobackupfolderfromconfig() + todo_backup_name
+    backup_name = os.path.join(todobackupfolderfromconfig(),todo_backup_name)
     try:
         copyfile(todofilefromconfig(), backup_name)
     except PermissionError:
@@ -43,4 +43,4 @@ def backup(openfile=open):
             + todobackupfolderfromconfig()
         )
         sys.exit()
-    printinfo("creating todolist backup - " + todo_backup_name)
+    printinfo("creating todolist backup - " + backup_name)

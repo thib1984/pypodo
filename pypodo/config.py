@@ -9,7 +9,7 @@ from pathlib import Path
 from pypodo.properties import DOSSIER_CONFIG_PYPODO, TODO_RC_FILE
 
 
-def get_user_config_directory_pyweather():
+def get_user_config_directory_pypodo():
     if os.name == "nt":
         appdata = os.getenv("LOCALAPPDATA")
         if appdata:
@@ -54,7 +54,7 @@ def read_config(section, cle, defaut, openfile=open):
     try:
         try:
             try:
-                f = openfile(get_user_config_directory_pyweather()+TODO_RC_FILE, "r")
+                f = openfile(os.path.join(get_user_config_directory_pypodo(),TODO_RC_FILE), "r")
                 f.close()
             except PermissionError:
                 print(
@@ -65,9 +65,9 @@ def read_config(section, cle, defaut, openfile=open):
                 )
                 sys.exit()
         except FileNotFoundError:
-            f = openfile(get_user_config_directory_pyweather()+TODO_RC_FILE, "w")
+            f = openfile(os.path.join(get_user_config_directory_pypodo(),TODO_RC_FILE), "w")
             f.close()
-        config.read(get_user_config_directory_pyweather()+TODO_RC_FILE)
+        config.read(os.path.join(get_user_config_directory_pypodo(),TODO_RC_FILE))
         return config[section][cle]
     except (configparser.MissingSectionHeaderError, KeyError):
         return defaut
@@ -183,7 +183,7 @@ def todofilefromconfig():
     Obtain path to todofile
     """
     return read_config(
-        "SYSTEM", "todofile", str(Path.home()) + "/.todo"
+        "SYSTEM", "todofile", os.path.join(get_user_config_directory_pypodo(),"todo")
     )  
 
 
@@ -194,5 +194,5 @@ def todobackupfolderfromconfig():
     return read_config(
         "SYSTEM",
         "todobackupfolder",
-        get_user_config_directory_pyweather() + "backup/",
+        os.path.join(get_user_config_directory_pypodo(),"backup"),
     )

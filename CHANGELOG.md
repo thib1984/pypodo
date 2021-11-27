@@ -4,7 +4,7 @@
 
 ### 5.0.0
 
-:warning: In the case of an update, with this version the location of the config file and default backup folder change! Play ``pypodo --info`` to see the new location and move you actual config file.
+:warning: In the case of an update, with this version the location of the todo file, the config file and default backup folder change! Play ``pypodo --info`` to see the new location and move you actual config file.
 
 - [x] improve and condensate help message
 - [x] remove -u -t for --untag --tag and use -u for update
