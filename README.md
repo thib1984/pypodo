@@ -1,7 +1,9 @@
+:warning: In the case of an update from 4.x version, with this version the location of the todo file, the config file and default backup folder change! Play ``pypodo --info`` to see the new location and move you actual config file.
+
 
 # :ballot_box_with_check: pypodo
 
-**pypodo** (\pipudu\\) is a pip package : a todolist tool which works with a .todo file positionned the root of the home directory.
+**pypodo** (\pipudu\\) is a pip package : a todolist tool which works in your terminal. It has a mecanism of indexes and tags.
 
 
 # 💫 Demo
@@ -33,7 +35,7 @@
 
 - ``pypodo --order/-o`` reorder the todolist with consecutive indexes
 
-- ``pypodo --backup/-b`` create a backup from the todolist in ~/.todo_backup folder, with timestamp suffix (.todoYYYYMMddHHmmSS)
+- ``pypodo --backup/-b`` create a backup from the todolist in the backup folder, with timestamp suffix (todoYYYYMMddHHmmSS)
 
 - ``pypodo --search/-s REGEX`` search regex given in the totolist
 

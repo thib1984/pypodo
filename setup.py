@@ -2,8 +2,8 @@ from setuptools import setup
 
 setup(
     name="pypodo",
-    version="5.0.0",
-    description="pypodo is a todolist tool which works with a .todo file at the root of the home directory. It has a mecanism of indexes and tags.",
+    version="5.0.1",
+    description="pypodo is a todolist tool which works in your terminal. It has a mecanism of indexes and tags.",
     long_description="The complete description/installation/use/FAQ is available at : https://github.com/thib1984/pypodo#readme",
     long_description_content_type="text/markdown",
     url="https://github.com/thib1984/pypodo",

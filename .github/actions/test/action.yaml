@@ -8,7 +8,7 @@ runs:
       run: |
         echo ${{ matrix.os-version }}
         echo '----> test return pypodo --help'        
-        pypodo --help | grep "pypodo is a todolist tool which works with a .todo"
+        pypodo --help | grep "pypodo is a todolist tool which works in your terminal. It has a mecanism of indexes and tags."
         echo '----> test return pypodo --info'        
         pypodo --info
         pypodo --info | grep "version pypodo"               

@@ -33,12 +33,12 @@ def check(openfile=open):
                         line.rstrip("\n"),
                     ):
                         printwarning(
-                            "this line has not a valid format in .todo - "
+                            "this line has not a valid format in todo file - "
                             + line.rstrip("\n")
                         )
                         error = True
             if error:
-                printerror("verify the .todo file.")
+                printerror("verify the todo file.")
                 sys.exit()
             return True
         except PermissionError:
@@ -48,7 +48,7 @@ def check(openfile=open):
             )
             sys.exit()
 
-    printinfo("creating .todolist file")
+    printinfo("creating todo file")
     try:
         f = openfile(todofilefromconfig(), "a")
         f.close
@@ -56,7 +56,7 @@ def check(openfile=open):
         printerror(
             "the path "
             + todofilefromconfig()
-            + " does not exist, correct it (in the .todo.rc file)"
+            + " does not exist, correct it (in the config file)"
         )
         sys.exit()
     return True

@@ -30,8 +30,8 @@ You can customize the application with the ``config`` file. Create it if it does
 #messagelevel = info
 ####format double % character, use for warning and alert on dates
 #formatdate = %%Y%%m%%d
-#todofile = ~/.todo
-#todobackupfolder = ~/.todo_backup/
+#todofile = ~/.config/pypodo/todo
+#todobackupfolder = ~/.config/pypodo/backup
 
 
 [FONCTIONAL]
@@ -58,5 +58,5 @@ browser "pypodo add '%u #rss'"
 
 # File sharing [optional]
 
-You can use the .todo.rc configuration file to change the path of your todofile. If you used a "cloud folder" as cozy drive, you can share your pypodo app between two or more computeurs!
+You can use the configuration file to change the path of your todofile. If you used a "cloud folder" as cozy drive, you can share your pypodo app between two or more computeurs!
 

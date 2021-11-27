@@ -28,7 +28,7 @@ def compute_args():
     check args and return them
     """
     my_parser = argparse.ArgumentParser(
-        description="pypodo is a todolist tool which works with a .todo file at the root of the home directory. It has a mecanism of indexes and tags. Without parameter, pypodo print the todolist.",
+        description="pypodo is a todolist tool which works in your terminal. It has a mecanism of indexes and tags.",
         epilog="""
         Full documentation at: <https://github.com/thib1984/pypodo>.
         Report bugs to <https://github.com/thib1984/pypodo/issues>.
