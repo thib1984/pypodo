@@ -15,6 +15,8 @@ from pypodo.args import compute_args
 from pypodo.print import (
     printwarning,
     printlinetodo,
+    listalerttags,
+    test_date
 )
 
 
@@ -50,6 +52,14 @@ def listtask(openfile=open):
                         line.rstrip("\n"),
                     ):
                         display = False                        
+            if compute_args().alert:
+                isalert = False
+                for part in line.split():
+                    if part.startswith("#"):
+                        if part in listalerttags() or test_date(part[1:]) == "alert":
+                            isalert = True
+                if isalert == False:
+                    display = False                                    
             if display:
                 data.append(printlinetodo(line))
                 empty = False

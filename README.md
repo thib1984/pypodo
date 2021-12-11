@@ -16,7 +16,7 @@
 
 - ``pypodo`` print your actual todolist.
 
-- ``pypodo --add/-a ITEM ...`` add items in the todolist
+- ``pypodo --add/ ITEM ...`` add items in the todolist
 
 - ``pypodo --del/-d INDEX ...``* delete items by the indexes in your todolist
 
@@ -30,6 +30,8 @@
 - ``pypodo --filter/-f TAG ...`` filter todolist with the tags given (cumulative filter)
 
 - ``pypodo --exclude/-e TAG ...`` filter todolist with the tags given excluded (cumulative filter)
+
+- ``pypodo --alert/-a TAG ...`` filter todolist with the alert tags
 
 ## 🚀 Expert
 
