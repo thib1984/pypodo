@@ -56,7 +56,7 @@ def listtask(openfile=open):
                 isalert = False
                 for part in line.split():
                     if part.startswith("#"):
-                        if part in listalerttags() or test_date(part[1:]) == "alert":
+                        if part in listalerttags() or test_date(part[1:]) == "alert" or test_date(part[1:]) == "warning":
                             isalert = True
                 if isalert == False:
                     display = False                                    

@@ -41,6 +41,7 @@ def compute_args():
     )
     my_group = my_parser.add_mutually_exclusive_group()
     my_group.add_argument(
+        "-a",
         "--add",
         action="store",
         nargs="+",
@@ -49,10 +50,10 @@ def compute_args():
         help="add ITEM(s) in the todolist",
     )
     my_group.add_argument(
-        "-a",
-        "--alert",
+        "-w",
+        "--warning",
         action="store_true",
-        help="print the todolist filtered with TAG(s) alert",
+        help="print the todolist filtered with TAG(s) alert and warning",
     )    
     my_group.add_argument(
         "-d",
