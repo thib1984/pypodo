@@ -147,10 +147,32 @@ def compute_args():
     )
 
     my_parser.add_argument(
+        "-D",
+        "--day",
+        action="store_true",
+        help="add tag actual day",
+    )
+
+    my_parser.add_argument(
+        "-W",
+        "--week",
+        action="store_true",
+        help="add tag next week",
+    )
+
+    my_parser.add_argument(
+        "-M",
+        "--month",
+        action="store_true",
+        help="add tag next month",
+    )
+
+    my_parser.add_argument(
         "-v",
         "--verbose",
         action="store_true",
         help="verbose mode",
     )
+    
     args = my_parser.parse_args()
     return args

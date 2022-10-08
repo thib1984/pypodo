@@ -1,7 +1,9 @@
 ## Changelog
 
 :warning: In the case of an update from 4.x version, with this version the location of the todo file, the config file and default backup folder change! Play ``pypodo --info`` to see the new location and move you actual config file.
-### TODO
+### 5.2.0
+
+- [ ] add --Day/--Week/--Month
 
 ### 5.1.1
 

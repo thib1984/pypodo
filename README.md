@@ -31,9 +31,15 @@
 
 - ``pypodo --exclude/-e TAG ...`` filter todolist with the tags given excluded (cumulative filter)
 
-- ``pypodo --warrning/-w TAG ...`` filter todolist with the alert or warning tags
+- ``pypodo --warning/-w TAG ...`` filter todolist with the alert or warning tags
 
 ## 🚀 Expert
+
+- ``pypodo --day/-D -a ITEM`` add item with tag of the current day
+
+- ``pypodo --week/-W -a ITEM`` add item with tag of the day + one week
+
+- ``pypodo --month/-M -a ITEM`` add item with tag of the day + one month
 
 - ``pypodo --order/-o`` reorder the todolist with consecutive indexes
 
