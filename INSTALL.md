@@ -42,8 +42,8 @@ You can customize the application with the ``config`` file. Create it if it does
 #alerttags = #urgent
 ####True to autosort todolist
 #autosort = False
-####False to auto condensate output
-#condendate = False
+####True to auto condensate output
+#condensate = False
 ####True to nocolor
 #nocolor = False
 

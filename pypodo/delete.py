@@ -15,6 +15,7 @@ from pypodo.print import (
     printwarning,
     printinfo,
 )
+from pypodo.sort import sort 
 
 
 def delete(openfile=open):

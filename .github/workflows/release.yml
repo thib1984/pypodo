@@ -7,14 +7,14 @@ on:
 jobs:
   push_to_registry:
     name: run tests + push pip package
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-22.04
     steps:
       - name: checkout the repo
         uses: actions/checkout@v2
       - name: install python3
         uses: actions/setup-python@v2
-        with:
-          python-version: '3.8.5'
+        #with:
+        #  python-version: '3.11'
       - name: update pip
         run: |
           python -m pip install --upgrade pip
