@@ -54,30 +54,32 @@ def pypodo(openfile=open):
     Entrypoint
     """
     compute_args()
-    if check(openfile):
-        if compute_args().filter:
-            listtask(openfile)
-        elif compute_args().add:
-            add(openfile)
-        elif compute_args().delete:
-            delete(openfile)
-        elif compute_args().order:
-            sort(openfile)
-            listtask(openfile)
-        elif compute_args().untag:
-            untag(openfile)
-        elif compute_args().tag:
-            tag(openfile)
-        elif compute_args().backup:
-            backup(openfile)
-        elif compute_args().search:
-            find(openfile)
-        elif compute_args().info:
+    if compute_args().info:
             version()
-        elif compute_args().update:
-            update()
-        else:
-            listtask(openfile)
+    elif compute_args().order:
+        sort(openfile)
+        listtask(openfile)
+    elif compute_args().update:
+        update()        
+    else:      
+        if check(openfile):
+            if compute_args().filter:
+                listtask(openfile)
+            elif compute_args().add:
+                add(openfile)
+            elif compute_args().delete:
+                delete(openfile)
+            elif compute_args().untag:
+                untag(openfile)
+            elif compute_args().tag:
+                tag(openfile)
+            elif compute_args().backup:
+                backup(openfile)
+            elif compute_args().search:
+                find(openfile)
+            else:
+                listtask(openfile)
+           
 
 
 

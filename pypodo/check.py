@@ -38,7 +38,7 @@ def check(openfile=open):
                         )
                         error = True
             if error:
-                printerror("verify the todo file.")
+                printerror("verify the todo file, or launch pypdo --order/-o")
                 sys.exit()
             return True
         except PermissionError:

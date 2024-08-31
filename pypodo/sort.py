@@ -29,11 +29,20 @@ def sort(openfile=open):
         lines = todofile.readlines()
     with openfile(todofilefromconfig(), "w") as todofile:
         for line in lines:
-            # we replace the existing index by the current index that we increment
-            replaced = re.sub("^\\d+ ", str(index) + " ", line)
-            index = index + 1
-            todofile.write(replaced)
-            empty = False
+            if not re.findall(
+                "^\\d+ ([^#]|([^ ]#))*( #[^ #]+)*$",
+                line.rstrip("\n"),
+            ):
+                printwarning(
+                    "this line has not a valid format in todo file, it will be ignored - "
+                    + line.rstrip("\n")
+                )
+            else:
+                # we replace the existing index by the current index that we increment
+                replaced = re.sub("^\\d+ ", str(index) + " ", line)
+                index = index + 1
+                todofile.write(replaced)
+                empty = False
     if empty:
         printwarning("the todolist is empty - nothing to do")
     else:

@@ -2,6 +2,12 @@
 
 :warning: In the case of an update from 4.x version, with this version the location of the todo file, the config file and default backup folder change! Play ``pypodo --info`` to see the new location and move you actual config file.
 
+### 5.3.1
+
+- [x] --info should not test pypdo file
+- [x] multiline management
+- [x] clean todofile with -o
+
 ### 5.3.0
 
 - [x] fix Readme (config file)

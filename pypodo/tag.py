@@ -24,7 +24,7 @@ def tag(openfile=open):
     """
     if len(compute_args().tag) >= 2:
         tagtoadd = compute_args().tag[0]
-        if not re.findall("^[^ #]+$", tagtoadd):
+        if not re.findall("^[^ #]+$", tagtoadd) or "\n" in tagtoadd:
             printerror("the tag has not a valid format - " + tagtoadd)
         else:
             # loop on the indexes

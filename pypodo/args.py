@@ -103,7 +103,7 @@ def compute_args():
         "-o",
         "--order",
         action="store_true",
-        help="order the todolist",
+        help="order the todolist, and clean it from no valid lines",
     )
     my_group.add_argument(
         "-b",

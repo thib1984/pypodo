@@ -29,26 +29,28 @@ def add(openfile=open):
             index = 1
     with openfile(todofilefromconfig(), "a") as todofile:
         # loop on the indexes
-        for task in compute_args().add:
-            if compute_args().day:    
-                task = task + " #"+datetime.now().strftime(read_config_date_format("SYSTEM", "formatdate", "%Y%m%d"))
-            if compute_args().week:
-                task = task + " #"+(datetime.now()+relativedelta(weeks=1)).strftime(read_config_date_format("SYSTEM", "formatdate", "%Y%m%d"))
-            if compute_args().month:
-                task = task + " #"+(datetime.now()+relativedelta(months=1)).strftime(read_config_date_format("SYSTEM", "formatdate", "%Y%m%d"))                              
-            # check format : words* #tag1 #tag2 : task at free format,
-            # tags in one word prefixed by #
-            if not re.findall("^([^#]|([^ ]#))*( #[^ #]+)*$", task):
-                printwarning(
-                    "the task has not a valid format - " + task
-                )
-            else:
-                # adding task to the todolist
-                todofile.write(str(index) + " " + task + "\n")
-                printinfo(
-                    "task is added to the todolist - "
-                    + str(index)
-                    + " "
-                    + task
-                )
-                index = index + 1
+        for tasklist in compute_args().add:
+            for task in tasklist.splitlines():
+                if compute_args().day:    
+                    task = task + " #"+datetime.now().strftime(read_config_date_format("SYSTEM", "formatdate", "%Y%m%d"))
+                if compute_args().week:
+                    task = task + " #"+(datetime.now()+relativedelta(weeks=1)).strftime(read_config_date_format("SYSTEM", "formatdate", "%Y%m%d"))
+                if compute_args().month:
+                    task = task + " #"+(datetime.now()+relativedelta(months=1)).strftime(read_config_date_format("SYSTEM", "formatdate", "%Y%m%d"))                              
+                # check format : words* #tag1 #tag2 : task at free format,
+                # tags in one word prefixed by #
+                printwarning(task)
+                if not re.findall("^([^#]|([^ ]#))*( #[^ #]+)*$", task):
+                    printwarning(
+                        "the task has not a valid format - " + task
+                    )
+                else:
+                    # adding task to the todolist
+                    todofile.write(str(index) + " " + task + "\n")
+                    printinfo(
+                        "task is added to the todolist - "
+                        + str(index)
+                        + " "
+                        + task
+                    )
+                    index = index + 1
