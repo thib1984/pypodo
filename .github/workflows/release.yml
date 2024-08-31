@@ -37,15 +37,4 @@ jobs:
       - name: build pip
         run: python3 -m pep517.build --source --binary --out-dir dist/ .
       - name: publish to pypi
-        uses: pypa/gh-action-pypi-publish@release/v1    
-      - name: Deduce relase
-        id: vars
-        run: echo ::set-output name=relase_tag::$(grep version setup.py | cut -d "\"" -f2)
-      - name: tweet
-        env: 
-          CONSUMER_KEY: ${{ secrets.CONSUMER_KEY }}
-          CONSUMER_SECRET: ${{ secrets.CONSUMER_SECRET }}
-          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-          ACCESS_TOKEN_SECRET: ${{ secrets.ACCESS_TOKEN_SECRET }}
-          VERSION: ${{ steps.vars.outputs.relase_tag }}
-        run: pip install twython && python .github/publish_tweet.py             
+        uses: pypa/gh-action-pypi-publish@release/v1           
