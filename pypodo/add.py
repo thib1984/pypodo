@@ -39,7 +39,7 @@ def add(openfile=open):
                     task = task + " #"+(datetime.now()+relativedelta(months=1)).strftime(read_config_date_format("SYSTEM", "formatdate", "%Y%m%d"))                              
                 # check format : words* #tag1 #tag2 : task at free format,
                 # tags in one word prefixed by #
-                printwarning(task)
+                #printwarning(task)
                 if not re.findall("^([^#]|([^ ]#))*( #[^ #]+)*$", task):
                     printwarning(
                         "the task has not a valid format - " + task
