@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name="pypodo",
-    version="5.3.2",
+    version="5.3.3",
     description="pypodo is a todolist tool which works in your terminal. It has a mecanism of indexes and tags.",
     long_description="The complete description/installation/use/FAQ is available at : https://github.com/thib1984/pypodo#readme",
     long_description_content_type="text/markdown",
@@ -11,7 +11,7 @@ setup(
     author_email="thibault.garcon@gmail.com",
     license="mit",
     packages=["pypodo"],
-    install_requires=["termcolor","columnar","python-dateutil"],
+    install_requires=["termcolor","columnar","python-dateutil","setuptools"],
     zip_safe=False,
     entry_points={
         "console_scripts": ["pypodo=pypodo.__init__:pypodo"],
