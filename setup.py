@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name="pypodo",
-    version="6.0.2",
+    version="6.0.3",
     description="pypodo is a todolist tool which works in your terminal. It has a mecanism of indexes and tags.",
     long_description="The complete description/installation/use/FAQ is available at : https://github.com/thib1984/pypodo#readme",
     long_description_content_type="text/markdown",
@@ -18,15 +18,9 @@ setup(
         "console_scripts": ["pypodo=pypodo.__init__:pypodo"],
     },
     classifiers=[
-        "Programming Language :: Python :: 3.8",
-        "Programming Language :: Python :: 3.9",
-        "Programming Language :: Python :: 3.10",
-        "Programming Language :: Python :: 3.11",
-        "Programming Language :: Python :: 3.12",  
-        "Programming Language :: Python :: 3.13",
-        "Programming Language :: Python :: 3.14",      
+        "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    python_requires=">=3.8",
+    python_requires=">=3.10",
 )

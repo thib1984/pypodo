@@ -12,16 +12,47 @@ When you finish, past the merge request in "ready" mode and i will check this qu
 
 If you are any questions, don't try to ping me 😁
 
-# Local install to develop
+# Work
 
+```
+# Uninstall the globally installed version via pipx if needed (optional, just to reset the published app)
+pipx uninstall pypodo 
+
+# Clone the repository only the first time
 git clone https://github.com/thib1984/pypodo.git
+# Afterwards, update it using regular git commands (git pull, git fetch, etc.)
 cd pypodo 
-rm -rf pypodo_env #clean env if necessary
+
+# Remove any previous virtual environment to start fresh
+rm -rf pypodo_env 
+
+# Create a virtual environment to isolate dependencies for this project
 python3 -m venv pypodo_env
 source pypodo_env/bin/activate
-#work!
-pip3 install .
-pypodo [...] #to retest
+
+# Install the local package in the isolated environment
+pip install .
+
+# Test the app locally within the virtual environment
+pypodo [...] 
+
+# Optional: reinstall if needed and retest
+pip install .
+pypodo [...] 
+
+# Exit the virtual environment
 deactivate
 
+# Reinstall the globally published version via pipx if needed
+pipx install pypodo 
+``` 
+
+A venv (virtual environment) isolates this project's Python dependencies from the system, preventing version conflicts and keeping things clean.
+
+
+# Publish to pypi
+
+```
+#from work directory
 python3 -m build && python3 -m twine upload dist/* #to publish to pypi
+```
