@@ -47,8 +47,6 @@
 
 - ``pypodo --search/-s REGEX`` search regex given in the totolist
 
-- ``pypodo --update/-u`` update pypodo with pip or pip3
-
 - ``pypodo --info`` display informations about pypodo (version, location of files, ...)
 
 

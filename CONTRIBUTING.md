@@ -14,27 +14,14 @@ If you are any questions, don't try to ping me 😁
 
 # Local install to develop
 
-```
-git clone https://github.com/[your-forked-repo]/pypodo.git
+git clone https://github.com/thib1984/pypodo.git
 cd pypodo 
+rm -rf pypodo_env #clean env if necessary
+python3 -m venv pypodo_env
+source pypodo_env/bin/activate
 #work!
-pip3 install . #to build
-#test!
-#pip3 uninstall pypodo #to properly uninstall the dev version
-#git add/commit/push [...]
-``` 
-# Test
+pip3 install .
+pypodo [...] #to retest
+deactivate
 
-## Prerequisites
-
-With [act](https://github.com/nektos/act), you can play Github Action locally.
-
-To install it :
-```
-curl https://raw.githubusercontent.com/nektos/act/master/install.sh | sudo bash
-```
-or go to [this page](https://github.com/nektos/act#installation)
-
-## Launch test
-
-Just, go to the root of the project and play ``act -j full_test`` (test OS ubuntu 20.04/python 3.9) with  "Medium size image"
+python3 -m build && python3 -m twine upload dist/* #to publish to pypi

@@ -2,9 +2,18 @@
 
 :warning: In the case of an update from 4.x version, with this version the location of the todo file, the config file and default backup folder change! Play ``pypodo --info`` to see the new location and move you actual config file.
 
-### 5.3.3
+### 6.0.2
 
-- [x] add setuptools fort clean install
+- [x] delete setuptools and pkg_resources
+
+
+### 6.0.1
+
+- [x] add setuptools for clean install
+- [x] delete self-upgrade
+- [x] fix docs
+- [x] fix contributing
+
 
 ### 5.3.2
 

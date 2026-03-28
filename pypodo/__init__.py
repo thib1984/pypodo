@@ -29,8 +29,7 @@ from pypodo.config import (
 )
 from termcolor import colored
 from pypodo.args import compute_args
-from pypodo.update import update
-from pypodo.version import version
+from pypodo.version import version_infos
 from pypodo.print import (
     printdebug,
     printwarning,
@@ -55,12 +54,10 @@ def pypodo(openfile=open):
     """
     compute_args()
     if compute_args().info:
-            version()
+            version_infos()
     elif compute_args().order:
         sort(openfile)
-        listtask(openfile)
-    elif compute_args().update:
-        update()        
+        listtask(openfile)       
     else:      
         if check(openfile):
             if compute_args().filter:

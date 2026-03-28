@@ -1,15 +1,14 @@
 # Prerequisites
 
 - Install Python 3 for your system
-- Install pip3* for your system
+- Install pipx for your system
 
 # Install/Upgrade/Uninstall
 
-- ``pip3 install pypodo``* to install
-- ``pypodo --update`` or ``pip3 install --upgrade``* to upgrade
-- ``pip3 uninstall pypodo``* to uninstall
+- ``pipx install pypodo``* to install
+- ``pipx upgrade pypodo``* to upgrade
+- ``pipx unistall pypodo``* to remove
 
-*_Use pip instead of pip3, if pip3 does not exist_
 # Configuration [optional]
 
 You can customize the application with the ``config`` file. Create it if it does not exist and copy paste this content. The autosort option runs a pypodo sort after pypodo del. The location of the config file can be obtained with ``pypodo --V``

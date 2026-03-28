@@ -60,6 +60,4 @@ runs:
         echo "----> test pypodo backup"
         #TODO change for windows
         #pypodo -b
-        #diff ~/.config/pypodo/todo ~/.config/pypodo/backup/todo*
-        echo '----> test return pypodo --update'        
-        pypodo --update | grep "already"        
+        #diff ~/.config/pypodo/todo ~/.config/pypodo/backup/todo*    

@@ -125,12 +125,6 @@ def compute_args():
         action="store_true",
         help="print the infos",
     )
-    my_group.add_argument(
-        "-u",
-        "--update",
-        action="store_true",
-        help="update pypodo",
-    )
 
     my_parser.add_argument(
         "-n",
