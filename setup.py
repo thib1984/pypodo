@@ -10,7 +10,7 @@ setup(
     author="thib1984",
     author_email="thibault.garcon@gmail.com",
     license="MIT",
-    license_files=[],
+    license_files="LICENSE.txt",
     packages=["pypodo"],
     install_requires=["termcolor","columnar","python-dateutil"],
     zip_safe=False,
