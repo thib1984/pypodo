@@ -24,7 +24,8 @@ pip uninstall pypodo --break-system-packages
 # Installation
 
 ```
-pipx install pypodo
+pipx upgrade pypodo
+pipx reinstall pypodo #to force update dependencies
 ```
 
 # Upgrade

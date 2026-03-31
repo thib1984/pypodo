@@ -3,9 +3,20 @@ pypodo argparse gestion
 """
 
 import argparse
+import importlib.metadata
 
+def get_env_report():
+    lines = []
 
-class CustomHelpFormatter(argparse.HelpFormatter):
+    lines.append("\nInstalled packages:")
+    for dist in sorted(importlib.metadata.distributions(), key=lambda d: d.metadata["Name"].lower()):
+        name = dist.metadata["Name"]
+        version = dist.version
+        lines.append(f"  - {name}=={version}")
+
+    return "\n".join(lines)   
+
+class CustomHelpFormatter(argparse.RawDescriptionHelpFormatter,argparse.HelpFormatter):
     def _format_action_invocation(self, action):
         if not action.option_strings or action.nargs == 0:
             return super()._format_action_invocation(action)
@@ -29,14 +40,29 @@ def compute_args():
     """
     my_parser = argparse.ArgumentParser(
         description="pypodo is a todolist tool which works in your terminal. It has a mecanism of indexes and tags.",
-        epilog="""
-        Full documentation at: <https://github.com/thib1984/pypodo>.
-        Report bugs to <https://github.com/thib1984/pypodo/issues>.
-        MIT Licence.
-        Copyright (c) 2021 thib1984.
-        This is free software: you are free to change and redistribute it.
-        There is NO WARRANTY, to the extent permitted by law.
-        Written by thib1984.""",
+        epilog=f"""
+To upgrade, run:
+    pipx upgrade pypodo
+    pipx reinstall pypodo #to force update dependencies
+To install, run:
+    pipx install pypodo
+To force reinstall, run:
+    pipx install pypodo --force
+To uninstall, run:
+    pipx uninstall pypodo
+To force uninstall (if needed), run:
+    pipx uninstall pypodo --force
+
+{get_env_report()}
+
+Full documentation at: <https://github.com/thib1984/pypodo>.
+Report bugs to <https://github.com/thib1984/pypodo/issues>.
+MIT Licence.
+Copyright (c) 2021 thib1984.
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+Written by thib1984.
+        """,
         formatter_class=CustomHelpFormatter,
     )
     my_group = my_parser.add_mutually_exclusive_group()
