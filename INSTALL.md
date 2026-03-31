@@ -24,17 +24,15 @@ pip uninstall pypodo --break-system-packages
 # Installation
 
 ```
-pipx upgrade pypodo
-pipx reinstall pypodo #to force update dependencies
+pipx install pypodo
 ```
 
 # Upgrade
 
 ```
-pipx upgrade pypodo --include-deps
+pipx upgrade pypodo
+pipx reinstall pypodo #to force update dependencies
 ```
-
-This command upgrades the application to the latest version and also updates all its dependencies.
 
 # Uninstall
 
